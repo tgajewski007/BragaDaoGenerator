@@ -25,7 +25,14 @@ class FilesGenerator
 		$f->init();
 		$f->prepareDAOFile();
 		$f->prepareClassFile();
+		$f->prepareMainFile();
 		$f->finish();
+	}
+	// -------------------------------------------------------------------------
+	protected function prepareMainFile()
+	{
+		$d = new MainFileGenerator(self::$project);
+		$d->GO();
 	}
 	// -------------------------------------------------------------------------
 	protected function prepareClassFile()

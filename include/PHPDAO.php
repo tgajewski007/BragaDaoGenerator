@@ -19,6 +19,7 @@ include "ProjectType.php";
 include "DAOFileGenerator.php";
 include "ClassFileGenerator.php";
 include "ConnectedColumn.php";
+include "MainFileGenerator.php";
 include "framework/DataSource.php" ;
 include "framework/DAO.php" ;
 include "framework/Collection.php" ;

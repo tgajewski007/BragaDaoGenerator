@@ -20,7 +20,7 @@ class Project
 	 * unused
 	 */
 	protected $type = null;
-	protected $name = null;
+	protected $name = "Project1";
 	protected $nameSpace = null;
 	protected $errorPrefix = null;
 	// -------------------------------------------------------------------------
@@ -90,7 +90,7 @@ class Project
 	{
 		if(is_null($this->xmlFile))
 		{
-			return $this->getProjectFolder()."\\".$this->getDaoFolder()."\\dao.xml";
+			return $this->getProjectFolder()."\\dao.xml";
 		}
 		return $this->xmlFile;
 	}

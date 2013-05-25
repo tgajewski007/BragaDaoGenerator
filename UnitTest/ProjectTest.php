@@ -37,7 +37,6 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 	{
 		$p = new Project();
 		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test1");
-		$p->setDaoFolder("dao1");
 		$t = new Table();
 		$t->setName("a");
 		$this->assertNull($p->addTable($t));
@@ -46,8 +45,7 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 	function testGetTables()
 	{
 		$p = new Project();
-		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test1");
-		$p->setDaoFolder("dao1");
+		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test2");
 		$t = new Table();
 		$t->setName("a");
 		$p->addTable($t);
@@ -57,16 +55,14 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 	function testGenerate()
 	{
 		$p = new Project();
-		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test1");
-		$p->setDaoFolder("dao1");
+		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test3");
 		$this->assertNull(FilesGenerator::GO($p));
 	}
 	// -------------------------------------------------------------------------
 	function testKeyOfTableList()
 	{
 		$p = new Project();
-		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test1");
-		$p->setDaoFolder("dao1");
+		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test4");
 		$t = new Table();
 		$t->setName("zbior");
 		$t->setSchema("ORA_SCHEMA");
@@ -82,13 +78,6 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 		$r = $p->getTables();
 		$this->assertTrue(isset($r["zbior"]));
 
-	}
-	// -------------------------------------------------------------------------
-	function testFromXMLFile()
-	{
-		$p = new Project();
-		$p->setProjectFolder("o:\\wwwroot\\SandBox\\en\\include");
-		FilesGenerator::GO($p);
 	}
 	// -------------------------------------------------------------------------
 	function testGO()
@@ -161,8 +150,8 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 		$p = new Project();
 		$p->setAuthor("Tomasz.Gajewski");
 		$p->setDaoFolder("dao");
-		$p->setXmlFile("O:\\wwwroot\\TestDao\\test2\\Doc\\dao.xml");
-		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test2");
+		$p->setXmlFile("O:\\wwwroot\\TestDao\\test6\\Doc\\dao.xml");
+		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test6");
 		$p->setName("DAOElektronicznyNadawca");
 		$p->addTable($t);
 
@@ -226,11 +215,11 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 
 		FilesGenerator::GO($p);
 
-		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test2\\Doc\\dao.xml"));
-		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test2\\dao\\KlientDAO.php"));
-		include 'O:\\wwwroot\\TestDao\\test2\\dao\\KlientDAO.php';
-		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test2\\obj\\Klient.php"));
-		include 'O:\\wwwroot\\TestDao\\test2\\obj\\Klient.php';
+		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test6\\Doc\\dao.xml"));
+		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test6\\dao\\KlientDAO.php"));
+		include 'O:\\wwwroot\\TestDao\\test6\\dao\\KlientDAO.php';
+		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test6\\obj\\Klient.php"));
+		include 'O:\\wwwroot\\TestDao\\test6\\obj\\Klient.php';
 
 
 		$t = Klient::get();

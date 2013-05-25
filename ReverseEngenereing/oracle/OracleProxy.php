@@ -21,6 +21,7 @@ class OracleProxy implements ReverseProxy
 		$SQL .= "ORDER BY TABLE_NAME ";
 
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA,true);
+		echo "selecting triggers ....\n";
 		$db->query($SQL);
 		$trigger = array();
 		while($db->nextRecord())
@@ -33,6 +34,7 @@ class OracleProxy implements ReverseProxy
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "ORDER BY table_name ";
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA,true);
+		echo "selecting tables ....\n";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
@@ -57,6 +59,7 @@ class OracleProxy implements ReverseProxy
 
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
+		echo "columns for table ".$tableName." .... ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
@@ -112,6 +115,7 @@ class OracleProxy implements ReverseProxy
 		$SQL .= "ORDER BY b.POSITION ";
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
+		echo "selecting pk, ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
@@ -136,6 +140,7 @@ class OracleProxy implements ReverseProxy
 		$SQL .= "ORDER BY c.POSITION ";
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
+		echo "fk, ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
