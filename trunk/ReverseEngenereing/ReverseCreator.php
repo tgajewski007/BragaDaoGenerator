@@ -30,11 +30,14 @@ class ReverseCreator
 	// -------------------------------------------------------------------------
 	public function GO()
 	{
+		echo "starting...\n";
 		foreach ($this->proxy->getTables() as $table)/* @var $table ReverseTable */
 		{
 			$this->addTable($table);
 		}
+		echo "generating...\n";
 		$this->save();
+		echo "end\n";
 	}
 	// -------------------------------------------------------------------------
 	protected function addTable(ReverseTable $t)
@@ -98,8 +101,15 @@ class ReverseCreator
 				$table->addFK($tmp);
 			}
 		}
-
-		$this->project->addTable($table);
+		if(count($pk) > 0)
+		{
+			echo " ADDED\n";
+			$this->project->addTable($table);
+		}
+		else
+		{
+			echo " refused (NO PK)\n";
+		}
 	}
 	// -------------------------------------------------------------------------
 	protected function save()
