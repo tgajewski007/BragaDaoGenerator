@@ -6,7 +6,7 @@
  * error prefix
  *
  */
-require_once "O:/wwwroot/PHPDAOGenerator/include/PHPDAO.php";
+require_once __DIR__."/../include/PHPDAO.php";
 class ColumnTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------

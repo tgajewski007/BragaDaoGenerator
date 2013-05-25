@@ -6,7 +6,7 @@
  * error prefix
  *
  */
-require_once "O:/wwwroot/PHPDAOGenerator/include/PHPDAO.php";
+require_once __DIR__."/../include/PHPDAO.php";
 class FilesGeneratorTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------
@@ -144,7 +144,7 @@ class FilesGeneratorTest extends PHPUnit_Framework_TestCase
 
 		/* @var $doc DOMDocument */
 		$doc = DOMDocument::load("O:\\wwwroot\\TestDao\\dao\\dao.xml");
-		$this->assertTrue($doc->schemaValidate("O:\\wwwroot\\PHPDAOGenerator\\Doc\\PHPDAOSchema.xsd"));
+		$this->assertTrue($doc->schemaValidate(__DIR__."/../Doc/PHPDAOSchema.xsd"));
 
 	}
 	// -------------------------------------------------------------------------
