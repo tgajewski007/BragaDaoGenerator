@@ -50,9 +50,10 @@ class ClassFileGenerator extends DAOFileGenerator
 
 		$this->addLine("protected static function updateFactoryIndex(self \$" . lcfirst($t->getClassName()) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("if((\$key = array_search(\$" . lcfirst($t->getClassName()) . ",self::\$instance,true)) !== false )", 2);
+		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ",self::\$instance,true);", 2);
+		$this->addLine("if(\$key !== false)", 2);
 		$this->addLine("{", 2);
-		$this->addLine("if(\$key != " . implode(" . \"_\" . ", $tmp1) . ")", 3);
+		$this->addLine("if(\$key !== " . implode(" . \"_\" . ", $tmp1) . ")", 3);
 		$this->addLine("{", 3);
 		$this->addLine("unset(self::\$instance[\$key]);", 4);
 		$this->addLine("self::\$instance[" . implode(" . \"_\" . ", $tmp1) . "] = \$" . lcfirst($t->getClassName()) . ";", 4);
@@ -76,9 +77,9 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: jest to przykładowa metoda pozwalajaca pobrać kolekcję obiektów", 2);
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$SQL  = \"SELECT * \";", 2);
-		$this->addLine("\$SQL .= \"FROM \" . ".$t->getSchema()." . \".".$t->getName()." \";", 2);
-		$this->addLine("\$db->query(\$SQL);", 2);
+		$this->addLine("\$sql  = \"SELECT * \";", 2);
+		$this->addLine("\$sql .= \"FROM \" . ".$t->getSchema()." . \".".$t->getName()." \";", 2);
+		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("\$retval = new Collection(\$db, self::get());", 2);
 		$this->addLine("return \$retval;", 2);
 		$this->addLine("}", 1);
@@ -169,7 +170,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("static function get(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("if(" . implode(" and ", $tmp2) . ")", 2);
+		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(!isset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]))", 3);
 		$this->addLine("{", 3);
@@ -243,7 +244,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
-		$this->addLine(" * Wygenerowano przy pomocy PHPDAOClassGenerator ver " . Project::VERSION, 0);
+		$this->addLine(" * Wygenerowano przy pomocy SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
 		$this->addLine(" * {uzupełnij dokumentację}", 0);
 		$this->addLine(" */", 0);
 	}
