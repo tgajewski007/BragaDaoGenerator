@@ -56,10 +56,17 @@ class MainFileGenerator
 		$this->addLine(" */", 0);
 	}
 	// -------------------------------------------------------------------------
-	protected function addLine($content, $tabLevel)
+	protected function addLine($content, $tabLevel, $newLine = true)
 	{
 		$tmp = str_repeat("\t", $tabLevel);
-		$tmp .= $content . "\n";
+		if($newLine)
+		{
+			$tmp .= $content . "\n";
+		}
+		else
+		{
+			$tmp .= $content;
+		}
 		fwrite($this->fileHandle, $tmp);
 	}
 	// -------------------------------------------------------------------------
@@ -72,7 +79,7 @@ class MainFileGenerator
 	// -------------------------------------------------------------------------
 	protected function close()
 	{
-		$this->addLine("?>", 0);
+		$this->addLine("?>", 0, false);
 		fclose($this->fileHandle);
 	}
 	// -------------------------------------------------------------------------

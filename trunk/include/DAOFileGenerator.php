@@ -31,10 +31,17 @@ class DAOFileGenerator
 		}
 	}
 	// -------------------------------------------------------------------------
-	protected function addLine($content, $tabLevel)
+	protected function addLine($content, $tabLevel, $newLine = true)
 	{
 		$tmp = str_repeat("\t", $tabLevel);
-		$tmp .= $content . "\n";
+		if($newLine)
+		{
+			$tmp .= $content . "\n";
+		}
+		else
+		{
+			$tmp .= $content;
+		}
 		fwrite($this->fileHandle, $tmp);
 	}
 	// -------------------------------------------------------------------------
@@ -74,8 +81,8 @@ class DAOFileGenerator
 					lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$db = new DB();", 2);
-			$this->addLine("\$SQL  = \"SELECT * \";", 2);
-			$this->addLine("\$SQL  = \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+			$this->addLine("\$sql  = \"SELECT * \";", 2);
+			$this->addLine("\$sql  = \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 
 			$separator = "WHERE";
 			foreach($fk->getColumn() as $c)/* @var $c ConnectedColumn */
@@ -84,7 +91,7 @@ class DAOFileGenerator
 				{
 					if($c->fkColumnName == $i->getName())
 					{
-						$this->addLine("\$SQL .= \"" . $separator . " " . $i->getName() . " = :" . mb_strtoupper($i->getName()) . " \";", 2);
+						$this->addLine("\$sql .= \"" . $separator . " " . $i->getName() . " = :" . mb_strtoupper($i->getName()) . " \";", 2);
 						$separator = "AND";
 					}
 				}
@@ -109,7 +116,7 @@ class DAOFileGenerator
 
 			}
 
-			$this->addLine("\$db->query(\$SQL);", 2);
+			$this->addLine("\$db->query(\$sql);", 2);
 			$this->addLine("\$retval = new Collection(\$db, ".$t->getClassName()."::get());", 2);
 			$this->addLine("return \$retval;", 2);
 			$this->addLine("}", 1);
@@ -151,18 +158,18 @@ class DAOFileGenerator
 		$this->addLine("protected function destroy()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$SQL  = \"DELETE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql  = \"DELETE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$separator = "WHERE";
 		foreach($pk as $c)
 		{
-			$this->addLine("\$SQL .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
+			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
 		foreach($pk as $c)/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
 		}
-		$this->addLine("\$db->query(\$SQL);", 2);
+		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->RowCount)", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->commit();", 3);
@@ -217,18 +224,18 @@ class DAOFileGenerator
 		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$SQL  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$separator = "WHERE";
 		foreach($pk as $c)
 		{
-			$this->addLine("\$SQL .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
+			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
 		foreach($pk as $c)/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
 		}
-		$this->addLine("\$db->query(\$SQL);", 2);
+		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(\$db->nextRecord())", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$this->setAllFromDB(\$db);", 3);
@@ -283,7 +290,7 @@ class DAOFileGenerator
 		{
 			$pieces[] = $c->getName();
 		}
-		$this->addLine("\$SQL  = \"UPDATE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql  = \"UPDATE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 
 
 
@@ -306,13 +313,13 @@ class DAOFileGenerator
 		$separator = "SET";
 		foreach($data as $c)
 		{
-			$this->addLine("\$SQL .= \"" . $separator . " " . $columns[$c->getName()]. " = :" . $params[$c->getName()] . " \";", 2);
+			$this->addLine("\$sql .= \"" . $separator . " " . $columns[$c->getName()]. " = :" . $params[$c->getName()] . " \";", 2);
 			$separator = " ,";
 		}
 		$separator = "WHERE";
 		foreach($pk as $c)
 		{
-			$this->addLine("\$SQL .= \"" . $separator . " " . $columns[$c->getName()] . " = :" . $params[$c->getName()] . " \";", 2);
+			$this->addLine("\$sql .= \"" . $separator . " " . $columns[$c->getName()] . " = :" . $params[$c->getName()] . " \";", 2);
 			$separator = "AND";
 		}
 		$tmp = $pk + $data;
@@ -320,7 +327,7 @@ class DAOFileGenerator
 		{
 			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
-		$this->addLine("\$db->query(\$SQL);", 2);
+		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->RowCount)", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->commit();", 3);
@@ -380,8 +387,8 @@ class DAOFileGenerator
 				$params[$c->getName()] = RandomStringLetterOnly(8);
 			}
 		}
-		$this->addLine("\$SQL  = \"INSERT INTO \" . " . $t->getSchema() . " . \"." . $t->getName() . "(" . implode(", ", $columns) . ") \";", 2);
-		$this->addLine("\$SQL .= \"VALUES(:" . implode(", :", $params) . ") \";", 2);
+		$this->addLine("\$sql  = \"INSERT INTO \" . " . $t->getSchema() . " . \"." . $t->getName() . "(" . implode(", ", $columns) . ") \";", 2);
+		$this->addLine("\$sql .= \"VALUES(:" . implode(", :", $params) . ") \";", 2);
 
 		$pkSequenced = false;
 		if(count($pk) == 1)
@@ -389,20 +396,20 @@ class DAOFileGenerator
 			if(current($pk)->isAutoGenerated())
 			{
 				$pkSequenced = true;
-				$this->addLine("\$SQL .= \"RETURNING " . current($pk)->getName() . " INTO :" . mb_strtoupper(current($pk)->getName()) . "\";", 2);
+				$this->addLine("\$sql .= \"RETURNING " . current($pk)->getName() . " INTO :" . mb_strtoupper(current($pk)->getName()) . "\";", 2);
 			}
 		}
 
 		if($pkSequenced)
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) .
-					"(),true," . current($pk)->getSize() . ",SQLT_INT);", 2);
+					"(),true," . current($pk)->getSize() . ",sqlT_INT);", 2);
 		}
 		foreach($data as $c)/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
-		$this->addLine("\$db->query(\$SQL);", 2);
+		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->RowCount)", 2);
 		$this->addLine("{", 2);
 		if($pkSequenced)
@@ -525,7 +532,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateSetter(Column $c)
 	{
-		if($c->isAutoGenerated() and $c->isPK())
+		if($c->isAutoGenerated() && $c->isPK())
 		{
 			$this->addLine("protected function set" . ucfirst($c->getClassFieldName()) . "(\$" . $c->getClassFieldName() . ")", 1);
 		}
@@ -627,7 +634,7 @@ class DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function __construct(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("if(" . implode(" and ", $tmp2) . ")", 2);
+		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
 
 		$this->addLine("if(!\$this->retrieve(" . implode(", ", $tmp3) . "))", 3);
@@ -672,7 +679,7 @@ class DAOFileGenerator
 			{
 				foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 				{
-					if($fk->getTableName() == $t->getName() and $fk->getTableSchema() == $t->getSchema())
+					if($fk->getTableName() == $t->getName() && $fk->getTableSchema() == $t->getSchema())
 					{
 						$addSeparator = true;
 						$this->addLine("protected \$" . lcfirst($table->getClassName()) . "s = null;", 1);
@@ -704,7 +711,7 @@ class DAOFileGenerator
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
-		$this->addLine(" * Wygenerowano przy pomocy PHPDAOClassGenerator ver " . Project::VERSION, 0);
+		$this->addLine(" * Wygenerowano przy pomocy SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
 		$this->addLine(" * Zaprojektowane wg schematu CRUD http://pl.wikipedia.org/wiki/CRUD", 0);
 		$this->addLine(" * klasa wygenerowana automatycznie proszę nie wprowadzać zmian pod rygorem ", 0);
 		$this->addLine(" * NADPISANIA BEZ OSTRZEŻENIA ", 0);
@@ -728,7 +735,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function close()
 	{
-		$this->addLine("?>", 0);
+		$this->addLine("?>", 0,false);
 		fclose($this->fileHandle);
 	}
 	// -------------------------------------------------------------------------
