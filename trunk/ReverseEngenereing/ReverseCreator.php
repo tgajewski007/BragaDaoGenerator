@@ -25,7 +25,7 @@ class ReverseCreator
 	function __construct(Project $p, ReverseProxy $r)
 	{
 		$this->proxy = $r;
-		$this->project = $p;
+		$this->project = FilesGenerator::loadFromXML($p);
 	}
 	// -------------------------------------------------------------------------
 	public function GO()

@@ -9,7 +9,7 @@
 class Project
 {
 	// -------------------------------------------------------------------------
-	const VERSION = "2.0.0.a1";
+	const VERSION = "2.0.0.b1";
 	// -------------------------------------------------------------------------
 	protected $xmlFile = null;
 	protected $projectFolder = ".";
@@ -28,6 +28,31 @@ class Project
 	// -------------------------------------------------------------------------
 	public function addTable(Table $table)
 	{
+		if($this->isTableExists($table))
+		{
+			$this->mergeTable($table);
+		}
+		else
+		{
+			$this->tables[$table->getKey()] = $table;
+		}
+	}
+	// -------------------------------------------------------------------------
+	protected function mergeTable(Table $table)
+	{
+		/* @var $orgTable Table */
+		$orgTable = $this->tables[$table->getKey()];
+		foreach ($table->getColumny() as $col)/* @var $col Column */
+		{
+			$table->setClassName($orgTable->getClassName());
+			foreach ($orgTable->getColumny() as $orgCol) /* @var $orgCol Column */
+			{
+				if($col->getName() == $orgCol->getName())
+				{
+					$col->setClassFieldName($orgCol->getClassFieldName());
+				}
+			}
+		}
 		$this->tables[$table->getKey()] = $table;
 	}
 	// -------------------------------------------------------------------------

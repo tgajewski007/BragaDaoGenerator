@@ -70,6 +70,29 @@ class FilesGenerator
 		}
 	}
 	// -------------------------------------------------------------------------
+	/**
+	 * @param Project $p
+	 * @return Project
+	 */
+	public static function loadFromXML(Project $p)
+	{
+		self::$project = $p;
+		if(file_exists(self::$project->getXmlFile()))
+		{
+			try
+			{
+				$d = new self();
+				$d->xmlDocument = DOMDocument::load(self::$project->getXmlFile());
+				$d->readProject();
+			}
+			catch(Exception $e)
+			{
+			}
+
+		}
+		return self::$project;
+	}
+	// -------------------------------------------------------------------------
 	protected function readProject()
 	{
 		$p = $this->xmlDocument->getElementsByTagName("project")->item(0);
