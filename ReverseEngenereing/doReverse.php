@@ -4,16 +4,7 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
-
-define("ORA_SERVER", "10.32.80.11");
-define("ORA_PORT", "1521");
-define("ORA_SID", "ORA11");
-define("ORA_USERNAME", "EN");
-define("ORA_PASSWORD", "1");
-define("ORA_SCHEMA", "EN");
-
 include "../include/PHPDAO.php";
 include "ReverseProxy.php";
 include "ReverseColumn.php";
@@ -21,20 +12,33 @@ include "ReverseTable.php";
 include "ReverseForeginKey.php";
 include "ReversePrimaryKey.php";
 include "ReverseCreator.php";
-include "oracle/DB.php";
-include "oracle/OracleParams.php";
-include "oracle/OracleParam.php";
-include "oracle/OracleProxy.php";
 
+// define("ORA_SERVER", "10.32.80.11");
+// define("ORA_PORT", "1521");
+// define("ORA_SID", "ORA11");
+// define("ORA_USERNAME", "EN");
+// define("ORA_PASSWORD", "1");
+// define("ORA_SCHEMA", "EN");
+// include "oracle/DB.php";
+// include "oracle/OracleParams.php";
+// include "oracle/OracleParam.php";
+// include "oracle/OracleProxy.php";
 
-$folder = "O:\\wwwroot\\TestDao\\en\\include";
+define("DB_HOST", "localhost");
+define("DB_SCHEMA", "krystad");
+define("DB_USER", "root");
+define("DB_PASS", "1");
+include "mysql/DB.php";
+include "mysql/MySQLProxy.php";
+
+$folder = "O:\\wwwroot\\TestDao\\jose\\include";
 $project = new Project();
 $project->setProjectFolder($folder);
-$project->setErrorPrefix("EN:");
-$project->setNameSpace("ENadawca");
-$x = new OracleProxy();
+$project->setErrorPrefix("JOSE:");
+$project->setNameSpace("Jose");
+$x = new MySQLProxy();
 $p = new ReverseCreator($project, $x);
-$p->schemaName = "ORA_SCHEMA";
+$p->schemaName = "DB_SCHEMA";
 $p->indexTableSpace = "EN_IND";
 $p->GO();
 

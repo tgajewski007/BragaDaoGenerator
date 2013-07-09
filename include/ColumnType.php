@@ -16,6 +16,7 @@ class ColumnType
 	const DATETIME = "DATETIME";
 	const CHAR = "CHAR";
 	const TEXT = "TEXT";
+	const ENUM = "ENUM";
 	// -------------------------------------------------------------------------
 }
 ?>
