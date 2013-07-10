@@ -12,6 +12,7 @@ class ForeginKey
 	protected $columns = array();
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @var Table
 	 */
 	protected $table = null;
@@ -70,7 +71,7 @@ class ForeginKey
 		$fk = new self();
 		$fk->setTableName($c->getAttribute("tableName"));
 		$fk->setTableSchema($c->getAttribute("tableSchema"));
-		foreach ($c->getElementsByTagName("connectedColumn") as $value)/* @var $value DOMElement */
+		foreach($c->getElementsByTagName("connectedColumn") as $value)/* @var $value DOMElement */
 		{
 			$fk->addColumn($value->getAttribute("fkColumnName"), $value->getAttribute("pkColumnName"));
 		}
@@ -81,8 +82,8 @@ class ForeginKey
 	{
 		$c->setAttribute("tableName", $this->getTableName());
 		$c->setAttribute("tableSchema", $this->getTableSchema());
-
-		foreach ($this->columns as $columna) /* @var $columna ConnectedColumn */
+		
+		foreach($this->columns as $columna) /* @var $columna ConnectedColumn */
 		{
 			$el = new DOMElement("connectedColumn");
 			$c->appendChild($el);

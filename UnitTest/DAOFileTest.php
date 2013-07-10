@@ -6,13 +6,12 @@
  * error prefix
  *
  */
-require_once __DIR__."/../include/PHPDAO.php";
+require_once __DIR__ . "/../include/PHPDAO.php";
 class DAOFileTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------
 	function testHeader()
 	{
-
 	}
 	// -------------------------------------------------------------------------
 }

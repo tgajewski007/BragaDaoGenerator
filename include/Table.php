@@ -33,7 +33,7 @@ class Table
 		}
 		else
 		{
-			$this->fk[$fk->getTableSchema().".".$fk->getTableName()] = $fk;
+			$this->fk[$fk->getTableSchema() . "." . $fk->getTableName()] = $fk;
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -42,7 +42,7 @@ class Table
 		if(is_null($this->pk))
 		{
 			$this->pk = array();
-			foreach ($this->getColumny() as $c)/* @var $c Column */
+			foreach($this->getColumny() as $c)/* @var $c Column */
 			{
 				if($c->isPK())
 				{
@@ -148,8 +148,8 @@ class Table
 				$c = new Column();
 				$c->setPK();
 				$c->setAutoGenerate();
-				$c->setClassFieldName("id".$this->getClassName());
-				$c->setName("ID".$this->getName());
+				$c->setClassFieldName("id" . $this->getClassName());
+				$c->setName("ID" . $this->getName());
 				$c->setSize(22);
 				$c->setType(ColumnType::NUMBER);
 				$this->addColumn($c);
@@ -168,21 +168,21 @@ class Table
 	static function import(DOMElement $table)
 	{
 		$t = new self();
-
+		
 		$name = $table->getAttribute("name");
 		$schema = $table->getAttribute("schema");
 		$className = $table->getAttribute("className");
 		$tableSpace = $table->getAttribute("tableSpace");
 		$indexTableSpace = $table->getAttribute("indexTableSpace");
 		$errorPrefix = $table->getAttribute("errorPrefix");
-
+		
 		$t->setName($name);
 		$t->setSchema($schema);
 		$t->setClassName($className);
 		$t->setTableSpace($tableSpace);
 		$t->setIndexTableSpace($indexTableSpace);
 		$t->setErrorPrefix($errorPrefix);
-
+		
 		return $t;
 	}
 	// -------------------------------------------------------------------------

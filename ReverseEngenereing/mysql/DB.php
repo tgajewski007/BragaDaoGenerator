@@ -104,7 +104,9 @@ class DB implements DataSource
 		{
 			$this->lastQuery .= " LIMIT " . $this->offset . ", " . $this->limit;
 		}
-		$this->statement = self::$connectionObject->prepare($this->lastQuery, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+		$this->statement = self::$connectionObject->prepare($this->lastQuery, array(
+				PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY 
+		));
 		if($this->statement !== false)
 		{
 			return true;
@@ -256,7 +258,7 @@ class DB implements DataSource
 				self::$inTransaction = false;
 			}
 		}
-
+		
 		return true;
 	}
 	// ------------------------------------------------------------------------

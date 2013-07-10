@@ -9,10 +9,10 @@ class OracleParams
 	protected $listaParametrow = array();
 	protected $blob = false;
 	// -------------------------------------------------------------------------
-	public function add($name,OracleParam $param)
+	public function add($name, OracleParam $param)
 	{
-		if(mb_substr($name,0,1) == ":")
-			$name = mb_substr($name,1);
+		if(mb_substr($name, 0, 1) == ":")
+			$name = mb_substr($name, 1);
 		$this->listaParametrow[$name] = $param;
 		if(OCI_B_BLOB == $param->getTyp())
 		{
@@ -43,7 +43,7 @@ class OracleParams
 	// -------------------------------------------------------------------------
 	public function loadBlobData()
 	{
-		foreach ($this->listaParametrow as $value)
+		foreach($this->listaParametrow as $value)
 		{
 			$value->loadBlobValue();
 		}
@@ -51,9 +51,9 @@ class OracleParams
 	// -------------------------------------------------------------------------
 	public function bind($recordSet)
 	{
-		foreach ($this->listaParametrow as $key => $value)
+		foreach($this->listaParametrow as $key => $value)
 		{
-			$value->bind($recordSet,$key);
+			$value->bind($recordSet, $key);
 		}
 	}
 	// -------------------------------------------------------------------------

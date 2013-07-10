@@ -12,12 +12,14 @@ interface DataSource extends Countable
 	public function f($index);
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @param sting $SQL
 	 * @return boolean
 	 */
 	public function query($SQL);
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @return boolean
 	 */
 	public function nextRecord();

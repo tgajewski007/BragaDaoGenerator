@@ -10,10 +10,12 @@ class FilesGenerator
 {
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @var Project
 	 */
 	static $project = null;
 	/**
+	 *
 	 * @var DOMDocument
 	 */
 	protected $xmlDocument = null;
@@ -71,6 +73,7 @@ class FilesGenerator
 	}
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @param Project $p
 	 * @return Project
 	 */
@@ -88,7 +91,6 @@ class FilesGenerator
 			catch(Exception $e)
 			{
 			}
-
 		}
 		return self::$project;
 	}
@@ -96,7 +98,7 @@ class FilesGenerator
 	protected function readProject()
 	{
 		$p = $this->xmlDocument->getElementsByTagName("project")->item(0);
-
+		
 		if(!is_null($p->getAttribute("name")))
 		{
 			self::$project->setName($p->getAttribute("name"));
@@ -115,7 +117,7 @@ class FilesGenerator
 		}
 		$tables = $p->getElementsByTagName("table");
 		$existTable = self::$project->getTables();
-
+		
 		// odczyt tablic
 		$tmp = array();
 		foreach($tables as $t) /* @var $t DOMElement */
@@ -158,7 +160,7 @@ class FilesGenerator
 		$p->setAttribute("author", self::$project->getAuthor());
 		$p->setAttribute("errorPrefix", self::$project->getErrorPrefix());
 		$p->setAttribute("namespace", self::$project->getNameSpace());
-
+		
 		foreach(self::$project->getTables() as $table)/* @var $table Table */
 		{
 			$t = new DOMElement("table");
@@ -170,8 +172,8 @@ class FilesGenerator
 				$t->appendChild($c);
 				$columna->export($c);
 			}
-
-			foreach ($table->getFk() as $fk)/* @var $fk ForeginKey */
+			
+			foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 			{
 				$k = new DOMElement("fk");
 				$t->appendChild($k);
@@ -183,7 +185,7 @@ class FilesGenerator
 	protected function finish()
 	{
 		$dir = dirname(self::$project->getXmlFile());
-		@mkdir($dir,0777,true);
+		@mkdir($dir, 0777, true);
 		$this->xmlDocument->formatOutput = true;
 		$this->xmlDocument->save(self::$project->getXmlFile());
 	}
