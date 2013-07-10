@@ -24,7 +24,7 @@ class MySQLProxy implements ReverseProxy
 			$tmp = new ReverseTable();
 			$tmp->tableName = strtoupper($db->f(0));
 			$tmp->tableSpace = $db->f(1);
-			$tmp->haveAutoNumberPKField = ($db->f(2)>0);
+			$tmp->haveAutoNumberPKField = ($db->f(2) > 0);
 			$retval[] = $tmp;
 		}
 		return $retval;
@@ -38,10 +38,10 @@ class MySQLProxy implements ReverseProxy
 		$sql .= "WHERE TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "AND TABLE_NAME = :TABLE_NAME ";
 		$sql .= "ORDER BY ORDINAL_POSITION";
-
+		
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
-		echo "columns for table ".$tableName." .... ";
+		echo "columns for table " . $tableName . " .... ";
 		$db->query($sql);
 		$retval = array();
 		while($db->nextRecord())
@@ -50,32 +50,31 @@ class MySQLProxy implements ReverseProxy
 			$tmp->name = strtoupper($db->f(0));
 			switch($db->f(1))
 			{
-				case "date" :
+				case "date":
 					$tmp->type = ColumnType::DATE;
 					break;
-				case "datetime" :
-				case "timestamp" :
+				case "datetime":
+				case "timestamp":
 					$tmp->type = ColumnType::DATETIME;
 					break;
-				case "int" :
-				case "tinyint" :
-				case "bigint" :
+				case "int":
+				case "tinyint":
+				case "bigint":
 					$tmp->type = ColumnType::NUMBER;
 					break;
-				case "double" :
-				case "float" :
+				case "double":
+				case "float":
 					$tmp->type = ColumnType::FLOAT;
 					break;
-				case "text" :
+				case "text":
 					$tmp->type = ColumnType::TEXT;
 					break;
-				case "enum" :
+				case "enum":
 					$tmp->type = ColumnType::ENUM;
 					break;
-				default:
+				default :
 					$tmp->type = ColumnType::VARCHAR;
 					break;
-
 			}
 			if(is_null($db->f(3)))
 			{

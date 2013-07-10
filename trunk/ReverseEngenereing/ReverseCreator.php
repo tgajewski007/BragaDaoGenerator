@@ -13,10 +13,12 @@ class ReverseCreator
 	public $schemaName;
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @var ReverseProxy
 	 */
 	protected $proxy = null;
 	/**
+	 *
 	 * @var Project
 	 */
 	protected $project = null;
@@ -31,7 +33,7 @@ class ReverseCreator
 	public function GO()
 	{
 		echo "starting...\n";
-		foreach ($this->proxy->getTables() as $table)/* @var $table ReverseTable */
+		foreach($this->proxy->getTables() as $table)/* @var $table ReverseTable */
 		{
 			$this->addTable($table);
 		}
@@ -42,45 +44,42 @@ class ReverseCreator
 	// -------------------------------------------------------------------------
 	protected function addTable(ReverseTable $t)
 	{
-		$this->errorCount ++;
+		$this->errorCount++;
 		$table = new Table();
 		$table->setName($t->tableName);
 		$table->setSchema($this->schemaName);
 		$className = "";
-		foreach ((explode("_", strtolower($t->tableName))) as $v)
+		foreach((explode("_", strtolower($t->tableName))) as $v)
 		{
 			$className .= ucfirst($v);
 		}
 		$table->setClassName($className);
 		$table->setTableSpace($t->tableSpace);
 		$table->setIndexTableSpace($this->indexTableSpace);
-		$table->setErrorPrefix($this->project->getErrorPrefix().$this->errorCount);
-
-
-
+		$table->setErrorPrefix($this->project->getErrorPrefix() . $this->errorCount);
+		
 		$pk = $this->proxy->getPrimaryKeys($t->tableName);
 		$fk = $this->proxy->getForeginKeys($t->tableName);
-
-
-		foreach ($this->proxy->getColumn($t->tableName) as $col)/* @var $col ReverseColumn */
+		
+		foreach($this->proxy->getColumn($t->tableName) as $col)/* @var $col ReverseColumn */
 		{
 			$c = new Column();
 			$c->setName($col->name);
 			$classFieldName = "";
-			foreach ((explode("_", strtolower($col->name))) as $v)
+			foreach((explode("_", strtolower($col->name))) as $v)
 			{
 				$classFieldName .= ucfirst($v);
 			}
 			$classFieldName = lcfirst($classFieldName);
-			if(strtolower(substr($classFieldName,0,2)) == "id")
+			if(strtolower(substr($classFieldName, 0, 2)) == "id")
 			{
-				$classFieldName = "id".ucfirst(substr($classFieldName,2));
+				$classFieldName = "id" . ucfirst(substr($classFieldName, 2));
 			}
 			$c->setClassFieldName($classFieldName);
 			$c->setType($col->type);
 			$c->setSize($col->size);
 			$c->setScale($col->scale);
-			foreach ($pk as $x)/* @var $x ReversePrimaryKey */
+			foreach($pk as $x)/* @var $x ReversePrimaryKey */
 			{
 				if($x->name == $col->name)
 				{
@@ -89,12 +88,12 @@ class ReverseCreator
 				}
 			}
 			$table->addColumn($c);
-			foreach ($fk as $x)/* @var $x ReverseForeginKey */
+			foreach($fk as $x)/* @var $x ReverseForeginKey */
 			{
 				$tmp = new ForeginKey();
 				$tmp->setTableName($x->refTableName);
 				$tmp->setTableSchema($this->schemaName);
-				foreach ($x->columns as $fkCol) /* @var $fkCol ConnectedColumn */
+				foreach($x->columns as $fkCol) /* @var $fkCol ConnectedColumn */
 				{
 					$tmp->addColumn($fkCol->fkColumnName, $fkCol->pkColumnName);
 				}

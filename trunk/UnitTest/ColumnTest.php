@@ -6,7 +6,7 @@
  * error prefix
  *
  */
-require_once __DIR__."/../include/PHPDAO.php";
+require_once __DIR__ . "/../include/PHPDAO.php";
 class ColumnTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------
@@ -19,7 +19,7 @@ class ColumnTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($c->setSize(9));
 		$this->assertNull($c->setScale(2));
 		$this->assertNull($c->setPK(true));
-
+		
 		$this->assertEquals("idcol", $c->getName());
 		$this->assertEquals("idColumn", $c->getClassFieldName());
 		$this->assertEquals(ColumnType::CHAR, $c->getType());

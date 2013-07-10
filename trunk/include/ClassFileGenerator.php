@@ -13,11 +13,11 @@ class ClassFileGenerator extends DAOFileGenerator
 	// -------------------------------------------------------------------------
 	public function GO()
 	{
-		foreach ( $this->project->getTables() as $t)/* @var $t Table */
+		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
 			@mkdir($this->project->getProjectFolder() . "\\" . $this->project->getObjFolder(), 0777, true);
 			$this->file = $this->project->getProjectFolder() . "\\" . $this->project->getObjFolder() . "\\" . $t->getClassName() . ".php";
-			if (!file_exists($this->file))
+			if(!file_exists($this->file))
 			{
 				$this->open($t);
 				$this->prepareClass($t);
@@ -75,24 +75,24 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" * Metoda zapisuje obiekt klasy " . $t->getClassName(), 1);
 		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
 		$this->addLine(" */", 1);
-
+		
 		$data = array();
 		$pk = array();
-		foreach ( $t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)/* @var $c Column */
 		{
-			if ($c->isPK())
+			if($c->isPK())
 			{
 				$pk[$c->getKey()] = $c;
 			}
-			elseif ($c instanceof Column)
+			elseif($c instanceof Column)
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif ($c instanceof ColumnForeginKey)
+			elseif($c instanceof ColumnForeginKey)
 			{
-				foreach ( $c->getTable()->getColumny() as $z)/* @var $z Column */
+				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
 				{
-					if ($z instanceof ColumnPrimaryKey)
+					if($z instanceof ColumnPrimaryKey)
 					{
 						$data[$z->getKey()] = $z;
 					}

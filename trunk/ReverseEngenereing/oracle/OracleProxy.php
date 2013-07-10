@@ -12,15 +12,15 @@ class OracleProxy implements ReverseProxy
 	public function getTables()
 	{
 		$db = new DB();
-
+		
 		$SQL = "SELECT TABLE_NAME ";
 		$SQL .= "FROM ALL_TRIGGERS ";
 		$SQL .= "WHERE TABLE_OWNER = :ORA_SCHEMA ";
 		$SQL .= "AND TRIGGERING_EVENT = 'INSERT' ";
 		$SQL .= "AND BASE_OBJECT_TYPE = 'TABLE' ";
 		$SQL .= "ORDER BY TABLE_NAME ";
-
-		$db->setParam("ORA_SCHEMA", ORA_SCHEMA,true);
+		
+		$db->setParam("ORA_SCHEMA", ORA_SCHEMA, true);
 		echo "selecting triggers ....\n";
 		$db->query($SQL);
 		$trigger = array();
@@ -28,12 +28,12 @@ class OracleProxy implements ReverseProxy
 		{
 			$trigger[$db->f(0)] = true;
 		}
-
+		
 		$SQL = "SELECT table_name, tablespace_name ";
 		$SQL .= "FROM all_tables ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "ORDER BY table_name ";
-		$db->setParam("ORA_SCHEMA", ORA_SCHEMA,true);
+		$db->setParam("ORA_SCHEMA", ORA_SCHEMA, true);
 		echo "selecting tables ....\n";
 		$db->query($SQL);
 		$retval = array();
@@ -56,10 +56,10 @@ class OracleProxy implements ReverseProxy
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "AND table_name = :TABLE_NAME ";
 		$SQL .= "ORDER BY column_id ";
-
+		
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
-		echo "columns for table ".$tableName." .... ";
+		echo "columns for table " . $tableName . " .... ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
@@ -68,25 +68,24 @@ class OracleProxy implements ReverseProxy
 			$tmp->name = $db->f(0);
 			switch($db->f(1))
 			{
-				case "DATE" :
+				case "DATE":
 					$tmp->type = ColumnType::DATE;
 					break;
-				case "TIMESTAMP(6)" :
+				case "TIMESTAMP(6)":
 					$tmp->type = ColumnType::DATETIME;
 					break;
-				case "NUMBER" :
+				case "NUMBER":
 					$tmp->type = ColumnType::NUMBER;
 					break;
-				case "FLOAT" :
+				case "FLOAT":
 					$tmp->type = ColumnType::FLOAT;
 					break;
-				case "LONG" :
+				case "LONG":
 					$tmp->type = ColumnType::TEXT;
 					break;
-				default:
+				default :
 					$tmp->type = ColumnType::VARCHAR;
 					break;
-
 			}
 			if(is_null($db->f(3)))
 			{
@@ -100,7 +99,6 @@ class OracleProxy implements ReverseProxy
 			$retval[$tmp->name] = $tmp;
 		}
 		return $retval;
-
 	}
 	// -------------------------------------------------------------------------
 	public function getPrimaryKeys($tableName)
@@ -159,7 +157,6 @@ class OracleProxy implements ReverseProxy
 			$retval[$db->f(0)]->columns[] = $col;
 		}
 		return $retval;
-
 	}
 	// -------------------------------------------------------------------------
 }

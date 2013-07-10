@@ -11,13 +11,13 @@ class OracleParam
 	protected $size;
 	protected $typ;
 	// -------------------------------------------------------------------------
-	function __construct($connectionObject, $value,$size,$typ)
+	function __construct($connectionObject, $value, $size, $typ)
 	{
 		$this->typ = $typ;
 		$this->size = $size;
 		if(OCI_B_BLOB == $typ)
 		{
-			$this->value = oci_new_descriptor($connectionObject,OCI_D_LOB);
+			$this->value = oci_new_descriptor($connectionObject, OCI_D_LOB);
 			$this->blobValue = $value;
 		}
 		else
@@ -42,11 +42,11 @@ class OracleParam
 		}
 	}
 	// -------------------------------------------------------------------------
-	public function bind($recordSet,$name)
+	public function bind($recordSet, $name)
 	{
-		if(@!oci_bind_by_name($recordSet,$name,$this->value,$this->size,$this->typ))
+		if(@!oci_bind_by_name($recordSet, $name, $this->value, $this->size, $this->typ))
 		{
-			AddErrorLog("ERROR: Zmienna: ".$name."->".$this->value." Błąd bindowania");
+			AddErrorLog("ERROR: Zmienna: " . $name . "->" . $this->value . " Błąd bindowania");
 		}
 	}
 	// -------------------------------------------------------------------------

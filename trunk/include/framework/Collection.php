@@ -10,14 +10,17 @@ class Collection implements Iterator, Countable
 {
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @var DataSource
 	 */
 	protected $database = null;
 	/**
+	 *
 	 * @var DAO
 	 */
 	protected $prototype = null;
 	/**
+	 *
 	 * @var DAO
 	 */
 	protected $currentObj = null;

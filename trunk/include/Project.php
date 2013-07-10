@@ -42,10 +42,10 @@ class Project
 	{
 		/* @var $orgTable Table */
 		$orgTable = $this->tables[$table->getKey()];
-		foreach ($table->getColumny() as $col)/* @var $col Column */
+		foreach($table->getColumny() as $col)/* @var $col Column */
 		{
 			$table->setClassName($orgTable->getClassName());
-			foreach ($orgTable->getColumny() as $orgCol) /* @var $orgCol Column */
+			foreach($orgTable->getColumny() as $orgCol) /* @var $orgCol Column */
 			{
 				if($col->getName() == $orgCol->getName())
 				{
@@ -115,7 +115,7 @@ class Project
 	{
 		if(is_null($this->xmlFile))
 		{
-			return $this->getProjectFolder()."\\dao.xml";
+			return $this->getProjectFolder() . "\\dao.xml";
 		}
 		return $this->xmlFile;
 	}

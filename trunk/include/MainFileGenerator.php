@@ -10,6 +10,7 @@ class MainFileGenerator
 {
 	// -------------------------------------------------------------------------
 	/**
+	 *
 	 * @var Project
 	 */
 	protected $project = null;
@@ -31,18 +32,18 @@ class MainFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateClassFiles()
 	{
-		foreach ($this->project->getTables() as $t)/* @var $t Table */
+		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			$txt = "include '".$this->project->getObjFolder()."/".$t->getClassName().".php';";
+			$txt = "include '" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php';";
 			$this->addLine($txt, 0);
 		}
 	}
 	// -------------------------------------------------------------------------
 	protected function generateDaoFiles()
 	{
-		foreach ($this->project->getTables() as $t)/* @var $t Table */
+		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			$txt = "include '".$this->project->getDaoFolder()."/".$t->getClassName()."DAO.php';";
+			$txt = "include '" . $this->project->getDaoFolder() . "/" . $t->getClassName() . "DAO.php';";
 			$this->addLine($txt, 0);
 		}
 	}
@@ -72,7 +73,7 @@ class MainFileGenerator
 	// -------------------------------------------------------------------------
 	protected function open()
 	{
-		@mkdir($this->project->getProjectFolder(),0777,true);
+		@mkdir($this->project->getProjectFolder(), 0777, true);
 		$this->fileHandle = fopen($this->project->getProjectFolder() . "\\" . "main.php", "w");
 		$this->addLine("<?php", 0);
 	}

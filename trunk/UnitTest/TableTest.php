@@ -6,7 +6,7 @@
  * error prefix
  *
  */
-require_once __DIR__."/../include/PHPDAO.php";
+require_once __DIR__ . "/../include/PHPDAO.php";
 class TableTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------
@@ -19,7 +19,7 @@ class TableTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($t->setTableSpace("EN"));
 		$this->assertNull($t->setIndexTableSpace("EN_IND"));
 		$this->assertNull($t->setErrorPrefix("EN:123"));
-
+		
 		$this->assertEquals("test", $t->getName());
 		$this->assertEquals("ORA_SCHEMA", $t->getSchema());
 		$this->assertEquals("Test", $t->getClassName());
@@ -74,11 +74,11 @@ class TableTest extends PHPUnit_Framework_TestCase
 	{
 		$t = new Table();
 		$t->setName("test_table");
-
+		
 		$t->setClassName("TestTable");
 		$t->addAutoPrimaryColumn();
-
-		$this->assertEquals(1,count($t->getColumny()));
+		
+		$this->assertEquals(1, count($t->getColumny()));
 		$this->assertInstanceOf("Column", current($t->getColumny()));
 	}
 	// -------------------------------------------------------------------------

@@ -6,7 +6,7 @@
  * error prefix
  *
  */
-require_once __DIR__."/../include/PHPDAO.php";
+require_once __DIR__ . "/../include/PHPDAO.php";
 class ProjectTypeTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------
