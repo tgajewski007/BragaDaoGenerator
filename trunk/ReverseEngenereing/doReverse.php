@@ -25,18 +25,19 @@ include "ReverseCreator.php";
 // include "oracle/OracleProxy.php";
 
 define("DB_HOST", "localhost");
-define("DB_SCHEMA", "krystad");
+define("DB_SCHEMA", "trans");
 define("DB_USER", "root");
 define("DB_PASS", "1");
 include "mysql/DB.php";
 include "mysql/MySQLProxy.php";
 
-$folder = "O:\\wwwroot\\TestDao\\jose\\include";
+$folder = "O:\\wwwroot\\TransSped\\include\\";
 $project = new Project();
 $project->setProjectFolder($folder);
 $project->setErrorPrefix("JOSE:");
 $project->setNameSpace("Jose");
 $project->setDataBaseStyle(DataBaseStyle::MYSQL);
+$project->setXmlFile("O:\\wwwroot\\TransSped\\Doc\\dao.xml");
 $x = new MySQLProxy();
 $p = new ReverseCreator($project, $x);
 $p->schemaName = "DB_SCHEMA";

@@ -8,6 +8,93 @@
 class MySQLDAOFileGenerator extends DAOFileGenerator
 {
 	// -------------------------------------------------------------------------
+	protected function generateUpdate(Table $t)
+	{
+		$data = array();
+		$pk = array();
+		foreach($t->getColumny() as $c)/* @var $c Column */
+		{
+			if($c->isPK())
+			{
+				$pk[$c->getKey()] = $c;
+			}
+			elseif($c instanceof Column)
+			{
+				$data[$c->getKey()] = $c;
+			}
+			elseif($c instanceof ColumnForeginKey)
+			{
+				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
+				{
+					if($z instanceof ColumnPrimaryKey)
+					{
+						$data[$z->getKey()] = $z;
+					}
+				}
+			}
+		}
+
+		$this->addLine("/**", 1);
+		$this->addLine(" * Metoda zmienia obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
+		$this->addLine(" * Zmieniany jest rekord w tablicy " . $t->getName(), 1);
+		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" */", 1);
+		$this->addLine("protected function update()", 1);
+		$this->addLine("{", 1);
+		$this->addLine("\$db = new DB();", 2);
+
+		$pieces = array();
+		foreach($data as $c)/* @var $c Column */
+		{
+			$pieces[] = $c->getName();
+		}
+		$this->addLine("\$sql  = \"UPDATE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+
+		$columns = array();
+		$params = array();
+		foreach($t->getColumny() as $c)/* @var $c Column */
+		{
+			$columns[$c->getName()] = $c->getName();
+			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
+			if(strlen($params[$c->getName()]) == 0)
+			{
+				$params[$c->getName()] = RandomStringLetterOnly(8);
+			}
+		}
+
+		$separator = "SET";
+		foreach($data as $c)
+		{
+			$this->addLine("\$sql .= \"" . $separator . " " . $columns[$c->getName()] . " = :" . $params[$c->getName()] . " \";", 2);
+			$separator = " ,";
+		}
+		$separator = "WHERE";
+		foreach($pk as $c)
+		{
+			$this->addLine("\$sql .= \"" . $separator . " " . $columns[$c->getName()] . " = :" . $params[$c->getName()] . " \";", 2);
+			$separator = "AND";
+		}
+		$tmp = $pk + $data;
+		foreach($tmp as $c)/* @var $c Column */
+		{
+			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
+		}
+		$this->addLine("\$db->query(\$sql);", 2);
+		$this->addLine("if(1 == \$db->RowCount)", 2);
+		$this->addLine("{", 2);
+		$this->addLine("\$db->commit();", 3);
+		$this->addLine("return true;", 3);
+		$this->addLine("}", 2);
+		$this->addLine("else", 2);
+		$this->addLine("{", 2);
+		$this->addLine("\$db->rollback();", 3);
+		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Zmiana rekordu w tablicy " . $t->getName() . " nie powiodło się\");", 3);
+		$this->addLine("return false;", 3);
+		$this->addLine("}", 2);
+		$this->addLine("}", 1);
+		$this->addLine("// -------------------------------------------------------------------------", 1);
+	}
+	// -------------------------------------------------------------------------
 	protected function generateCreate(Table $t)
 	{
 		$data = array();
@@ -27,7 +114,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 				$data[$c->getKey()] = $c;
 			}
 		}
-		
+
 		$this->addLine("/**", 1);
 		$this->addLine(" * Metoda tworzy obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
 		$this->addLine(" * Dodawany jest rekord do tablicy " . $t->getName(), 1);
@@ -36,16 +123,12 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-		
+
 		$columns = array();
 		$params = array();
 		foreach($data as $c)/* @var $c Column */
 		{
-			
-			if($c->getName() == strtoupper($c->getName()))
-				$columns[$c->getName()] = $c->getName();
-			else
-				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+			$columns[$c->getName()] = $c->getName();
 			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
 			if(strlen($params[$c->getName()]) == 0)
 			{
@@ -54,7 +137,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		}
 		$this->addLine("\$sql  = \"INSERT INTO \" . " . $t->getSchema() . " . \"." . $t->getName() . "(" . implode(", ", $columns) . ") \";", 2);
 		$this->addLine("\$sql .= \"VALUES(:" . implode(", :", $params) . ") \";", 2);
-		
+
 		$pkSequenced = false;
 		if(count($pk) == 1)
 		{
