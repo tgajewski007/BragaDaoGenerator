@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 class ClassFileGenerator extends DAOFileGenerator
 {

@@ -1,6 +1,8 @@
 <?php
 /**
+ *
  * @package
+ *
  * @author Tomasz Gajewski
  * Created on 19-12-2010 21:38:15
  */

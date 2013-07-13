@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 class Project
 {
@@ -16,10 +15,7 @@ class Project
 	protected $daoFolder = "dao";
 	protected $objFolder = "obj";
 	protected $author = null;
-	/**
-	 * unused
-	 */
-	protected $type = null;
+	protected $dataBaseStyle = DataBaseStyle::ORACLE;
 	protected $name = "Project1";
 	protected $nameSpace = null;
 	protected $errorPrefix = null;
@@ -90,10 +86,9 @@ class Project
 	{
 		$this->author = $author;
 	}
-	// -------------------------------------------------------------------------
-	public function setType($type)
+	public function setDataBaseStyle($dataBaseStyle)
 	{
-		$this->type = $type;
+		$this->dataBaseStyle = $dataBaseStyle;
 	}
 	// -------------------------------------------------------------------------
 	public function setName($name)
@@ -140,9 +135,9 @@ class Project
 		return $this->author;
 	}
 	// -------------------------------------------------------------------------
-	public function getType()
+	public function getDataBaseStyle()
 	{
-		return $this->type;
+		return $this->dataBaseStyle;
 	}
 	// -------------------------------------------------------------------------
 	public function getName()

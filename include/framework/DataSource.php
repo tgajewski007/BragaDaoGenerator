@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 interface DataSource extends Countable
 {
@@ -13,7 +12,7 @@ interface DataSource extends Countable
 	// -------------------------------------------------------------------------
 	/**
 	 *
-	 * @param sting $SQL
+	 * @param sting $SQL 
 	 * @return boolean
 	 */
 	public function query($SQL);
@@ -25,6 +24,12 @@ interface DataSource extends Countable
 	public function nextRecord();
 	// -------------------------------------------------------------------------
 	public function setParam($name, $val);
+	// -------------------------------------------------------------------------
+	public function getRowAffected();
+	// -------------------------------------------------------------------------
+	public function commit();
+	// -------------------------------------------------------------------------
+	public function rollback();
 	// -------------------------------------------------------------------------
 }
 ?>

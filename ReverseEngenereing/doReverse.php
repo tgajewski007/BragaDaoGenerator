@@ -36,6 +36,7 @@ $project = new Project();
 $project->setProjectFolder($folder);
 $project->setErrorPrefix("JOSE:");
 $project->setNameSpace("Jose");
+$project->setDataBaseStyle(DataBaseStyle::MYSQL);
 $x = new MySQLProxy();
 $p = new ReverseCreator($project, $x);
 $p->schemaName = "DB_SCHEMA";

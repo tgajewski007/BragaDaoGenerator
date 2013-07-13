@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 require_once __DIR__ . "/../include/PHPDAO.php";
 class ProjectTest extends PHPUnit_Framework_TestCase
@@ -22,14 +21,12 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($p->setDaoFolder("dao1"));
 		$this->assertNull($p->setProjectFolder("./"));
 		$this->assertNull($p->setXmlFile("dao1.xml"));
-		$this->assertNull($p->setType(ProjectType::DBEN));
 		$this->assertNull($p->setName("ElektronicznyNadawca"));
 		
 		$this->assertEquals("Tomek", $p->getAuthor());
 		$this->assertEquals("dao1", $p->getDaoFolder());
 		$this->assertEquals("./", $p->getProjectFolder());
 		$this->assertEquals("dao1.xml", $p->getXmlFile());
-		$this->assertEquals(ProjectType::DBEN, $p->getType());
 		$this->assertEquals("ElektronicznyNadawca", $p->getName());
 	}
 	// -------------------------------------------------------------------------

@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 class FilesGenerator
 {
@@ -45,7 +44,15 @@ class FilesGenerator
 	// -------------------------------------------------------------------------
 	protected function prepareDAOFile()
 	{
-		$d = new DAOFileGenerator(self::$project);
+		switch(self::$project->getDataBaseStyle())
+		{
+			case DataBaseStyle::MYSQL:
+				$d = new MySQLDAOFileGenerator(self::$project);
+				break;
+			default:
+				$d = new DAOFileGenerator(self::$project);
+				break;
+		}
 		$d->GO();
 	}
 	// -------------------------------------------------------------------------
@@ -74,7 +81,7 @@ class FilesGenerator
 	// -------------------------------------------------------------------------
 	/**
 	 *
-	 * @param Project $p
+	 * @param Project $p 
 	 * @return Project
 	 */
 	public static function loadFromXML(Project $p)
@@ -89,8 +96,7 @@ class FilesGenerator
 				$d->readProject();
 			}
 			catch(Exception $e)
-			{
-			}
+			{}
 		}
 		return self::$project;
 	}
@@ -114,6 +120,10 @@ class FilesGenerator
 		if(!is_null($p->getAttribute("namespace")))
 		{
 			self::$project->setNameSpace($p->getAttribute("namespace"));
+		}
+		if(!is_null($p->getAttribute("dataBaseStyle")))
+		{
+			self::$project->setDataBaseStyle($p->getAttribute("dataBaseStyle"));
 		}
 		$tables = $p->getElementsByTagName("table");
 		$existTable = self::$project->getTables();
@@ -160,6 +170,7 @@ class FilesGenerator
 		$p->setAttribute("author", self::$project->getAuthor());
 		$p->setAttribute("errorPrefix", self::$project->getErrorPrefix());
 		$p->setAttribute("namespace", self::$project->getNameSpace());
+		$p->setAttribute("dataBaseStyle", self::$project->getDataBaseStyle());
 		
 		foreach(self::$project->getTables() as $table)/* @var $table Table */
 		{
