@@ -73,7 +73,7 @@ class MainFileGenerator
 	protected function open()
 	{
 		@mkdir($this->project->getProjectFolder(), 0777, true);
-		$this->fileHandle = fopen($this->project->getProjectFolder() . "\\" . "main.php", "w");
+		$this->fileHandle = fopen($this->project->getProjectFolder() . "\\" . "objdao.php", "w");
 		$this->addLine("<?php", 0);
 	}
 	// -------------------------------------------------------------------------

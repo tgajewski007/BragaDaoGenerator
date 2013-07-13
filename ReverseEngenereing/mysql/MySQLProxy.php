@@ -22,7 +22,7 @@ class MySQLProxy implements ReverseProxy
 		while($db->nextRecord())
 		{
 			$tmp = new ReverseTable();
-			$tmp->tableName = strtoupper($db->f(0));
+			$tmp->tableName = $db->f(0);
 			$tmp->tableSpace = $db->f(1);
 			$tmp->haveAutoNumberPKField = ($db->f(2) > 0);
 			$retval[] = $tmp;
@@ -38,7 +38,7 @@ class MySQLProxy implements ReverseProxy
 		$sql .= "WHERE TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "AND TABLE_NAME = :TABLE_NAME ";
 		$sql .= "ORDER BY ORDINAL_POSITION";
-		
+
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
 		echo "columns for table " . $tableName . " .... ";
@@ -47,7 +47,7 @@ class MySQLProxy implements ReverseProxy
 		while($db->nextRecord())
 		{
 			$tmp = new ReverseColumn();
-			$tmp->name = strtoupper($db->f(0));
+			$tmp->name = $db->f(0);
 			switch($db->f(1))
 			{
 				case "date":
@@ -107,7 +107,7 @@ class MySQLProxy implements ReverseProxy
 		while($db->nextRecord())
 		{
 			$tmp = new ReversePrimaryKey();
-			$tmp->name = strtoupper($db->f(0));
+			$tmp->name = $db->f(0);
 			$retval[$tmp->name] = $tmp;
 		}
 		return $retval;
@@ -120,7 +120,7 @@ class MySQLProxy implements ReverseProxy
 		$sql .= "FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE ";
 		$sql .= "WHERE TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "AND TABLE_NAME = :TABLE_NAME ";
-		$sql .= "AND REFERENCED_COLUMN_NAME IS NOT NULL";
+		$sql .= "AND REFERENCED_COLUMN_NAME IS NOT NULL ";
 		$sql .= "ORDER BY ORDINAL_POSITION ";
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
@@ -132,12 +132,12 @@ class MySQLProxy implements ReverseProxy
 			if(!isset($retval[$db->f(0)]))
 			{
 				$retval[$db->f(0)] = new ReverseForeginKey();
-				$retval[$db->f(0)]->refTableName = strtoupper($db->f(3));
+				$retval[$db->f(0)]->refTableName = $db->f(3);
 				$retval[$db->f(0)]->refTableSchema = $db->f(4);
 			}
 			$col = new ConnectedColumn();
-			$col->fkColumnName = strtoupper($db->f(1));
-			$col->pkColumnName = strtoupper($db->f(2));
+			$col->fkColumnName = $db->f(1);
+			$col->pkColumnName = $db->f(2);
 			$retval[$db->f(0)]->columns[] = $col;
 		}
 		return $retval;
