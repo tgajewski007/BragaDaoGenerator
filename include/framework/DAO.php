@@ -10,7 +10,7 @@ interface DAO
 	// -------------------------------------------------------------------------
 	/**
 	 *
-	 * @param string $idDAO 
+	 * @param string $idDAO
 	 * @return DAO
 	 */
 	static function get($idDAO = null);
