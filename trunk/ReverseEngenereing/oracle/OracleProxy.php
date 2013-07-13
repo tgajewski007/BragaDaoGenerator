@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 class OracleProxy implements ReverseProxy
 {
@@ -83,7 +82,7 @@ class OracleProxy implements ReverseProxy
 				case "LONG":
 					$tmp->type = ColumnType::TEXT;
 					break;
-				default :
+				default:
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}

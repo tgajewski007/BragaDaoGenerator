@@ -9,6 +9,8 @@
 		<xs:attribute name="author" type="xs:string"></xs:attribute>
 		<xs:attribute name="errorPrefix" type="xs:string"></xs:attribute>
 		<xs:attribute name="namespace" type="xs:string"></xs:attribute>
+		<xs:attribute name="dataBaseStyle" type="DataBaseStyleType">
+		</xs:attribute>
 	</xs:complexType>
 	<xs:simpleType name="DataSourceImplementationEnum">
 		<xs:restriction base="xs:string">
@@ -56,7 +58,7 @@
 	</xs:simpleType>
 	<xs:complexType name="ForeginKeyType">
 		<xs:sequence>
-			<xs:element name="connectedColumn" type="connectedColumnType" maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="connectedColumn" type="ConnectedColumnType" maxOccurs="unbounded" minOccurs="1">
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="tableName" type="xs:string">
@@ -64,10 +66,16 @@
 		<xs:attribute name="tableSchema" type="xs:string">
 		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="connectedColumnType">
+	<xs:complexType name="ConnectedColumnType">
 		<xs:attribute name="fkColumnName" type="xs:string">
 		</xs:attribute>
 		<xs:attribute name="pkColumnName" type="xs:string">
 		</xs:attribute>
 	</xs:complexType>
+	<xs:simpleType name="DataBaseStyleType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ORACLE"></xs:enumeration>
+			<xs:enumeration value="MYSQL"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

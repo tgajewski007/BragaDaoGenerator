@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 require_once __DIR__ . "/../include/PHPDAO.php";
 class TableTest extends PHPUnit_Framework_TestCase

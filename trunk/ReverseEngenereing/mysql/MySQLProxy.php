@@ -72,7 +72,7 @@ class MySQLProxy implements ReverseProxy
 				case "enum":
 					$tmp->type = ColumnType::ENUM;
 					break;
-				default :
+				default:
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}

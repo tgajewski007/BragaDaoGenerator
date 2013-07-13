@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 class DAOFileGenerator
 {
@@ -858,7 +857,7 @@ function RandomStringLetterOnly($dlugosc)
 	$keychars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	$randkey = "";
 	$max = strlen($keychars) - 1;
-	for($i = 0; $i < $dlugosc; $i++)
+	for($i = 0;$i < $dlugosc;$i++)
 	{
 		$randkey .= substr($keychars, rand(0, $max), 1);
 	}

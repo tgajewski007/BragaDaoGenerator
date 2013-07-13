@@ -1,7 +1,7 @@
 <?php
 /**
  * create 29-05-2012 07:48:24
- *
+ * 
  * @author Tomasz Gajewski
  * @package common
  */
@@ -104,9 +104,7 @@ class DB implements DataSource
 		{
 			$this->lastQuery .= " LIMIT " . $this->offset . ", " . $this->limit;
 		}
-		$this->statement = self::$connectionObject->prepare($this->lastQuery, array(
-				PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY 
-		));
+		$this->statement = self::$connectionObject->prepare($this->lastQuery, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
 		if($this->statement !== false)
 		{
 			return true;
@@ -205,7 +203,14 @@ class DB implements DataSource
 	// -------------------------------------------------------------------------
 	public function getRowAffected()
 	{
-		return $this->rowAffected;
+		if($this->rowAffected == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return $this->rowAffected;
+		}
 	}
 	// -------------------------------------------------------------------------
 	/**

@@ -4,7 +4,6 @@
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
- *
  */
 require_once __DIR__ . "/../include/PHPDAO.php";
 class FilesGeneratorTest extends PHPUnit_Framework_TestCase
@@ -123,7 +122,6 @@ class FilesGeneratorTest extends PHPUnit_Framework_TestCase
 		
 		$p = new Project();
 		$p->setProjectFolder("O:\\wwwroot\\TestDao\\test13");
-		$p->setType(ProjectType::DBEN);
 		$p->setName("ELektronicznyNadawca");
 		$p->addTable($t);
 		$p->addTable($u);

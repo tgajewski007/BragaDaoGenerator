@@ -1,5 +1,6 @@
 <?php
 /**
+ *
  * @package common
  * @author Tomasz.Gajewski
  * Created on 2006-03-27
@@ -141,9 +142,11 @@ class DB implements DataSource
 	/**
 	 * query
 	 * Funkcja wykonuje właściwe zapytanie do bazy danych
+	 * 
 	 * @return bool true jeżeli ok false jeżeli zapytanie kończy się błędem
 	 * @var string $SQLqueryString
-	 * @var bool $GetMetaData zmienna określająca czy pobierane będą metadane z zapytania SQL
+	 * @var bool $GetMetaData zmienna określająca czy pobierane będą metadane z
+	 * zapytania SQL
 	 */
 	public function query($SQLqueryString, $GetMetaData = true, $Mode = null)
 	{
@@ -266,7 +269,7 @@ class DB implements DataSource
 			$max--;
 		$this->MetaData["FieldNum"] = $max;
 		$this->MetaData["RecCount"] = @oci_num_rows($this->RecordSet);
-		for($i = 1; $i <= $max; $i++)
+		for($i = 1;$i <= $max;$i++)
 		{
 			$tmp = @oci_field_name($this->RecordSet, $i);
 			$this->MetaData["Name"][$i - 1] = $tmp;
