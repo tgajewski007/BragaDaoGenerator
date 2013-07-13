@@ -107,6 +107,10 @@ class DAOFileGenerator
 		{
 			$tmp1[] = "\$db->f(\"" . $c->getName() . "\")";
 		}
+		$this->addLine("/**", 1);
+		$this->addLine(" * @param DataSource \$db", 1);
+		$this->addLine(" * @return ".$t->getClassName(), 1);
+		$this->addLine(" */", 1);
 		$this->addLine("static function getByDataSource(DataSource \$db)", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = " . implode(" . \"_\" . ", $tmp1) . ";", 2);
