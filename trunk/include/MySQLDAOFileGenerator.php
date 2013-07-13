@@ -80,7 +80,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
-		$this->addLine("if(1 == \$db->RowCount)", 2);
+		$this->addLine("if(1 == \$db->getRowAffected())", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->commit();", 3);
 		$this->addLine("return true;", 3);
