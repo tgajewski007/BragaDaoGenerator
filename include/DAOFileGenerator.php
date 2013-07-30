@@ -663,23 +663,23 @@ class DAOFileGenerator
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(\$" . $c->getClassFieldName() . "," . intval($c->getScale()) . ");", 2);
 				break;
 			case ColumnType::DATE:
-				$this->addLine("if(isset(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("if(empty(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
+				$this->addLine("}", 2);
+				$this->addLine("else", 2);
 				$this->addLine("{", 2);
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATE_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
-				$this->addLine("else", 2);
-				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
-				$this->addLine("}", 2);
 				break;
 			case ColumnType::DATETIME:
-				$this->addLine("if(isset(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("if(empty(\$" . $c->getClassFieldName() . "))", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATETIME_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATETIME_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::FLOAT:
