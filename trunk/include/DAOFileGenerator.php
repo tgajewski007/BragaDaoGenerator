@@ -657,7 +657,14 @@ class DAOFileGenerator
 		{
 			case ColumnType::CHAR:
 			case ColumnType::VARCHAR:
+				$this->addLine("if(empty(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
+				$this->addLine("}", 2);
+				$this->addLine("else", 2);
+				$this->addLine("{", 2);
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = mb_substr(\$" . $c->getClassFieldName() . ",0," . $c->getSize() . ");", 2);
+				$this->addLine("}", 2);
 				break;
 			case ColumnType::NUMBER:
 				$this->addLine("if(empty(\$" . $c->getClassFieldName() . "))", 2);
