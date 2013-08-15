@@ -292,7 +292,7 @@ class DAOFileGenerator
 		}
 		foreach($pk as $c)/* @var $c Column */
 		{
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);

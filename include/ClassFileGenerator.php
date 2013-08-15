@@ -31,6 +31,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->generateClassHead($t);
 		$this->generateCheck($t);
 		$this->generateSave($t);
+		$this->generateKill($t);
 		$this->generateGetAllExample($t);
 		$this->generateClassFooter();
 	}
@@ -68,13 +69,27 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
+	protected function generateKill($t)
+	{
+		$this->addLine("/**", 1);
+		$this->addLine(" * Metoda usuwa obiekt klasy " . $t->getClassName(), 1);
+		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" */", 1);
+		$this->addLine("public function kill()", 1);
+		$this->addLine("{", 1);
+		$this->addLine("// TODO: metode należy zmienić jeżeli rekordy mają być tylko oznaczane jako usunięte", 2);
+		$this->addLine("return \$this->destroy();", 2);
+		$this->addLine("}", 1);
+		$this->addLine("// -------------------------------------------------------------------------", 1);
+	}
+	// -------------------------------------------------------------------------
 	protected function generateSave($t)
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * Metoda zapisuje obiekt klasy " . $t->getClassName(), 1);
 		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
 		$this->addLine(" */", 1);
-		
+
 		$data = array();
 		$pk = array();
 		foreach($t->getColumny() as $c)/* @var $c Column */
