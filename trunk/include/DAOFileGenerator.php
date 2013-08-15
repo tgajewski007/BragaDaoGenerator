@@ -663,7 +663,7 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = mb_substr(\$" . $c->getClassFieldName() . ",0," . $c->getSize() . ");", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = mb_substr(\$" . $c->getClassFieldName() . ",0," . $c->getSize() . ");", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::NUMBER:
@@ -684,6 +684,16 @@ class DAOFileGenerator
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATE_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
+				$this->addLine("}", 2);
+				break;
+			case ColumnType::TIME:
+				$this->addLine("if(empty(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
+				$this->addLine("}", 2);
+				$this->addLine("else", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_TIME_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::DATETIME:

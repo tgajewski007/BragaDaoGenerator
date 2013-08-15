@@ -57,6 +57,9 @@ class MySQLProxy implements ReverseProxy
 				case "timestamp":
 					$tmp->type = ColumnType::DATETIME;
 					break;
+				case "time":
+					$tmp->type = ColumnType::TIME;
+					break;
 				case "int":
 				case "tinyint":
 				case "bigint":
