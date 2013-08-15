@@ -13,6 +13,7 @@ class ColumnType
 	const FLOAT = "FLOAT";
 	const DATE = "DATE";
 	const DATETIME = "DATETIME";
+	const TIME = "TIME";
 	const CHAR = "CHAR";
 	const TEXT = "TEXT";
 	const ENUM = "ENUM";
