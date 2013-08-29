@@ -402,7 +402,7 @@ class DAOFileGenerator
 
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method change object of class " . $t->getClassName(), 1);
-		$this->addLine(" * updated is record in table " . $t->getName(), 1);
+		$this->addLine(" * update record in table " . $t->getName(), 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update()", 1);
@@ -486,7 +486,7 @@ class DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Methods add object of class " . $t->getClassName() , 1);
+		$this->addLine(" * Methods add object of class " . $t->getClassName(), 1);
 		$this->addLine(" * insert record into table " . $t->getName(), 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
@@ -498,7 +498,6 @@ class DAOFileGenerator
 		$params = array();
 		foreach($data as $c)/* @var $c Column */
 		{
-
 			if($c->getName() == strtoupper($c->getName()))
 				$columns[$c->getName()] = $c->getName();
 			else
@@ -811,18 +810,18 @@ class DAOFileGenerator
 
 		// $addSeparator = false;
 		// foreach($this->project->getTables() as $table) /* @var $table Table
-	// */
+		// */
 		// {
 		// if($table != $t)
 		// {
 		// foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 		// {
 		// if($fk->getTableName() == $t->getName() && $fk->getTableSchema() ==
-	// $t->getSchema())
+		// $t->getSchema())
 		// {
 		// $addSeparator = true;
 		// $this->addLine("protected \$" . lcfirst($table->getClassName()) . "s
-	// = null;", 1);
+		// = null;", 1);
 		// }
 		// }
 		// }
@@ -830,8 +829,8 @@ class DAOFileGenerator
 		// if($addSeparator)
 		// {
 		// $this->addLine("//
-	// -------------------------------------------------------------------------",
-	// 1);
+		// -------------------------------------------------------------------------",
+		// 1);
 		// }
 	}
 	// -------------------------------------------------------------------------

@@ -35,9 +35,9 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda zmienia obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
-		$this->addLine(" * Zmieniany jest rekord w tablicy " . $t->getName(), 1);
-		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" * Method change object of class " . $t->getClassName(), 1);
+		$this->addLine(" * update record in table " . $t->getName(), 1);
+		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
@@ -116,9 +116,9 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda tworzy obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
-		$this->addLine(" * Dodawany jest rekord do tablicy " . $t->getName(), 1);
-		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" * Methods add object of class " . $t->getClassName(), 1);
+		$this->addLine(" * insert record into table " . $t->getName(), 1);
+		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
