@@ -43,20 +43,20 @@ define("PHP_DATETIME_FORMAT", PHP_DATE_FORMAT . " " . PHP_TIME_FORMAT);
 
 2) Philosophy
 
-this software genereate get, set function and if finds foregin key, get function for parent / childs objects. 
-
+this software generate get, set function and if finds foregin key, get function for parent / childs objects. 
 this software does not aspire to replace human in write efficient sql  .
 
 generated are two group of clases ObjectDAO.php and Object.php 
 
 ObjectDAO.php files are overwrite on every generate proces so DO NOT MODIFY THEM
 
-Object.php are files are generated only if not exists 
-this is the place for other specjalized sql query ex. search function 
+Object.php file are generated only if not exists 
+this is the place for other specialized sql query ex. search function 
 
 Files are generated only if table have primary key 
 
-this software generate two other files 
+this software generate two other files:
+
 dao.xml to save links between names column and atributes in clases 
 
 this file is generated if no exist  and modify when exists 
@@ -92,4 +92,6 @@ $obj = Object::get($idObject);
 $obj->kill();
 
 
-
+4) Knows problems
+use namespace are not implemented (in near future will be )
+ 
