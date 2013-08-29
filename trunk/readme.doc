@@ -66,10 +66,12 @@ automagic conversion are made
 
 for table / class
 first_table  -> FirstTable
+
 for column / atrib
 first_column -> firstColumn 
 
-
+and objdao.php 
+with all includes class files
 3) Using 
 
 read record from table 
