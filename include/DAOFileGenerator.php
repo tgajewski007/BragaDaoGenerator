@@ -109,7 +109,7 @@ class DAOFileGenerator
 		}
 		$this->addLine("/**", 1);
 		$this->addLine(" * @param DataSource \$db", 1);
-		$this->addLine(" * @return ".$t->getClassName(), 1);
+		$this->addLine(" * @return " . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
 		$this->addLine("static function getByDataSource(DataSource \$db)", 1);
 		$this->addLine("{", 1);
@@ -202,7 +202,7 @@ class DAOFileGenerator
 			$fkTable = $fk->getTable();
 
 			$this->addLine("/**", 1);
-			$this->addLine(" * Metoda zwraca kolekcję obiektów " . $t->getClassName(), 1);
+			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public static function getAllBy" . $fkTable->getClassName() . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
@@ -276,9 +276,9 @@ class DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda usuwa obiekt klasy " . $t->getClassName(), 1);
-		$this->addLine(" * usuwany jest rekord z tablicy " . $t->getName(), 1);
-		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" * Method removes object of class " . $t->getClassName(), 1);
+		$this->addLine(" * removed are record from table " . $t->getName(), 1);
+		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function destroy()", 1);
 		$this->addLine("{", 1);
@@ -303,7 +303,7 @@ class DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->rollback();", 3);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "04 Usunięcie rekordu z tablicy " . $t->getName() . " nie powiodło się\");", 3);
+		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "04 Delete record from table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -337,9 +337,9 @@ class DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda odczytuje obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
-		$this->addLine(" * Odczytywany jest rekord z tablicy " . $t->getName(), 1);
-		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" * Method read object of class " . $t->getClassName() . " you can read all of atrib by get...() function", 1);
+		$this->addLine(" * select record from table " . $t->getName(), 1);
+		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
 		foreach($pk as $c)/* @var $c Column */
@@ -401,9 +401,9 @@ class DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda zmienia obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
-		$this->addLine(" * Zmieniany jest rekord w tablicy " . $t->getName(), 1);
-		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" * Method change object of class " . $t->getClassName(), 1);
+		$this->addLine(" * updated is record in table " . $t->getName(), 1);
+		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
@@ -458,7 +458,7 @@ class DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->rollback();", 3);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Zmiana rekordu w tablicy " . $t->getName() . " nie powiodło się\");", 3);
+		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -486,9 +486,9 @@ class DAOFileGenerator
 		}
 
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda tworzy obiekt klasy " . $t->getClassName() . " własności możliwe do pobrania poprzez metody get...", 1);
-		$this->addLine(" * Dodawany jest rekord do tablicy " . $t->getName(), 1);
-		$this->addLine(" * @return boolean Zwraca true w przypadku powodzenia i false w przypadku przeciwnym", 1);
+		$this->addLine(" * Methods add object of class " . $t->getClassName() , 1);
+		$this->addLine(" * insert record into table " . $t->getName(), 1);
+		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
@@ -545,7 +545,7 @@ class DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->rollback();", 3);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "02 Dodanie rekordu do tablicy " . $t->getName() . " nie powiodło się\");", 3);
+		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -606,7 +606,7 @@ class DAOFileGenerator
 				if($fk->getTable() == $table)
 				{
 					$this->addLine("/**", 1);
-					$this->addLine(" * Metoda zwraca kolekcję obiektów " . $t->getClassName(), 1);
+					$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 					$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
 					$this->addLine(" */", 1);
 					$this->addLine("public function get" . ucfirst($t->getClassName()) . "s()", 1);
@@ -728,7 +728,7 @@ class DAOFileGenerator
 	protected function generateSetAllFromDB(Table $t)
 	{
 		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda ustawia wszystkie własności klasy " . $t->getClassName() . " z obiektu klasy DB", 1);
+		$this->addLine(" * Methods set all atributes in object of class " . $t->getClassName() . " from object class DB", 1);
 		$this->addLine(" * @return void", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function setAllFromDB(DataSource \$db)", 1);
@@ -775,7 +775,7 @@ class DAOFileGenerator
 
 		$this->addLine("if(!\$this->retrieve(" . implode(", ", $tmp3) . "))", 3);
 		$this->addLine("{", 3);
-		$this->addLine("throw new Exception(\"" . $t->getErrorPrefix() . "01 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  nie istnieje\");", 4);
+		$this->addLine("throw new Exception(\"" . $t->getErrorPrefix() . "01 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 4);
 		$this->addLine("}", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -809,25 +809,30 @@ class DAOFileGenerator
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
 
-// 		$addSeparator = false;
-// 		foreach($this->project->getTables() as $table) /* @var $table Table */
-// 		{
-// 			if($table != $t)
-// 			{
-// 				foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
-// 				{
-// 					if($fk->getTableName() == $t->getName() && $fk->getTableSchema() == $t->getSchema())
-// 					{
-// 						$addSeparator = true;
-// 						$this->addLine("protected \$" . lcfirst($table->getClassName()) . "s = null;", 1);
-// 					}
-// 				}
-// 			}
-// 		}
-// 		if($addSeparator)
-// 		{
-// 			$this->addLine("// -------------------------------------------------------------------------", 1);
-// 		}
+		// $addSeparator = false;
+		// foreach($this->project->getTables() as $table) /* @var $table Table
+	// */
+		// {
+		// if($table != $t)
+		// {
+		// foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+		// {
+		// if($fk->getTableName() == $t->getName() && $fk->getTableSchema() ==
+	// $t->getSchema())
+		// {
+		// $addSeparator = true;
+		// $this->addLine("protected \$" . lcfirst($table->getClassName()) . "s
+	// = null;", 1);
+		// }
+		// }
+		// }
+		// }
+		// if($addSeparator)
+		// {
+		// $this->addLine("//
+	// -------------------------------------------------------------------------",
+	// 1);
+		// }
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassHead($t)
@@ -848,10 +853,11 @@ class DAOFileGenerator
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
-		$this->addLine(" * Wygenerowano przy pomocy SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
-		$this->addLine(" * Zaprojektowane wg schematu CRUD http://pl.wikipedia.org/wiki/CRUD", 0);
-		$this->addLine(" * klasa wygenerowana automatycznie proszę nie wprowadzać zmian pod rygorem ", 0);
-		$this->addLine(" * NADPISANIA BEZ OSTRZEŻENIA ", 0);
+		$this->addLine(" * Genreated by SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
+		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
+		$this->addLine(" * Designed by schama CRUD http://wikipedia.org/wiki/CRUD", 0);
+		$this->addLine(" * class generated automatically, please do not modify under pain of ", 0);
+		$this->addLine(" * OVERWRITTEN WITHOUT WARNING ", 0);
 		$this->addLine(" */", 0);
 	}
 	// -------------------------------------------------------------------------
