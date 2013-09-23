@@ -45,10 +45,10 @@ class DB implements DataSource
 		$this->Param = new OracleParams();
 		if($trasactionOn)
 			$this->trasactionMode = OCI_DEFAULT;
-		
+
 		putenv("NLS_LANG=Polish_Poland.UTF8");
 		$this->checkConnection();
-		$this->Database = "(DESCRIPTION = " . "(ADDRESS = " . "(PROTOCOL = TCP)" . "(HOST = " . $this->Serwer . ")" . "(PORT = " . $this->Port . ")" . ")" . "(CONNECT_DATA = " . "(SID = " . $this->SID . "))" . ")";
+		$this->Database = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = " . $this->Serwer . ")(PORT = " . $this->Port . ")(CONNECT_DATA = (SID = " . $this->SID . ")))";
 	}
 	// ------------------------------------------------------------------------
 	public function setLimit($arg1, $arg2 = null)
@@ -142,7 +142,7 @@ class DB implements DataSource
 	/**
 	 * query
 	 * Funkcja wykonuje właściwe zapytanie do bazy danych
-	 * 
+	 *
 	 * @return bool true jeżeli ok false jeżeli zapytanie kończy się błędem
 	 * @var string $SQLqueryString
 	 * @var bool $GetMetaData zmienna określająca czy pobierane będą metadane z
@@ -154,7 +154,7 @@ class DB implements DataSource
 		{
 			$Mode = $this->trasactionMode;
 		}
-		
+
 		$this->queryStr = $SQLqueryString;
 		$this->oryginalQueryString = $SQLqueryString;
 		if(null !== $this->limit)
@@ -171,7 +171,7 @@ class DB implements DataSource
 				$this->setParam("REC_LIMIT_FROM", $this->limit);
 			}
 		}
-		
+
 		if($this->connect())
 		{
 			$this->RecordSet = @oci_parse($this->connectionObiect, $this->queryStr);
@@ -235,7 +235,7 @@ class DB implements DataSource
 			$tmp = @oci_error($this->connectionObiect);
 		else
 			$tmp = @oci_error();
-		
+
 		if($SQL != "")
 		{
 			if(substr($SQL, 0, 10) != "ALTER USER")
@@ -273,7 +273,7 @@ class DB implements DataSource
 		{
 			$tmp = @oci_field_name($this->RecordSet, $i);
 			$this->MetaData["Name"][$i - 1] = $tmp;
-			
+
 			if(strtolower(mb_substr($this->MetaData["Name"][$i - 1], -3, 3, "UTF-8")) != "_nn")
 			{
 				$this->MetaData["Flags"][$i - 1] = "null";
