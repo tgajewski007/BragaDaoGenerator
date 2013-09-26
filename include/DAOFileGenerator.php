@@ -666,7 +666,7 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::NUMBER:
-				$this->addLine("if(isset(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("if(is_numeric(\$" . $c->getClassFieldName() . "))", 2);
 				$this->addLine("{", 2);
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(\$" . $c->getClassFieldName() . "," . intval($c->getScale()) . ");", 3);
 				$this->addLine("}", 2);
