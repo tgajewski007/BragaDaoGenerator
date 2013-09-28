@@ -81,7 +81,7 @@ class FilesGenerator
 	// -------------------------------------------------------------------------
 	/**
 	 *
-	 * @param Project $p 
+	 * @param Project $p
 	 * @return Project
 	 */
 	public static function loadFromXML(Project $p)
@@ -104,30 +104,45 @@ class FilesGenerator
 	protected function readProject()
 	{
 		$p = $this->xmlDocument->getElementsByTagName("project")->item(0);
-		
+
 		if(!is_null($p->getAttribute("name")))
 		{
-			self::$project->setName($p->getAttribute("name"));
+			if(self::$project->getName() == "Project1")
+			{
+				self::$project->setName($p->getAttribute("name"));
+			}
 		}
 		if(!is_null($p->getAttribute("author")))
 		{
-			self::$project->setAuthor($p->getAttribute("author"));
+			if(is_null(self::$project->getAuthor()))
+			{
+				self::$project->setAuthor($p->getAttribute("author"));
+			}
 		}
 		if(!is_null($p->getAttribute("errorPrefix")))
 		{
-			self::$project->setErrorPrefix($p->getAttribute("errorPrefix"));
+			if(is_null(self::$project->getErrorPrefix()))
+			{
+				self::$project->setErrorPrefix($p->getAttribute("errorPrefix"));
+			}
 		}
 		if(!is_null($p->getAttribute("namespace")))
 		{
-			self::$project->setNameSpace($p->getAttribute("namespace"));
+			if(is_null(self::$project->getNameSpace()))
+			{
+				self::$project->setNameSpace($p->getAttribute("namespace"));
+			}
 		}
 		if(!is_null($p->getAttribute("dataBaseStyle")))
 		{
-			self::$project->setDataBaseStyle($p->getAttribute("dataBaseStyle"));
+			if(is_null(self::$project->getDataBaseStyle()))
+			{
+				self::$project->setDataBaseStyle($p->getAttribute("dataBaseStyle"));
+			}
 		}
 		$tables = $p->getElementsByTagName("table");
 		$existTable = self::$project->getTables();
-		
+
 		// odczyt tablic
 		$tmp = array();
 		foreach($tables as $t) /* @var $t DOMElement */
@@ -171,7 +186,7 @@ class FilesGenerator
 		$p->setAttribute("errorPrefix", self::$project->getErrorPrefix());
 		$p->setAttribute("namespace", self::$project->getNameSpace());
 		$p->setAttribute("dataBaseStyle", self::$project->getDataBaseStyle());
-		
+
 		foreach(self::$project->getTables() as $table)/* @var $table Table */
 		{
 			$t = new DOMElement("table");
@@ -183,7 +198,7 @@ class FilesGenerator
 				$t->appendChild($c);
 				$columna->export($c);
 			}
-			
+
 			foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 			{
 				$k = new DOMElement("fk");
