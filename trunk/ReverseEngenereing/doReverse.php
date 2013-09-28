@@ -39,6 +39,7 @@ $project->setDataBaseStyle(DataBaseStyle::MYSQL);
 $project->setAuthor("Tomasz Gajewski");
 $project->setName("TransSped");
 $project->setXmlFile("O:\\wwwroot\\TransSped\\Doc\\dao.xml");
+$project->setNameSpace("TransSped");
 
 $x = new MySQLProxy();
 $p = new ReverseCreator($project, $x);

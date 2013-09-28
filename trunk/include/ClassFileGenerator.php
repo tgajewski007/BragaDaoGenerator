@@ -19,9 +19,18 @@ class ClassFileGenerator extends DAOFileGenerator
 			if(!file_exists($this->file))
 			{
 				$this->open($t);
+				$this->generateNameSpace();
 				$this->prepareClass($t);
 				$this->close();
 			}
+		}
+	}
+	// -------------------------------------------------------------------------
+	protected function generateNameSpace()
+	{
+		if(strlen($this->project->getNameSpace()) > 0)
+		{
+			$this->addLine("namespace " . $this->project->getNameSpace() . ";", 0);
 		}
 	}
 	// -------------------------------------------------------------------------
