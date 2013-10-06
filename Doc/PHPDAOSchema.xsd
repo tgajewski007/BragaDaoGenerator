@@ -58,13 +58,12 @@
 	</xs:simpleType>
 	<xs:complexType name="ForeginKeyType">
 		<xs:sequence>
-			<xs:element name="connectedColumn" type="ConnectedColumnType" maxOccurs="unbounded" minOccurs="1">
-			</xs:element>
+			<xs:element name="connectedColumn" type="ConnectedColumnType" maxOccurs="unbounded" minOccurs="1"></xs:element>
 		</xs:sequence>
-		<xs:attribute name="tableName" type="xs:string">
-		</xs:attribute>
-		<xs:attribute name="tableSchema" type="xs:string">
-		</xs:attribute>
+		<xs:attribute name="tableName" type="xs:string"></xs:attribute>
+		<xs:attribute name="tableSchema" type="xs:string"></xs:attribute>
+		<xs:attribute name="classFieldName" type="xs:string"></xs:attribute>
+		<xs:attribute name="name" type="xs:string"></xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ConnectedColumnType">
 		<xs:attribute name="fkColumnName" type="xs:string">
