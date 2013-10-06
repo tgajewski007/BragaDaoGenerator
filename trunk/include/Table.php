@@ -26,14 +26,7 @@ class Table
 	// -------------------------------------------------------------------------
 	public function addFK(ForeginKey $fk)
 	{
-		if(is_null($fk->getTableSchema()))
-		{
-			$this->fk[$fk->getTableName()] = $fk;
-		}
-		else
-		{
-			$this->fk[$fk->getTableSchema() . "." . $fk->getTableName()] = $fk;
-		}
+		$this->fk[$fk->getName()] = $fk;
 	}
 	// -------------------------------------------------------------------------
 	public function getPk()
@@ -167,21 +160,21 @@ class Table
 	static function import(DOMElement $table)
 	{
 		$t = new self();
-		
+
 		$name = $table->getAttribute("name");
 		$schema = $table->getAttribute("schema");
 		$className = $table->getAttribute("className");
 		$tableSpace = $table->getAttribute("tableSpace");
 		$indexTableSpace = $table->getAttribute("indexTableSpace");
 		$errorPrefix = $table->getAttribute("errorPrefix");
-		
+
 		$t->setName($name);
 		$t->setSchema($schema);
 		$t->setClassName($className);
 		$t->setTableSpace($tableSpace);
 		$t->setIndexTableSpace($indexTableSpace);
 		$t->setErrorPrefix($errorPrefix);
-		
+
 		return $t;
 	}
 	// -------------------------------------------------------------------------

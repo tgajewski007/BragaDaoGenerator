@@ -49,6 +49,16 @@ class Project
 				}
 			}
 		}
+		foreach ($table->getFk() as $fk) /* @var $fk ForeginKey */
+		{
+			foreach ($orgTable->getFk() as $orgFk) /* @var $orgFk ForeginKey */
+			{
+				if($fk->getName() == $orgFk->getName())
+				{
+					$fk->setClassFieldName($orgFk->getClassFieldName());
+				}
+			}
+		}
 		$this->tables[$table->getKey()] = $table;
 	}
 	// -------------------------------------------------------------------------

@@ -8,9 +8,9 @@
 class ReverseForeginKey
 {
 	// -------------------------------------------------------------------------
+	public $refTableName = null;
+	public $refTableSchema = null;
 	public $columns = array();
-	public $refTableName = array();
-	public $refTableSchema = array();
 	// -------------------------------------------------------------------------
 }
 ?>

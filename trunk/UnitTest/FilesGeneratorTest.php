@@ -83,6 +83,7 @@ class FilesGeneratorTest extends PHPUnit_Framework_TestCase
 		$fk1 = new ForeginKey();
 		$fk1->setTableName($u->getName());
 		$fk1->setTableSchema($u->getSchema());
+		$fk1->setName("UZYTKOWNIK");
 		$fk1->addColumn("IDUZYSZKODNIK", "IDUZYTKOWNIK");
 
 		$t = new Table();
@@ -117,6 +118,7 @@ class FilesGeneratorTest extends PHPUnit_Framework_TestCase
 		$fk2 = new ForeginKey();
 		$fk2->setTableName($t->getName());
 		$fk2->setTableSchema($t->getSchema());
+		$fk2->setName("ZBIOR");
 		$fk2->addColumn("IDZBIOR", "IDZBIOR");
 		$przes->addFK($fk2);
 
