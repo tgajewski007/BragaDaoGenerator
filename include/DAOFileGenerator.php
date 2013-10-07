@@ -593,24 +593,47 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateGetterCollection(Table $table)
 	{
-		foreach($this->project->getTables() as $t) /* @var $t Table */
+
+
+
+		foreach($this->project->getTables() as $t)
 		{
-			foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
+			if($t != $table)
 			{
-				if($fk->getTable() == $table)
+				foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
 				{
-					$this->addLine("/**", 1);
-					$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
-					$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
-					$this->addLine(" */", 1);
-					$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor".ucfirst($fk->getClassFieldName())."()", 1);
-					$this->addLine("{", 1);
-					$this->addLine("return " . $t->getClassName() . "::getAllBy" . ucfirst($fk->getClassFieldName()) . "(\$this);", 2);
-					$this->addLine("}", 1);
-					$this->addLine("// -------------------------------------------------------------------------", 1);
+					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
+					{
+// 						$addSeparator = true;
+// 						$this->addLine("protected \$" . lcfirst($t->getClassName()) . "s = null;", 1);
+						$this->addLine("/**", 1);
+						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
+						$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
+						$this->addLine(" */", 1);
+						$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . "()", 1);
+						$this->addLine("{", 1);
+						$this->addLine("if(is_null(\$this->" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . "))", 2);
+						$this->addLine("{", 2);
+						$this->addLine("\$this->" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . " = " . $t->getClassName() . "::getAllBy" . ucfirst($fk->getClassFieldName()) . "(\$this);", 3);
+						$this->addLine("}", 2);
+						$this->addLine("return \$this->" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . ";", 2);
+						$this->addLine("}", 1);
+						$this->addLine("// -------------------------------------------------------------------------", 1);
+					}
 				}
 			}
 		}
+
+
+// 		foreach($this->project->getTables() as $t) /* @var $t Table */
+// 		{
+// 			foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
+// 			{
+// 				if($fk->getTable() == $table)
+// 				{
+// 				}
+// 			}
+// 		}
 	}
 	// -------------------------------------------------------------------------
 	protected function generateGetter($classFieldName)
@@ -776,57 +799,55 @@ class DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateProperties(Table $t)
+	protected function generateProperties(Table $table)
 	{
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 		$this->addLine("protected static \$instance = array();", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
-		foreach($t->getColumny() as $c) /* @var $c Column */
+		foreach($table->getColumny() as $c) /* @var $c Column */
 		{
 			$this->addLine("protected \$" . $c->getClassFieldName() . " = null;", 1);
 		}
 		$this->addLine("protected \$readed = false;", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 
-// 		$addSeparator = false;
-// 		foreach($t->getFk() as $fk) /* @var $fk ForeginKey */
-// 		{
-// 			$addSeparator = true;
-// 			$this->addLine("/**", 1);
-// 			$this->addLine(" * @var " . $fk->getTable()->getClassName(), 1);
-// 			$this->addLine(" */", 1);
-// 			$this->addLine("protected \$" . lcfirst($fk->getName()) . " = null;", 1);
-// 		}
-
-// 		if($addSeparator)
-// 		{
-// 			$this->addLine("// -------------------------------------------------------------------------", 1);
-// 		}
-
 		// $addSeparator = false;
-		// foreach($this->project->getTables() as $table) /* @var $table Table
-		// */
-		// {
-		// if($table != $t)
-		// {
-		// foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
-		// {
-		// if($fk->getTableName() == $t->getName() && $fk->getTableSchema() ==
-		// $t->getSchema())
+		// foreach($t->getFk() as $fk) /* @var $fk ForeginKey */
 		// {
 		// $addSeparator = true;
-		// $this->addLine("protected \$" . lcfirst($table->getClassName()) . "s
-		// = null;", 1);
+		// $this->addLine("/**", 1);
+		// $this->addLine(" * @var " . $fk->getTable()->getClassName(), 1);
+		// $this->addLine(" */", 1);
+		// $this->addLine("protected \$" . lcfirst($fk->getName()) . " = null;",
+		// 1);
 		// }
-		// }
-		// }
-		// }
+
 		// if($addSeparator)
 		// {
 		// $this->addLine("//
 		// -------------------------------------------------------------------------",
 		// 1);
 		// }
+
+		$addSeparator = false;
+		foreach($this->project->getTables() as $t)
+		{
+			if($t != $table)
+			{
+				foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
+				{
+					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
+					{
+						$addSeparator = true;
+						$this->addLine("protected \$" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . " = null;", 1);
+					}
+				}
+			}
+		}
+		if($addSeparator)
+		{
+			$this->addLine("// -------------------------------------------------------------------------", 1);
+		}
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassHead($t)

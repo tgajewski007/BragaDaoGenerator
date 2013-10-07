@@ -25,25 +25,39 @@ include "ReverseCreator.php";
 // include "oracle/OracleProxy.php";
 
 define("DB_HOST", "localhost");
-define("DB_SCHEMA", "trans");
+define("DB_SCHEMA", "tomurb02_enmarke");
 define("DB_USER", "root");
 define("DB_PASS", "1");
 include "mysql/DB.php";
 include "mysql/MySQLProxy.php";
 
-$folder = "O:\\wwwroot\\TransSped\\include\\";
+$folder = "O:\\wwwroot\\EnMarket\\common\\";
 $project = new Project();
 $project->setProjectFolder($folder);
-$project->setErrorPrefix("TS:");
+$project->setErrorPrefix("EM:");
 $project->setDataBaseStyle(DataBaseStyle::MYSQL);
 $project->setAuthor("Tomasz Gajewski");
-$project->setName("TransSped");
-$project->setXmlFile("O:\\wwwroot\\TransSped\\Doc\\dao.xml");
+$project->setName("EnMarket");
+$project->setXmlFile("O:\\wwwroot\\EnMarket\\Doc\\dao.xml");
 
 $x = new MySQLProxy();
 $p = new ReverseCreator($project, $x);
 $p->schemaName = "DB_SCHEMA";
 $p->indexTableSpace = "EN_IND";
 $p->GO();
+// $folder = "O:\\wwwroot\\TransSped\\include\\";
+// $project = new Project();
+// $project->setProjectFolder($folder);
+// $project->setErrorPrefix("TS:");
+// $project->setDataBaseStyle(DataBaseStyle::MYSQL);
+// $project->setAuthor("Tomasz Gajewski");
+// $project->setName("TransSped");
+// $project->setXmlFile("O:\\wwwroot\\TransSped\\Doc\\dao.xml");
+
+// $x = new MySQLProxy();
+// $p = new ReverseCreator($project, $x);
+// $p->schemaName = "DB_SCHEMA";
+// $p->indexTableSpace = "EN_IND";
+// $p->GO();
 
 ?>
