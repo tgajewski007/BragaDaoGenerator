@@ -203,7 +203,7 @@ class DAOFileGenerator
 
 			$this->addLine("/**", 1);
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
-			$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
+			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public static function getAllBy" . ucfirst($fk->getClassFieldName()) . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
@@ -608,7 +608,7 @@ class DAOFileGenerator
 // 						$this->addLine("protected \$" . lcfirst($t->getClassName()) . "s = null;", 1);
 						$this->addLine("/**", 1);
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
-						$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
+						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . "()", 1);
 						$this->addLine("{", 1);
