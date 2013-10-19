@@ -170,7 +170,7 @@ class DAOFileGenerator
 		{
 			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
 			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
-			$tmp2[] = "isset(\$" . $c->getClassFieldName() . ")";
+			$tmp2[] = "strlen(\$" . $c->getClassFieldName() . ") > 0";
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
 
@@ -781,7 +781,7 @@ class DAOFileGenerator
 		{
 			$this->addLine(" * @param " . $c->getPHPType() . " \$" . $c->getClassFieldName() . "", 1);
 			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
-			$tmp2[] = "isset(\$" . $c->getClassFieldName() . ")";
+			$tmp2[] = "!is_null(\$" . $c->getClassFieldName() . ")";
 			$tmp3[] = "\$" . $c->getClassFieldName() . "";
 		}
 		$this->addLine(" */", 1);
