@@ -70,6 +70,8 @@ class MySQLProxy implements ReverseProxy
 				case "float":
 					$tmp->type = ColumnType::FLOAT;
 					break;
+				case "mediumtext":
+				case "longtext":
 				case "text":
 					$tmp->type = ColumnType::TEXT;
 					break;
