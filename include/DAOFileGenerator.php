@@ -242,8 +242,7 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("\$db->query(\$sql);", 2);
-			$this->addLine("\$retval = new Collection(\$db, " . $t->getClassName() . "::get());", 2);
-			$this->addLine("return \$retval;", 2);
+			$this->addLine("return new Collection(\$db, " . $t->getClassName() . "::get());", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}

@@ -72,8 +72,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("\$sql  = \"SELECT * \";", 2);
 		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$this->addLine("\$db->query(\$sql);", 2);
-		$this->addLine("\$retval = new Collection(\$db, self::get());", 2);
-		$this->addLine("return \$retval;", 2);
+		$this->addLine("return new Collection(\$db, self::get());", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
@@ -148,6 +147,7 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("class " . $t->getClassName() . " extends " . $t->getClassName() . "DAO implements DAO", 0);
 		$this->addLine("{", 0);
+		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassDocumentation(Table $t)
