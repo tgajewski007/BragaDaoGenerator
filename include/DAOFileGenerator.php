@@ -170,7 +170,16 @@ class DAOFileGenerator
 		{
 			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
 			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
-			$tmp2[] = "strlen(\$" . $c->getClassFieldName() . ") > 0";
+			switch($c->getType())
+			{
+				case ColumnType::FLOAT:
+				case ColumnType::NUMBER:
+					$tmp2[] = "is_numeric(\$" . $c->getClassFieldName() . ")";
+					break;
+				default:
+					$tmp2[] = "!empty(\$" . $c->getClassFieldName() . ")";
+					break;
+			}
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
 
@@ -592,9 +601,6 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateGetterCollection(Table $table)
 	{
-
-
-
 		foreach($this->project->getTables() as $t)
 		{
 			if($t != $table)
@@ -603,8 +609,9 @@ class DAOFileGenerator
 				{
 					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
 					{
-// 						$addSeparator = true;
-// 						$this->addLine("protected \$" . lcfirst($t->getClassName()) . "s = null;", 1);
+						// $addSeparator = true;
+						// $this->addLine("protected \$" .
+						// lcfirst($t->getClassName()) . "s = null;", 1);
 						$this->addLine("/**", 1);
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
@@ -623,16 +630,15 @@ class DAOFileGenerator
 			}
 		}
 
-
-// 		foreach($this->project->getTables() as $t) /* @var $t Table */
-// 		{
-// 			foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
-// 			{
-// 				if($fk->getTable() == $table)
-// 				{
-// 				}
-// 			}
-// 		}
+		// foreach($this->project->getTables() as $t) /* @var $t Table */
+		// {
+		// foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
+		// {
+		// if($fk->getTable() == $table)
+		// {
+		// }
+		// }
+		// }
 	}
 	// -------------------------------------------------------------------------
 	protected function generateGetter($classFieldName)
