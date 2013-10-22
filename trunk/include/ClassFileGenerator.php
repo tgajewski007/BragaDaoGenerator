@@ -63,7 +63,7 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * This method returns a collection of objects ", 1);
-		$this->addLine(" * @return Collection&lt;" . $t->getClassName() . "&gt; ", 1);
+		$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function getAll()", 1);
 		$this->addLine("{", 1);
