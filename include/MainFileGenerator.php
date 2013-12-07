@@ -51,8 +51,8 @@ class MainFileGenerator
 	{
 		$this->addLine("/**", 0);
 		$this->addLine(" * Created on " . date("d-m-Y H:i:s"), 0);
-		$this->addLine(" * Lista plików do includowania", 0);
-		$this->addLine(" * NADPISANIA BEZ OSTRZEŻENIA ", 0);
+		$this->addLine(" * list of files to include", 0);
+		$this->addLine(" * OVERWRITTEN WITHOUT WARNING", 0);
 		$this->addLine(" */", 0);
 	}
 	// -------------------------------------------------------------------------
