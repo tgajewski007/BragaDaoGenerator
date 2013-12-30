@@ -62,7 +62,8 @@ class FilesGenerator
 		{
 			try
 			{
-				$this->xmlDocument = DOMDocument::load(self::$project->getXmlFile());
+				$this->xmlDocument = new DOMDocument();
+				$this->xmlDocument->load(self::$project->getXmlFile());
 				$this->readProject();
 				$this->createXmlDoc();
 			}
@@ -92,7 +93,8 @@ class FilesGenerator
 			try
 			{
 				$d = new self();
-				$d->xmlDocument = DOMDocument::load(self::$project->getXmlFile());
+				$d->xmlDocument = new DOMDocument();
+				$d->xmlDocument->load(self::$project->getXmlFile());
 				$d->readProject();
 			}
 			catch(Exception $e)
