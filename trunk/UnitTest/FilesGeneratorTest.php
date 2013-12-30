@@ -135,7 +135,8 @@ class FilesGeneratorTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue(file_exists("O:\\wwwroot\\TestDao\\test13\\dao.xml"));
 
 		/* @var $doc DOMDocument */
-		$doc = DOMDocument::load("O:\\wwwroot\\TestDao\\test13\\dao.xml");
+		$doc = new DOMDocument();
+		$doc->load("O:\\wwwroot\\TestDao\\test13\\dao.xml");
 		$this->assertTrue($doc->schemaValidate(__DIR__ . "/../Doc/PHPDAOSchema.xsd"));
 	}
 	// -------------------------------------------------------------------------
