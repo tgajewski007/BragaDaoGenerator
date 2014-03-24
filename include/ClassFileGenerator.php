@@ -94,7 +94,7 @@ class ClassFileGenerator extends DAOFileGenerator
 	protected function generateSave($t)
 	{
 		$this->addLine("/**", 1);
-		$this->addLine(" * Method saves the object of the class" . $t->getClassName(), 1);
+		$this->addLine(" * Method saves the object of the class " . $t->getClassName(), 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 
