@@ -40,6 +40,11 @@ class DB implements DataSource
 		return $this->connectionObiect;
 	}
 	// ------------------------------------------------------------------------
+	public function getRowAffected()
+	{
+		return $this->RowCount;
+	}
+	// ------------------------------------------------------------------------
 	public function __construct($trasactionOn = true)
 	{
 		$this->Param = new OracleParams();
