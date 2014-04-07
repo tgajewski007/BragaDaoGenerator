@@ -14,6 +14,7 @@ class DB implements DataSource
 	protected $Serwer = ORA_SERVER;
 	protected $Port = ORA_PORT;
 	protected $SID = ORA_SID;
+	protected $Database = null;
 	public $UserName = ORA_USERNAME;
 	public $Password = ORA_PASSWORD;
 	public $Debug = false;
@@ -53,7 +54,7 @@ class DB implements DataSource
 
 		putenv("NLS_LANG=Polish_Poland.UTF8");
 		$this->checkConnection();
-		$this->Database = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = " . $this->Serwer . ")(PORT = " . $this->Port . ")(CONNECT_DATA = (SID = " . $this->SID . ")))";
+		$this->Database = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = " . $this->Serwer. ")(PORT = " . $this->Port . "))(CONNECT_DATA = (SID = " . $this->SID . ")))";
 	}
 	// ------------------------------------------------------------------------
 	public function setLimit($arg1, $arg2 = null)
@@ -98,7 +99,7 @@ class DB implements DataSource
 		{
 			return true;
 		}
-		$this->connectionObiect = @oci_pconnect($this->UserName, $this->Password, $this->Database, 'UTF8');
+		$this->connectionObiect = oci_pconnect($this->UserName, $this->Password, $this->Database, 'UTF8');
 		if(!$this->connectionObiect)
 		{
 			$this->getOciErrors("Błąd połączenia");
@@ -120,20 +121,20 @@ class DB implements DataSource
 	// ------------------------------------------------------------------------
 	public function commit()
 	{
-		@oci_commit($this->connectionObiect);
+		oci_commit($this->connectionObiect);
 	}
 	// ------------------------------------------------------------------------
 	public function rollback()
 	{
-		@oci_rollback($this->connectionObiect);
+		oci_rollback($this->connectionObiect);
 	}
 	// -------------------------------------------------------------------------
 	protected function fastQuery($SQLqueryString)
 	{
-		$this->RecordSet = @oci_parse($this->connectionObiect, $SQLqueryString);
+		$this->RecordSet = oci_parse($this->connectionObiect, $SQLqueryString);
 		if($this->RecordSet)
 		{
-			if(@oci_execute($this->RecordSet, OCI_COMMIT_ON_SUCCESS))
+			if(oci_execute($this->RecordSet, OCI_COMMIT_ON_SUCCESS))
 			{
 				return true;
 			}
@@ -179,17 +180,17 @@ class DB implements DataSource
 
 		if($this->connect())
 		{
-			$this->RecordSet = @oci_parse($this->connectionObiect, $this->queryStr);
+			$this->RecordSet = oci_parse($this->connectionObiect, $this->queryStr);
 			$this->addParam();
 			if($this->RecordSet)
 			{
-				if(@oci_execute($this->RecordSet, $Mode))
+				if(oci_execute($this->RecordSet, $Mode))
 				{
 					if($GetMetaData)
 					{
 						$this->setMetaData();
 					}
-					$this->RowCount = @oci_num_rows($this->RecordSet);
+					$this->RowCount = oci_num_rows($this->RecordSet);
 					return true;
 				}
 				else
@@ -237,9 +238,9 @@ class DB implements DataSource
 		$retval = $Error . "<br>\n";
 		$this->RowCount = 0;
 		if(is_resource($this->connectionObiect))
-			$tmp = @oci_error($this->connectionObiect);
+			$tmp = oci_error($this->connectionObiect);
 		else
-			$tmp = @oci_error();
+			$tmp = oci_error();
 
 		if($SQL != "")
 		{
@@ -273,10 +274,10 @@ class DB implements DataSource
 		if(null !== $this->limit)
 			$max--;
 		$this->MetaData["FieldNum"] = $max;
-		$this->MetaData["RecCount"] = @oci_num_rows($this->RecordSet);
+		$this->MetaData["RecCount"] = oci_num_rows($this->RecordSet);
 		for($i = 1;$i <= $max;$i++)
 		{
-			$tmp = @oci_field_name($this->RecordSet, $i);
+			$tmp = oci_field_name($this->RecordSet, $i);
 			$this->MetaData["Name"][$i - 1] = $tmp;
 
 			if(strtolower(mb_substr($this->MetaData["Name"][$i - 1], -3, 3, "UTF-8")) != "_nn")
@@ -291,10 +292,10 @@ class DB implements DataSource
 			{
 				$this->MetaData["Flags"][$i - 1] .= " read only";
 			}
-			$this->MetaData["Len"][$i - 1] = @oci_field_size($this->RecordSet, $i);
-			$this->MetaData["Prec"][$i - 1] = @oci_field_precision($this->RecordSet, $i);
-			$this->MetaData["Type"][$i - 1] = @oci_field_type($this->RecordSet, $i);
-			$this->MetaData["Scale"][$i - 1] = @oci_field_scale($this->RecordSet, $i);
+			$this->MetaData["Len"][$i - 1] = oci_field_size($this->RecordSet, $i);
+			$this->MetaData["Prec"][$i - 1] = oci_field_precision($this->RecordSet, $i);
+			$this->MetaData["Type"][$i - 1] = oci_field_type($this->RecordSet, $i);
+			$this->MetaData["Scale"][$i - 1] = oci_field_scale($this->RecordSet, $i);
 		}
 	}
 	// ------------------------------------------------------------------------
@@ -303,7 +304,7 @@ class DB implements DataSource
 		global $SumaryFetchTime;
 		if($this->connect())
 		{
-			$this->Row = @oci_fetch_array($this->RecordSet, OCI_BOTH + OCI_RETURN_NULLS);
+			$this->Row = oci_fetch_array($this->RecordSet, OCI_BOTH + OCI_RETURN_NULLS);
 			if(is_array($this->Row))
 			{
 				return true;
@@ -317,7 +318,7 @@ class DB implements DataSource
 	// ------------------------------------------------------------------------
 	public function field($FieldName)
 	{
-		return @$this->Row[$FieldName];
+		return $this->Row[$FieldName];
 	}
 	// ------------------------------------------------------------------------
 	public function f($FieldName)
