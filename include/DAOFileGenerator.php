@@ -622,11 +622,7 @@ class DAOFileGenerator
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . "()", 1);
 						$this->addLine("{", 1);
-						$this->addLine("if(is_null(\$this->" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . "))", 2);
-						$this->addLine("{", 2);
-						$this->addLine("\$this->" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . " = " . $t->getClassName() . "::getAllBy" . ucfirst($fk->getClassFieldName()) . "(\$this);", 3);
-						$this->addLine("}", 2);
-						$this->addLine("return \$this->" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . ";", 2);
+						$this->addLine("return " . $t->getClassName() . "::getAllBy" . ucfirst($fk->getClassFieldName()) . "(\$this);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -------------------------------------------------------------------------", 1);
 					}
@@ -819,44 +815,6 @@ class DAOFileGenerator
 		}
 		$this->addLine("protected \$readed = false;", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
-
-		// $addSeparator = false;
-		// foreach($t->getFk() as $fk) /* @var $fk ForeginKey */
-		// {
-		// $addSeparator = true;
-		// $this->addLine("/**", 1);
-		// $this->addLine(" * @var " . $fk->getTable()->getClassName(), 1);
-		// $this->addLine(" */", 1);
-		// $this->addLine("protected \$" . lcfirst($fk->getName()) . " = null;",
-		// 1);
-		// }
-
-		// if($addSeparator)
-		// {
-		// $this->addLine("//
-		// -------------------------------------------------------------------------",
-		// 1);
-		// }
-
-		$addSeparator = false;
-		foreach($this->project->getTables() as $t)
-		{
-			if($t != $table)
-			{
-				foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
-				{
-					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
-					{
-						$addSeparator = true;
-						$this->addLine("protected \$" . lcfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . " = null;", 1);
-					}
-				}
-			}
-		}
-		if($addSeparator)
-		{
-			$this->addLine("// -------------------------------------------------------------------------", 1);
-		}
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassHead($t)
