@@ -112,12 +112,12 @@ class ReverseCreator
 		}
 		if(count($pk) > 0)
 		{
-			echo " ADDED\n";
+			echo "\tADDED\n";
 			$this->project->addTable($table);
 		}
 		else
 		{
-			echo " refused (NO PK)\n";
+			echo "\trefused (NO PK)\n";
 		}
 	}
 	// -------------------------------------------------------------------------
