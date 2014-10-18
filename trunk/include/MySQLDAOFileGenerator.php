@@ -41,7 +41,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$rs= new RecordSet();", 2);
 
 		$pieces = array();
 		foreach($data as $c)/* @var $c Column */
@@ -122,7 +122,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$rs= new RecordSet();", 2);
 
 		$columns = array();
 		$params = array();
