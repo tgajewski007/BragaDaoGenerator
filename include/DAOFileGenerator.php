@@ -220,7 +220,7 @@ class DAOFileGenerator
 			$this->addLine(" */", 1);
 			$this->addLine("public static function getAllBy" . ucfirst($fk->getClassFieldName()) . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
-			$this->addLine("\$db = new DB();", 2);
+			$this->addLine("\$rs= new RecordSet();", 2);
 			$this->addLine("\$sql  = \"SELECT * \";", 2);
 			$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 
@@ -294,7 +294,7 @@ class DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function destroy()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$rs= new RecordSet();", 2);
 		$this->addLine("\$sql  = \"DELETE FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$separator = "WHERE";
 		foreach($pk as $c)
@@ -360,7 +360,7 @@ class DAOFileGenerator
 		}
 		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$rs= new RecordSet();", 2);
 		$this->addLine("\$sql  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$separator = "WHERE";
 		foreach($pk as $c)
@@ -419,7 +419,7 @@ class DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$rs= new RecordSet();", 2);
 
 		$pieces = array();
 		foreach($data as $c)/* @var $c Column */
@@ -504,7 +504,7 @@ class DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$rs= new RecordSet();", 2);
 
 		$columns = array();
 		$params = array();
