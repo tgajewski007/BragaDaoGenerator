@@ -68,7 +68,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("public static function getAll()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: this is example of method selecting multi rec from table ", 2);
-		$this->addLine("\$rs= new RecordSet();", 2);
+		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql  = \"SELECT * \";", 2);
 		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$this->addLine("\$db->query(\$sql);", 2);
