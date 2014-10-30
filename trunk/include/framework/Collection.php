@@ -23,6 +23,7 @@ class Collection implements Iterator, Countable
 	 * @var DAO
 	 */
 	protected $currentObj = null;
+	protected $inited = false;
 	// -------------------------------------------------------------------------
 	function __construct(DataSource $db, DAO $prototype)
 	{
@@ -37,6 +38,7 @@ class Collection implements Iterator, Countable
 	// -------------------------------------------------------------------------
 	public function next()
 	{
+		$this->inited = true;
 		if($this->database->nextRecord())
 		{
 			$this->materialize();
@@ -49,6 +51,10 @@ class Collection implements Iterator, Countable
 	// -------------------------------------------------------------------------
 	public function current()
 	{
+		if(!$this->inited)
+		{
+			$this->next();
+		}
 		return $this->currentObj;
 	}
 	// -------------------------------------------------------------------------
@@ -64,6 +70,8 @@ class Collection implements Iterator, Countable
 	// -------------------------------------------------------------------------
 	public function rewind()
 	{
+		$this->inited = false;
+		$this->database->rewind();
 		$this->next();
 	}
 	// -------------------------------------------------------------------------
