@@ -5,10 +5,6 @@
  * @author Tomasz Gajewski
  * @package common
  */
-require_once 'DataSource.php';
-require_once 'DataSourceMetaData.php';
-require_once 'MySQLMetaData.php';
-require_once 'DataSourceColumnMetaData.php';
 class DB implements DataSource
 {
 	// -------------------------------------------------------------------------
