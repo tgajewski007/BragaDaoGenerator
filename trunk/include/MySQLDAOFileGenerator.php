@@ -88,7 +88,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->rollback();", 3);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Zmiana rekordu w tablicy " . $t->getName() . " nie powiodło się\");", 3);
+		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -165,7 +165,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("\$db->rollback();", 3);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "02 Dodanie rekordu do tablicy " . $t->getName() . " nie powiodło się\");", 3);
+		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
