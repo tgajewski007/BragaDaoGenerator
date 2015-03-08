@@ -56,10 +56,10 @@ class ReverseCreator
 		$table->setTableSpace($t->tableSpace);
 		$table->setIndexTableSpace($this->indexTableSpace);
 		$table->setErrorPrefix($this->project->getErrorPrefix() . $this->errorCount);
-
+		
 		$pk = $this->proxy->getPrimaryKeys($t->tableName);
 		$fk = $this->proxy->getForeginKeys($t->tableName);
-
+		
 		foreach($this->proxy->getColumn($t->tableName) as $col)/* @var $col ReverseColumn */
 		{
 			$c = new Column();
@@ -91,22 +91,20 @@ class ReverseCreator
 			{
 				$tmp = new ForeginKey();
 				$tmp->setName($key);
-				$key = str_replace("fk_", "", $key);
-				$key = str_replace($table->getName() . "_", "", $key);
-
-				$fkName = "";
-				foreach((explode("_", strtolower($key))) as $v)
-				{
-					$fkName .= ucfirst($v);
-				}
-				$fkName = lcfirst($fkName);
-				$tmp->setClassFieldName($fkName);
 				$tmp->setTableName($x->refTableName);
 				$tmp->setTableSchema($this->schemaName);
+				$fkName = "";
 				foreach($x->columns as $fkCol) /* @var $fkCol ConnectedColumn */
 				{
+					$classFieldName = strtolower($fkCol->pkColumnName);
+					if(strtolower(substr($classFieldName, 0, 2)) == "id")
+					{
+						$classFieldName = "id" . ucfirst(substr($classFieldName, 2));
+					}
+					$fkName .= $classFieldName;
 					$tmp->addColumn($fkCol->fkColumnName, $fkCol->pkColumnName);
 				}
+				$tmp->setClassFieldName($fkName);
 				$table->addFK($tmp);
 			}
 		}
