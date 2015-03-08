@@ -7,139 +7,92 @@
  * klasa zapewniająca łączność z bazą danych Oracle
  * error prefix EN:016
  */
+require_once 'DataSource.php';
+require_once 'DataSourceMetaData.php';
+require_once 'OracleMetaData.php';
+require_once 'DataSourceColumnMetaData.php';
 define("ORACLE_DATE_FORMAT", "YYYY-MM-DD");
 define("ORACLE_DATETIME_FORMAT", "YYYY-MM-DD HH24:MI:SS");
+define("ORA_TNS_NAME", "");
 class DB implements DataSource
 {
-	protected $Serwer = ORA_SERVER;
-	protected $Port = ORA_PORT;
-	protected $SID = ORA_SID;
-	protected $Database = null;
-	public $UserName = ORA_USERNAME;
-	public $Password = ORA_PASSWORD;
-	public $Debug = false;
-	public $Error = "";
-	public $MetaData;
-	public $RowCount;
-	protected $connectionObiect;
-	protected $IsConnected;
-	protected $RecordSet;
-	protected $Row;
-	protected $RowNum;
-	protected $Param;
-	protected $WorkTime = 0;
-	protected $trasactionMode = OCI_COMMIT_ON_SUCCESS;
-	protected $queryStr = null;
-	// ------------------------------------------------------------------------
-	protected $oryginalQueryString = null;
-	// ------------------------------------------------------------------------
-	protected $startFrom = null;
+	// -------------------------------------------------------------------------
+	protected $serwer = ORA_SERVER;
+	protected $port = ORA_PORT;
+	protected $sid = ORA_SID;
+	protected $userName = ORA_USERNAME;
+	protected $password = ORA_PASSWORD;
+	protected $database = ORA_TNS_NAME;
+	// -------------------------------------------------------------------------
+	static $paramCount = 0;
+	// -------------------------------------------------------------------------
+	protected static $connectionObiect;
+	protected $error = "";
+	protected $trasaction = OCI_DEFAULT;
+	protected $statement = null;
+	/**
+	 *
+	 * @var OracleParams
+	 */
+	protected $params = null;
+	protected $row = null;
+	protected $rowAffected = -1;
+	protected $lastQuery = null;
+	protected $orginalQuery = null;
 	protected $limit = null;
-	// ------------------------------------------------------------------------
-	public function getConnectionObject()
-	{
-		return $this->connectionObiect;
-	}
-	// ------------------------------------------------------------------------
-	public function getRowAffected()
-	{
-		return $this->RowCount;
-	}
-	// ------------------------------------------------------------------------
+	protected $offset = null;
+	protected $fetchMode = null;
+	/**
+	 *
+	 * @var DataSourceMetaData
+	 */
+	protected $metaData = null;
+	/**
+	 *
+	 * @var boolean
+	 */
+	protected static $inTransaction = false;
+	// -------------------------------------------------------------------------
 	public function __construct($trasactionOn = true)
 	{
-		$this->Param = new OracleParams();
-		if($trasactionOn)
-			$this->trasactionMode = OCI_DEFAULT;
-
-		putenv("NLS_LANG=Polish_Poland.UTF8");
-		$this->checkConnection();
-		$this->Database = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = " . $this->Serwer. ")(PORT = " . $this->Port . "))(CONNECT_DATA = (SID = " . $this->SID . ")))";
-	}
-	// ------------------------------------------------------------------------
-	public function setLimit($arg1, $arg2 = null)
-	{
-		if(null == $arg2)
+		$this->fetchMode = OCI_BOTH + OCI_RETURN_NULLS;
+		$this->params = new OracleParams();
+		if(!$trasactionOn)
 		{
-			$this->limit = $arg1;
-		}
-		else
-		{
-			$this->limit = $arg2;
-			$this->startFrom = $arg1;
+			$this->trasaction = OCI_COMMIT_ON_SUCCESS;
 		}
 	}
-	// ------------------------------------------------------------------------
-	public function checkConnection()
+	// -------------------------------------------------------------------------
+	public function rewind()
 	{
-		global $ORACONNECTION;
-		if(isset($ORACONNECTION))
+		if($this->params->haveBlob())
 		{
-			if(is_resource($ORACONNECTION))
+			// zapytanie z BLOBAMI
+			if(oci_execute($this->statement, OCI_DEFAULT))
 			{
-				$this->connectionObiect = $ORACONNECTION;
-				$this->IsConnected = true;
+				$this->params->loadBlobData();
+				if(OCI_COMMIT_ON_SUCCESS == $this->trasaction)
+				{
+					$this->commit();
+				}
+				return true;
 			}
 			else
 			{
-				$this->IsConnected = false;
+				$this->saveErrors("Błąd wykonania");
+				return false;
 			}
 		}
 		else
 		{
-			$this->IsConnected = false;
-		}
-	}
-	// ------------------------------------------------------------------------
-	public function connect()
-	{
-		global $ORACONNECTION;
-		$this->checkConnection();
-		if($this->IsConnected)
-		{
-			return true;
-		}
-		$this->connectionObiect = oci_pconnect($this->UserName, $this->Password, $this->Database, 'UTF8');
-		if(!$this->connectionObiect)
-		{
-			$this->getOciErrors("Błąd połączenia");
-			return false;
-		}
-		else
-		{
-			$ORACONNECTION = $this->connectionObiect;
-			$this->IsConnected = true;
-			$SQL = "ALTER SESSION SET NLS_DATE_FORMAT = '" . ORACLE_DATE_FORMAT . "'";
-			$this->fastQuery($SQL);
-			$SQL = "ALTER SESSION SET NLS_TIMESTAMP_FORMAT = '" . ORACLE_DATETIME_FORMAT . "'";
-			$this->fastQuery($SQL);
-			$SQL = "ALTER SESSION SET NLS_NUMERIC_CHARACTERS = '.`'";
-			$this->fastQuery($SQL);
-			return true;
-		}
-	}
-	// ------------------------------------------------------------------------
-	public function commit()
-	{
-		oci_commit($this->connectionObiect);
-	}
-	// ------------------------------------------------------------------------
-	public function rollback()
-	{
-		oci_rollback($this->connectionObiect);
-	}
-	// -------------------------------------------------------------------------
-	protected function fastQuery($SQLqueryString)
-	{
-		$this->RecordSet = oci_parse($this->connectionObiect, $SQLqueryString);
-		if($this->RecordSet)
-		{
-			if(oci_execute($this->RecordSet, OCI_COMMIT_ON_SUCCESS))
+			// zwykłe zapytanie
+			if(oci_execute($this->statement, $this->trasaction))
 			{
 				return true;
 			}
 			else
 			{
+				$this->saveErrors("Błąd wykonania");
 				return false;
 			}
 		}
@@ -148,60 +101,38 @@ class DB implements DataSource
 	/**
 	 * query
 	 * Funkcja wykonuje właściwe zapytanie do bazy danych
-	 *
 	 * @return bool true jeżeli ok false jeżeli zapytanie kończy się błędem
-	 * @var string $SQLqueryString
-	 * @var bool $GetMetaData zmienna określająca czy pobierane będą metadane z
+	 * @var string $sql
 	 * zapytania SQL
 	 */
-	public function query($SQLqueryString, $GetMetaData = true, $Mode = null)
+	public function query($sql)
 	{
-		if(null == $Mode)
-		{
-			$Mode = $this->trasactionMode;
-		}
-
-		$this->queryStr = $SQLqueryString;
-		$this->oryginalQueryString = $SQLqueryString;
-		if(null !== $this->limit)
-		{
-			if(null !== $this->startFrom)
-			{
-				$this->queryStr = "SELECT * FROM (SELECT regular.*, ROWNUM db_numer_recordu FROM (" . $this->queryStr . ") regular ) WHERE db_numer_recordu BETWEEN :REC_LIMIT_FROM AND :REC_LIMIT_TO ";
-				$this->setParam("REC_LIMIT_FROM", $this->startFrom + 1);
-				$this->setParam("REC_LIMIT_TO", $this->startFrom + $this->limit);
-			}
-			else
-			{
-				$this->queryStr = "SELECT * FROM (SELECT regular.*, ROWNUM db_numer_recordu FROM (" . $this->queryStr . ") regular ) WHERE db_numer_recordu <= :REC_LIMIT_FROM  ";
-				$this->setParam("REC_LIMIT_FROM", $this->limit);
-			}
-		}
-
+		$this->lastQuery = $sql;
 		if($this->connect())
 		{
-			$this->RecordSet = oci_parse($this->connectionObiect, $this->queryStr);
-			$this->addParam();
-			if($this->RecordSet)
+			if($this->prepare())
 			{
-				if(oci_execute($this->RecordSet, $Mode))
+				if($this->rewind())
 				{
-					if($GetMetaData)
+					if(strtoupper(substr($this->lastQuery, 0, 1)) == "S")
 					{
 						$this->setMetaData();
 					}
-					$this->RowCount = oci_num_rows($this->RecordSet);
+					else
+					{
+						$this->rowAffected = oci_num_rows($this->statement);
+					}
 					return true;
 				}
 				else
 				{
-					$this->getOciErrors("Błąd wykonania", $this->queryStr);
+					$this->saveErrors("Błąd wykonania");
 					return false;
 				}
 			}
 			else
 			{
-				$this->getOciErrors("Błąd wykonania", $this->queryStr);
+				$this->saveErrors("Błąd wykonania");
 				return false;
 			}
 		}
@@ -210,102 +141,65 @@ class DB implements DataSource
 			return false;
 		}
 	}
-	// ------------------------------------------------------------------------
-	public function clearParam()
-	{
-		$this->Param->clear();
-	}
-	// ------------------------------------------------------------------------
-	protected function addParam()
-	{
-		$this->Param->bind($this->RecordSet);
-	}
-	// ------------------------------------------------------------------------
-	public function setParam($name, $value = "", $clear = false, $length = -1, $type = SQLT_CHR)
-	{
-		if($clear)
-			$this->Param->clear();
-		$this->Param->add($name, new OracleParam($this->connectionObiect, $value, $length, $type));
-	}
-	// ------------------------------------------------------------------------
-	public function getParam($name)
-	{
-		return $this->Param->get($name);
-	}
-	// ------------------------------------------------------------------------
-	protected function getOciErrors($Error, $SQL = "")
-	{
-		$retval = $Error . "<br>\n";
-		$this->RowCount = 0;
-		if(is_resource($this->connectionObiect))
-			$tmp = oci_error($this->connectionObiect);
-		else
-			$tmp = oci_error();
-
-		if($SQL != "")
-		{
-			if(substr($SQL, 0, 10) != "ALTER USER")
-			{
-				$retval .= "SQL: <br>\n" . "<code>$SQL</code><br>\n";
-				$retval .= "<p>PARAM:" . "<pre>" . var_export($this->Param, true) . "" . "</pre><p>";
-			}
-		}
-		if(!is_array($tmp))
-			$tmp = (error_get_last());
-		$this->Error = $tmp;
-		if(is_array($tmp))
-		{
-			$a = mb_strpos($tmp["message"], ":");
-			if($a !== false)
-			{
-				$tmp["message"] = mb_substr($tmp["message"], $a + 1);
-			}
-			$retval .= $tmp["message"] . " <br>\n";
-		}
-		else
-		{
-			$retval .= "<b>Brak opisu błędu</b><br>";
-		}
-	}
-	// ------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	protected function setMetaData()
 	{
-		$max = oci_num_fields($this->RecordSet);
-		if(null !== $this->limit)
-			$max--;
-		$this->MetaData["FieldNum"] = $max;
-		$this->MetaData["RecCount"] = oci_num_rows($this->RecordSet);
-		for($i = 1;$i <= $max;$i++)
+		$this->metaData = new OracleMetaData($this->statement);
+	}
+	// -------------------------------------------------------------------------
+	/**
+	 *
+	 * @return boolean
+	 */
+	protected function prepare()
+	{
+		try
 		{
-			$tmp = oci_field_name($this->RecordSet, $i);
-			$this->MetaData["Name"][$i - 1] = $tmp;
-
-			if(strtolower(mb_substr($this->MetaData["Name"][$i - 1], -3, 3, "UTF-8")) != "_nn")
+			$this->orginalQuery = $this->lastQuery;
+			if(!is_null($this->limit))
 			{
-				$this->MetaData["Flags"][$i - 1] = "null";
+				$this->lastQuery = "SELECT * FROM (SELECT regular.*, ROWNUM db_numer_recordu FROM (" . $this->lastQuery . ") regular ) WHERE db_numer_recordu BETWEEN :REC_LIMIT_FROM AND :REC_LIMIT_TO ";
+				$this->setParam("REC_LIMIT_FROM", $this->offset);
+				$this->setParam("REC_LIMIT_TO", $this->offset + $this->limit);
+			}
+			$this->statement = oci_parse($this->getConnectionObject(), $this->lastQuery);
+			if($this->statement === false)
+			{
+				return false;
 			}
 			else
 			{
-				$this->MetaData["Flags"][$i - 1] = "not null";
+				$this->addParam();
+				return true;
 			}
-			if(strtolower(mb_substr($this->MetaData["Name"][$i - 1], -3, 3, "UTF-8")) == "_ro")
-			{
-				$this->MetaData["Flags"][$i - 1] .= " read only";
-			}
-			$this->MetaData["Len"][$i - 1] = oci_field_size($this->RecordSet, $i);
-			$this->MetaData["Prec"][$i - 1] = oci_field_precision($this->RecordSet, $i);
-			$this->MetaData["Type"][$i - 1] = oci_field_type($this->RecordSet, $i);
-			$this->MetaData["Scale"][$i - 1] = oci_field_scale($this->RecordSet, $i);
+		}
+		catch(Exception $e)
+		{
+			$this->saveErrors($e->getMessage());
+			return false;
 		}
 	}
-	// ------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	public function setLimit($arg1, $arg2 = null)
+	{
+		if(null == $arg2)
+		{
+			$this->limit = intval($arg1);
+			$this->offset = 0;
+		}
+		else
+		{
+			$this->limit = intval($arg2);
+			$this->offset = intval($arg1);
+		}
+	}
+	// -------------------------------------------------------------------------
 	public function nextRecord()
 	{
-		global $SumaryFetchTime;
 		if($this->connect())
 		{
-			$this->Row = oci_fetch_array($this->RecordSet, OCI_BOTH + OCI_RETURN_NULLS);
-			if(is_array($this->Row))
+			$this->row = oci_fetch_array($this->statement, $this->fetchMode);
+			if(is_array($this->row))
 			{
 				return true;
 			}
@@ -315,24 +209,135 @@ class DB implements DataSource
 			}
 		}
 	}
-	// ------------------------------------------------------------------------
-	public function field($FieldName)
+	// -------------------------------------------------------------------------
+	public function f($fieldName)
 	{
-		return $this->Row[$FieldName];
+		if(isset($this->row[$fieldName]))
+		{
+			return $this->row[$fieldName];
+		}
+		else
+		{
+			return null;
+		}
 	}
-	// ------------------------------------------------------------------------
-	public function f($FieldName)
+	// -------------------------------------------------------------------------
+	public function setParam($name, $value = "", $clear = false, $length = -1, $type = SQLT_CHR)
 	{
-		// alias funkcji Field
-		return $this->field($FieldName);
+		if($clear)
+		{
+			$this->params->clear();
+		}
+		$this->params->add($name, new OracleParam($this->getConnectionObject(), $value, $length, $type));
 	}
-	// ------------------------------------------------------------------------
-	static function getCount(DB $db)
+	// -------------------------------------------------------------------------
+	public function commit()
+	{
+		oci_commit($this->getConnectionObject());
+	}
+	// -------------------------------------------------------------------------
+	public function rollback()
+	{
+		oci_rollback($this->getConnectionObject());
+	}
+	// -------------------------------------------------------------------------
+	public function getRowAffected()
+	{
+		return $this->rowAffected;
+	}
+	// -------------------------------------------------------------------------
+	/**
+	 *
+	 * @return int
+	 */
+	public function getLastInsertID()
+	{
+		return null;
+	}
+	// -------------------------------------------------------------------------
+	/**
+	 *
+	 * @return DataSourceMetaData
+	 */
+	public function getMetaData()
+	{
+		return $this->metaData;
+	}
+	// -------------------------------------------------------------------------
+	public function setFetchMode($fetchMode)
+	{
+		$this->fetchMode = $fetchMode;
+	}
+	// -------------------------------------------------------------------------
+	protected function getConnectionObject()
+	{
+		if(isset(self::$connectionObiect[$this->userName]))
+		{
+			return self::$connectionObiect[$this->userName];
+		}
+		else
+		{
+			return null;
+		}
+	}
+	// -------------------------------------------------------------------------
+	protected function setConnectionObject($connectionObject)
+	{
+		self::$connectionObiect[$this->userName] = $connectionObject;
+	}
+	// -------------------------------------------------------------------------
+	public function connect()
+	{
+		if(is_null($this->getConnectionObject()))
+		{
+			putenv("NLS_LANG=Polish_Poland.UTF8");
+			if(empty($this->database))
+			{
+				$this->database = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = " . $this->serwer . ")(PORT = " . $this->port . "))(CONNECT_DATA = (SID = " . $this->sid . ")))";
+			}
+			
+			$this->setConnectionObject(oci_pconnect($this->userName, $this->password, $this->database, 'UTF8'));
+			if(is_resource($this->getConnectionObject()))
+			{
+				$this->fastQuery("ALTER SESSION SET NLS_DATE_FORMAT = '" . ORACLE_DATE_FORMAT . "'");
+				$this->fastQuery("ALTER SESSION SET NLS_TIMESTAMP_FORMAT = '" . ORACLE_DATETIME_FORMAT . "'");
+				$this->fastQuery("ALTER SESSION SET NLS_NUMERIC_CHARACTERS = '.`'");
+				return true;
+			}
+			else
+			{
+				$this->saveErrors("Błąd połączenia");
+				return false;
+			}
+		}
+		else
+		{
+			return (bool)$this->getConnectionObject();
+		}
+	}
+	// -------------------------------------------------------------------------
+	protected function fastQuery($sql)
+	{
+		$stmt = oci_parse($this->getConnectionObject(), $sql);
+		oci_execute($stmt, $this->trasaction);
+	}
+	// -------------------------------------------------------------------------
+	static protected function getCount(DataSource $db)
 	{
 		$dbCount = new DB();
-		$SQL = "SELECT Count(*) " . "FROM (" . $db->oryginalQueryString . ") ";
-		$dbCount->Param = $db->Param;
-		$dbCount->query($SQL);
+		$sql = "SELECT Count(*) ";
+		$sql .= "FROM (" . $db->orginalQuery . ") ";
+		$listaParametrow = $db->params->getParameters();
+		if(isset($listaParametrow["REC_LIMIT_FROM"]))
+		{
+			unset($listaParametrow["REC_LIMIT_FROM"]);
+		}
+		if(isset($listaParametrow["REC_LIMIT_TO"]))
+		{
+			unset($listaParametrow["REC_LIMIT_TO"]);
+		}
+		$dbCount->params->setParameters($listaParametrow);
+		$dbCount->query($sql);
 		if($dbCount->nextRecord())
 		{
 			$ilosc = $dbCount->f(0);
@@ -348,12 +353,65 @@ class DB implements DataSource
 	{
 		return self::getCount($this);
 	}
-	// ------------------------------------------------------------------------
-	public function getParamNameGenerated($dlugosc = 8)
+	// -------------------------------------------------------------------------
+	protected function close()
 	{
-		$p = "P" . strtoupper(RandomStringLetterOnly($dlugosc - 1));
+		if(is_resource($this->statement))
+		{
+			oci_cancel($this->statement);
+		}
+	}
+	// -------------------------------------------------------------------------
+	public function clearParam()
+	{
+		$this->params->clear();
+	}
+	// -------------------------------------------------------------------------
+	protected function addParam()
+	{
+		$this->params->bind($this->statement);
+	}
+	// -------------------------------------------------------------------------
+	public function getParam($name)
+	{
+		return $this->params->get($name);
+	}
+	// -------------------------------------------------------------------------
+	static function getParamName($length = 8)
+	{
+		$p = "P" . str_pad(strval(self::$paramCount), $dlugosc, "0", STR_PAD_LEFT);
+		self::$paramCount++;
 		return $p;
 	}
-	// ------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	protected function saveErrors($errorDesc)
+	{
+		$c = $this->getConnectionObject();
+		if($c)
+		{
+			$ociErrors = oci_error($c);
+		}
+		else
+		{
+			$ociErrors = oci_error();
+		}
+		$code = @$ociErrors["code"];
+		$message = @$ociErrors["message"];
+		$offset = @$ociErrors["offset"];
+		$sqltext = @$ociErrors["sqltext"];
+		
+		$txt = $errorDesc;
+		$txt .= Tags::br();
+		$txt .= Tags::p($code . " " . $message);
+		$txt .= Tags::code($sqltext);
+		AddSQLError($txt);
+		$this->error[] = $message;
+	}
+	// -------------------------------------------------------------------------
+	public function __destruct()
+	{
+		$this->close();
+	}
+	// -------------------------------------------------------------------------
 }
 ?>
