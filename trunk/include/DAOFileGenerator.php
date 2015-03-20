@@ -587,7 +587,7 @@ class DAOFileGenerator
 			$this->addLine("/**", 1);
 			$this->addLine(" * @return " . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function get" . ucfirst($fk->getClassFieldName()) . "()", 1);
+			$this->addLine("public function get" . ucfirst($fk->getTable()->getClassName()) . "()", 1);
 			$this->addLine("{", 1);
 			$this->addLine("return " . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
