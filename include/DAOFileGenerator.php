@@ -848,6 +848,7 @@ class DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . ";", 0);
+			$this->addLine("use Braga\DataSource;", 0);
 		}
 	}
 	// -------------------------------------------------------------------------
