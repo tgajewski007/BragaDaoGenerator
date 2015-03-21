@@ -31,6 +31,8 @@ class ClassFileGenerator extends DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . ";", 0);
+			$this->addLine("use Braga\DAO;", 0);
+			$this->addLine("use Braga\DB;", 0);
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -97,7 +99,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" * Method saves the object of the class " . $t->getClassName(), 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
-
+		
 		$data = array();
 		$pk = array();
 		foreach($t->getColumny() as $c)/* @var $c Column */
