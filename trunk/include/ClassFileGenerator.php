@@ -33,6 +33,7 @@ class ClassFileGenerator extends DAOFileGenerator
 			$this->addLine("namespace " . $this->project->getNameSpace() . ";", 0);
 			$this->addLine("use Braga\DAO;", 0);
 			$this->addLine("use Braga\DB;", 0);
+			$this->addLine("use Braga\Collection;", 0);
 		}
 	}
 	// -------------------------------------------------------------------------
