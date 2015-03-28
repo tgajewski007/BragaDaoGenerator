@@ -64,16 +64,7 @@ class ReverseCreator
 		{
 			$c = new Column();
 			$c->setName($col->name);
-			$classFieldName = "";
-			foreach((explode("_", strtolower($col->name))) as $v)
-			{
-				$classFieldName .= ucfirst($v);
-			}
-			$classFieldName = lcfirst($classFieldName);
-			if(strtolower(substr($classFieldName, 0, 2)) == "id")
-			{
-				$classFieldName = "id" . ucfirst(substr($classFieldName, 2));
-			}
+			$classFieldName = Column::convertFieldNameToClassName($col->name);
 			$c->setClassFieldName($classFieldName);
 			$c->setType($col->type);
 			$c->setSize($col->size);

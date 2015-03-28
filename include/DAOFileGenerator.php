@@ -209,16 +209,28 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateGetAllForForeginColumn($t)
 	{
-		$fk = array();
 		foreach($t->getFk() as $fk) /* @var $fk ForeginKey */
 		{
 			$fkTable = $fk->getTable();
+			$functioName = "getAllBy";
+			foreach($fk->getColumn() as $c) /* @var $c ConnectedColumn */
+			{
+				$classFieldName = Column::convertFieldNameToClassName($c->fkColumnName);
+				if(substr($classFieldName, 0, 2) == "id")
+				{
+					$functioName .= substr($classFieldName, 2);
+				}
+				else
+				{
+					$functioName .= $classFieldName;
+				}
+			}
 			
 			$this->addLine("/**", 1);
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public static function getAllBy" . $fkTable->getClassName() . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
+			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql  = \"SELECT * \";", 2);
@@ -568,6 +580,7 @@ class DAOFileGenerator
 		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
+			$functionName = "get";
 			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
@@ -579,6 +592,14 @@ class DAOFileGenerator
 							if($x->getName() == $cc->fkColumnName)
 							{
 								$tmp1[] = "\$this->get" . ucfirst($x->getClassFieldName()) . "()";
+								if(substr($x->getClassFieldName(), 0, 2) == "id")
+								{
+									$functionName .= substr($x->getClassFieldName(), 2);
+								}
+								else
+								{
+									$functionName .= $x->getClassFieldName();
+								}
 							}
 						}
 					}
@@ -587,7 +608,7 @@ class DAOFileGenerator
 			$this->addLine("/**", 1);
 			$this->addLine(" * @return " . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function get" . ucfirst($fk->getTable()->getClassName()) . "()", 1);
+			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
 			$this->addLine("return " . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
@@ -613,32 +634,36 @@ class DAOFileGenerator
 				{
 					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
 					{
-						// $addSeparator = true;
-						// $this->addLine("protected \$" .
-						// lcfirst($t->getClassName()) . "s = null;", 1);
+						$functionName = "getAllBy";
+						$objectName = "";
+						foreach($fk->getColumn() as $c) /* @var $c ConnectedColumn */
+						{
+							$classFieldName = Column::convertFieldNameToClassName($c->fkColumnName);
+							if(substr($classFieldName, 0, 2) == "id")
+							{
+								$objectName .= substr($classFieldName, 2);
+								$functionName .= substr($classFieldName, 2);
+							}
+							else
+							{
+								$objectName .= $classFieldName;
+								$functionName .= $classFieldName;
+							}
+						}
+						
 						$this->addLine("/**", 1);
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 						$this->addLine(" */", 1);
-						$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor" . ucfirst($fk->getClassFieldName()) . "()", 1);
+						$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
-						$this->addLine("return " . $t->getClassName() . "::getAllBy" . ucfirst($fk->getClassFieldName()) . "(\$this);", 2);
+						$this->addLine("return " . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -------------------------------------------------------------------------", 1);
 					}
 				}
 			}
 		}
-		
-		// foreach($this->project->getTables() as $t) /* @var $t Table */
-		// {
-		// foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
-		// {
-		// if($fk->getTable() == $table)
-		// {
-		// }
-		// }
-		// }
 	}
 	// -------------------------------------------------------------------------
 	protected function generateGetter($classFieldName)
