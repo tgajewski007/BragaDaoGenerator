@@ -163,5 +163,20 @@ class Column
 		return $this->getName();
 	}
 	// -------------------------------------------------------------------------
+	public static function convertFieldNameToClassName($fieldName)
+	{
+		$classFieldName = "";
+		foreach((explode("_", strtolower($fieldName))) as $v)
+		{
+			$classFieldName .= ucfirst($v);
+		}
+		$classFieldName = lcfirst($classFieldName);
+		if(strtolower(substr($classFieldName, 0, 2)) == "id")
+		{
+			$classFieldName = "id" . ucfirst(substr($classFieldName, 2));
+		}
+		return $classFieldName;
+	}
+	// -------------------------------------------------------------------------
 }
 ?>
