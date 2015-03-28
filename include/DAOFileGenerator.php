@@ -655,7 +655,7 @@ class DAOFileGenerator
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 						$this->addLine(" */", 1);
-						$this->addLine("public function get" . ucfirst($t->getClassName()) . "sFor" . $objectName . "()", 1);
+						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
 						$this->addLine("return " . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
