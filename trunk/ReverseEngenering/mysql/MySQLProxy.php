@@ -63,9 +63,9 @@ class MySQLProxy implements ReverseProxy
 				case "int":
 				case "tinyint":
 				case "bigint":
-				case "decimal":
 					$tmp->type = ColumnType::NUMBER;
 					break;
+				case "decimal":
 				case "double":
 				case "float":
 					$tmp->type = ColumnType::FLOAT;
