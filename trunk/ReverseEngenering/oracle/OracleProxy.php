@@ -50,7 +50,7 @@ class OracleProxy implements ReverseProxy
 	public function getColumn($tableName)
 	{
 		$db = new DB();
-		$SQL = "SELECT column_name,data_type,data_length, data_precision, data_scale ";
+		$SQL = "SELECT column_name, data_type, char_length, data_precision, data_scale ";
 		$SQL .= "FROM all_tab_columns ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "AND table_name = :TABLE_NAME ";
@@ -86,14 +86,14 @@ class OracleProxy implements ReverseProxy
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}
-			if(is_null($db->f(3)))
+			if($db->f(2) > 0)
 			{
-				$tmp->size = $db->f(2) / 4;
+				$tmp->size = $db->f(2);
 			}
 			else
 			{
 				$tmp->size = $db->f(3);
-				$tmp->size = $db->f(4);
+				$tmp->size += $db->f(4);
 			}
 			$retval[$tmp->name] = $tmp;
 		}
