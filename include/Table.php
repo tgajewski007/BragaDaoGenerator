@@ -180,12 +180,12 @@ class Table
 	// -------------------------------------------------------------------------
 	public function export(DOMElement $t)
 	{
-		$t->setAttribute("schema", $this->getSchema());
 		$t->setAttribute("name", $this->getName());
 		$t->setAttribute("className", $this->getClassName());
 		$t->setAttribute("tableSpace", $this->getTableSpace());
 		$t->setAttribute("indexTableSpace", $this->getIndexTableSpace());
 		$t->setAttribute("errorPrefix", $this->getErrorPrefix());
+		$t->setAttribute("schema", $this->getSchema());
 	}
 	// -------------------------------------------------------------------------
 }
