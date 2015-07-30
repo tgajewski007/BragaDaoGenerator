@@ -41,7 +41,7 @@ class MySQLProxy implements ReverseProxy
 
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
-		echo "columns for table " . $tableName . " .... ";
+		echo "columns for table " . str_pad($tableName, 60, ".", STR_PAD_RIGHT) . " ";
 		$db->query($sql);
 		$retval = array();
 		while($db->nextRecord())

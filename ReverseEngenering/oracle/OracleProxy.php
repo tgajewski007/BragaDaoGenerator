@@ -11,14 +11,14 @@ class OracleProxy implements ReverseProxy
 	public function getTables()
 	{
 		$db = new DB();
-		
+
 		$SQL = "SELECT TABLE_NAME ";
 		$SQL .= "FROM ALL_TRIGGERS ";
 		$SQL .= "WHERE TABLE_OWNER = :ORA_SCHEMA ";
 		$SQL .= "AND TRIGGERING_EVENT = 'INSERT' ";
 		$SQL .= "AND BASE_OBJECT_TYPE = 'TABLE' ";
 		$SQL .= "ORDER BY TABLE_NAME ";
-		
+
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA, true);
 		echo "selecting triggers ....\n";
 		$db->query($SQL);
@@ -27,7 +27,7 @@ class OracleProxy implements ReverseProxy
 		{
 			$trigger[$db->f(0)] = true;
 		}
-		
+
 		$SQL = "SELECT table_name, tablespace_name ";
 		$SQL .= "FROM all_tables ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
@@ -55,10 +55,10 @@ class OracleProxy implements ReverseProxy
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "AND table_name = :TABLE_NAME ";
 		$SQL .= "ORDER BY column_id ";
-		
+
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
-		echo "columns for table " . $tableName . " .... ";
+		echo "columns for table " . str_pad($tableName, 40, ".", STR_PAD_RIGHT) . " ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
@@ -82,7 +82,7 @@ class OracleProxy implements ReverseProxy
 				case "LONG":
 					$tmp->type = ColumnType::TEXT;
 					break;
-				default:
+				default :
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}
@@ -127,7 +127,7 @@ class OracleProxy implements ReverseProxy
 	public function getForeginKeys($tableName)
 	{
 		$db = new DB();
-		$SQL = "SELECT a.CONSTRAINT_NAME, c.COLUMN_NAME, e.COLUMN_NAME, b.TABLE_NAME, b.OWNER ";
+		$SQL = "SELECT DISTINCT a.CONSTRAINT_NAME, c.COLUMN_NAME, e.COLUMN_NAME, b.TABLE_NAME, b.OWNER, c.POSITION  ";
 		$SQL .= "FROM ALL_CONSTRAINTS a ";
 		$SQL .= "INNER JOIN  ALL_CONSTRAINTS b ON b.CONSTRAINT_NAME  = a.R_CONSTRAINT_NAME ";
 		$SQL .= "INNER JOIN  ALL_CONS_COLUMNS c ON a.CONSTRAINT_NAME  = c.CONSTRAINT_NAME ";
