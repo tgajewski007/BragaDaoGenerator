@@ -88,7 +88,7 @@ class OracleProxy implements ReverseProxy
 			}
 			if(is_null($db->f(3)))
 			{
-				$tmp->size = $db->f(2);
+				$tmp->size = $db->f(2) / 4;
 			}
 			else
 			{
