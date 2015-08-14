@@ -580,7 +580,7 @@ class DAOFileGenerator
 		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
-			$functionName = "get" . $fk->getClassFieldName();
+			$functionName = "get" . $fk->getTable()->getClassName();
 			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
