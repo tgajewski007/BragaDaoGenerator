@@ -580,7 +580,7 @@ class DAOFileGenerator
 		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
-			$functionName = "get" . $fk->getTable()->getClassName();
+			$functionName = "get";// . $fk->getTable()->getClassName();
 			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
@@ -592,14 +592,14 @@ class DAOFileGenerator
 							if($x->getName() == $cc->fkColumnName)
 							{
 								$tmp1[] = "\$this->get" . ucfirst($x->getClassFieldName()) . "()";
-								// if(substr($x->getClassFieldName(), 0, 2) == "id")
-								// {
-								// $functionName .= substr($x->getClassFieldName(), 2);
-								// }
-								// else
-								// {
-								// $functionName .= $x->getClassFieldName();
-								// }
+								if(substr($x->getClassFieldName(), 0, 2) == "id")
+								{
+									$functionName .= substr($x->getClassFieldName(), 2);
+								}
+								else
+								{
+									$functionName .= $x->getClassFieldName();
+								}
 							}
 						}
 					}
