@@ -150,6 +150,7 @@ class Column
 			case ColumnType::DATETIME:
 			case ColumnType::VARCHAR:
 			case ColumnType::TEXT:
+			case ColumnType::CLOB:
 				return "string";
 				break;
 			case ColumnType::NUMBER:

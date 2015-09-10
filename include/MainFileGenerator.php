@@ -24,7 +24,7 @@ class MainFileGenerator
 	{
 		$this->open();
 		$this->generateDoc();
-		$this->generateDaoFiles();
+//		$this->generateDaoFiles();
 		$this->generateClassFiles();
 		$this->close();
 	}

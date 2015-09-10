@@ -17,6 +17,7 @@ class ColumnType
 	const CHAR = "CHAR";
 	const TEXT = "TEXT";
 	const ENUM = "ENUM";
+	const CLOB = "CLOB";
 	// -------------------------------------------------------------------------
 }
 ?>

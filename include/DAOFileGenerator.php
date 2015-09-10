@@ -753,6 +753,20 @@ class DAOFileGenerator
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATETIME_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
 				break;
+			case ColumnType::CLOB:
+				$this->addLine("if(empty(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
+				$this->addLine("}", 2);
+				$this->addLine("elseif(is_object(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = \$" . $c->getClassFieldName() . "->read(\$" . $c->getClassFieldName() . "->size());", 3);
+				$this->addLine("}", 2);
+				$this->addLine("else", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = \$" . $c->getClassFieldName() . ";", 3);
+				$this->addLine("}", 2);
+				break;
 			case ColumnType::FLOAT:
 			case ColumnType::TEXT:
 			case ColumnType::ENUM:
@@ -860,6 +874,7 @@ class DAOFileGenerator
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
+		$this->addLine(" * max error " . $t->getErrorPrefix() . "04", 0);
 		$this->addLine(" * Genreated by SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
 		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
 		$this->addLine(" * Designed by schama CRUD http://wikipedia.org/wiki/CRUD", 0);

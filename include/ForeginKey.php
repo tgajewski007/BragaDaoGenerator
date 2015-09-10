@@ -79,7 +79,8 @@ class ForeginKey
 		$tmp = new ConnectedColumn();
 		$tmp->fkColumnName = $fkColumnName;
 		$tmp->pkColumnName = $pkColumnName;
-		$this->columns[] = $tmp;
+		if(!isset($this->columns[$fkColumnName]))
+			$this->columns[$fkColumnName] = $tmp;
 	}
 	// -------------------------------------------------------------------------
 	public function getColumn()
