@@ -50,7 +50,7 @@ class OracleProxy implements ReverseProxy
 	public function getColumn($tableName)
 	{
 		$db = new DB();
-		$SQL = "SELECT column_name,data_type,data_length, data_precision, data_scale ";
+		$SQL = "SELECT column_name, data_type, char_length, data_precision, data_scale ";
 		$SQL .= "FROM all_tab_columns ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "AND table_name = :TABLE_NAME ";
@@ -58,7 +58,7 @@ class OracleProxy implements ReverseProxy
 
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
-		echo "columns for table " . $tableName . " .... ";
+		echo "columns for table " . str_pad($tableName, 40, ".", STR_PAD_RIGHT) . " ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())
@@ -83,20 +83,21 @@ class OracleProxy implements ReverseProxy
 					$tmp->type = ColumnType::TEXT;
 					break;
 				case "BLOB":
-					continue 2;
+				case "CLOB":
+					$tmp->type = ColumnType::CLOB;
 					break;
-				default:
+				default :
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}
-			if(is_null($db->f(3)))
+			if($db->f(2) > 0)
 			{
 				$tmp->size = $db->f(2);
 			}
 			else
 			{
 				$tmp->size = $db->f(3);
-				$tmp->size = $db->f(4);
+				$tmp->size += $db->f(4);
 			}
 			$retval[$tmp->name] = $tmp;
 		}
@@ -130,7 +131,7 @@ class OracleProxy implements ReverseProxy
 	public function getForeginKeys($tableName)
 	{
 		$db = new DB();
-		$SQL = "SELECT DISTINCT a.CONSTRAINT_NAME, c.COLUMN_NAME, e.COLUMN_NAME, b.TABLE_NAME, b.OWNER ";
+		$SQL = "SELECT DISTINCT a.CONSTRAINT_NAME, c.COLUMN_NAME, e.COLUMN_NAME, b.TABLE_NAME, b.OWNER, c.POSITION  ";
 		$SQL .= "FROM ALL_CONSTRAINTS a ";
 		$SQL .= "INNER JOIN  ALL_CONSTRAINTS b ON b.CONSTRAINT_NAME  = a.R_CONSTRAINT_NAME ";
 		$SQL .= "INNER JOIN  ALL_CONS_COLUMNS c ON a.CONSTRAINT_NAME  = c.CONSTRAINT_NAME ";
