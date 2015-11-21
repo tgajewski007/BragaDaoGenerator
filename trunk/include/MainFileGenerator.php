@@ -33,7 +33,7 @@ class MainFileGenerator
 	{
 		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			$txt = "include '" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php';";
+			$txt = "require_once '" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php';";
 			$this->addLine($txt, 0);
 		}
 	}
@@ -42,7 +42,7 @@ class MainFileGenerator
 	{
 		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			$txt = "include '" . $this->project->getDaoFolder() . "/" . $t->getClassName() . "DAO.php';";
+			$txt = "require_once '" . $this->project->getDaoFolder() . "/" . $t->getClassName() . "DAO.php';";
 			$this->addLine($txt, 0);
 		}
 	}
