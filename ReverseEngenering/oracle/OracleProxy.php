@@ -11,14 +11,14 @@ class OracleProxy implements ReverseProxy
 	public function getTables()
 	{
 		$db = new DB();
-
+		
 		$SQL = "SELECT TABLE_NAME ";
 		$SQL .= "FROM ALL_TRIGGERS ";
 		$SQL .= "WHERE TABLE_OWNER = :ORA_SCHEMA ";
 		$SQL .= "AND TRIGGERING_EVENT = 'INSERT' ";
 		$SQL .= "AND BASE_OBJECT_TYPE = 'TABLE' ";
 		$SQL .= "ORDER BY TABLE_NAME ";
-
+		
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA, true);
 		echo "selecting triggers ....\n";
 		$db->query($SQL);
@@ -27,7 +27,7 @@ class OracleProxy implements ReverseProxy
 		{
 			$trigger[$db->f(0)] = true;
 		}
-
+		
 		$SQL = "SELECT table_name, tablespace_name ";
 		$SQL .= "FROM all_tables ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
@@ -50,12 +50,12 @@ class OracleProxy implements ReverseProxy
 	public function getColumn($tableName)
 	{
 		$db = new DB();
-		$SQL = "SELECT column_name,data_type,data_length, data_precision, data_scale ";
+		$SQL = "SELECT column_name,data_type,data_length, data_precision, data_scale, char_length ";
 		$SQL .= "FROM all_tab_columns ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
 		$SQL .= "AND table_name = :TABLE_NAME ";
 		$SQL .= "ORDER BY column_id ";
-
+		
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
 		echo "columns for table " . str_pad($tableName, 40, ".", STR_PAD_RIGHT) . " ";
@@ -89,13 +89,12 @@ class OracleProxy implements ReverseProxy
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}
-			if(is_null($db->f(3)))
+			if($tmp->type == ColumnType::VARCHAR)
 			{
-				$tmp->size = $db->f(2) / 4;
+				$tmp->size = $db->f(5);
 			}
 			else
 			{
-				$tmp->size = $db->f(3);
 				$tmp->size = $db->f(4);
 			}
 			$retval[$tmp->name] = $tmp;
