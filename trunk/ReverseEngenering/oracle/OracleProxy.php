@@ -93,6 +93,11 @@ class OracleProxy implements ReverseProxy
 			{
 				$tmp->size = $db->f(5);
 			}
+			elseif($tmp->type == ColumnType::NUMBER)
+			{
+				$tmp->size = $db->f(3);
+				$tmp->scale = $db->f(4);
+			}
 			else
 			{
 				$tmp->size = $db->f(4);
