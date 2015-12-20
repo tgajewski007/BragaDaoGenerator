@@ -64,7 +64,7 @@ class DAOFileGenerator
 		$this->generateCreate($t);
 		$this->generateUpdate($t);
 		$this->generateDestroy($t);
-
+		
 		$this->generateSetAllFromDB($t);
 		$this->generateGetAllForForeginColumn($t);
 		$this->generateClassFooter();
@@ -131,7 +131,7 @@ class DAOFileGenerator
 		{
 			$tmp1[] = "\$" . lcfirst($t->getClassName()) . "->get" . ucfirst($c->getClassFieldName()) . "()";
 		}
-
+		
 		$this->addLine("protected static function updateFactoryIndex(" . $t->getClassName() . " \$" . lcfirst($t->getClassName()) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ",self::\$instance,true);", 2);
@@ -161,7 +161,7 @@ class DAOFileGenerator
 				$pkField[] = $c;
 			}
 		}
-
+		
 		$this->addLine("/**", 1);
 		$tmp1 = array();
 		$tmp2 = array();
@@ -182,7 +182,7 @@ class DAOFileGenerator
 			}
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
-
+		
 		$this->addLine(" * @return " . $t->getClassName() . "", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("static function get(" . implode(", ", $tmp1) . ")", 1);
@@ -225,7 +225,7 @@ class DAOFileGenerator
 					$functioName .= $classFieldName;
 				}
 			}
-
+			
 			$this->addLine("/**", 1);
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
@@ -235,7 +235,7 @@ class DAOFileGenerator
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql  = \"SELECT * \";", 2);
 			$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
-
+			
 			$separator = "WHERE";
 			foreach($fk->getColumn() as $c)/* @var $c ConnectedColumn */
 			{
@@ -248,7 +248,7 @@ class DAOFileGenerator
 					}
 				}
 			}
-
+			
 			foreach($fk->getColumn() as $c)/* @var $c ConnectedColumn */
 			{
 				foreach($t->getColumny() as $i)/* @var $i Column */
@@ -265,7 +265,7 @@ class DAOFileGenerator
 					}
 				}
 			}
-
+			
 			$this->addLine("\$db->query(\$sql);", 2);
 			$this->addLine("return new Collection(\$db, " . $t->getClassName() . "::get());", 2);
 			$this->addLine("}", 1);
@@ -298,7 +298,7 @@ class DAOFileGenerator
 				}
 			}
 		}
-
+		
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method removes object of class " . $t->getClassName(), 1);
 		$this->addLine(" * removed are record from table " . $t->getName(), 1);
@@ -359,7 +359,7 @@ class DAOFileGenerator
 				}
 			}
 		}
-
+		
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method read object of class " . $t->getClassName() . " you can read all of atrib by get...() function", 1);
 		$this->addLine(" * select record from table " . $t->getName(), 1);
@@ -423,7 +423,7 @@ class DAOFileGenerator
 				}
 			}
 		}
-
+		
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method change object of class " . $t->getClassName(), 1);
 		$this->addLine(" * update record in table " . $t->getName(), 1);
@@ -432,19 +432,19 @@ class DAOFileGenerator
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-
+		
 		$pieces = array();
 		foreach($data as $c)/* @var $c Column */
 		{
 			$pieces[] = $c->getName();
 		}
 		$this->addLine("\$sql  = \"UPDATE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
-
+		
 		$columns = array();
 		$params = array();
 		foreach($t->getColumny() as $c)/* @var $c Column */
 		{
-
+			
 			if($c->getName() == strtoupper($c->getName()))
 				$columns[$c->getName()] = $c->getName();
 			else
@@ -455,7 +455,7 @@ class DAOFileGenerator
 				$params[$c->getName()] = RandomStringLetterOnly(8);
 			}
 		}
-
+		
 		$separator = "SET";
 		foreach($data as $c)
 		{
@@ -508,7 +508,7 @@ class DAOFileGenerator
 				$data[$c->getKey()] = $c;
 			}
 		}
-
+		
 		$this->addLine("/**", 1);
 		$this->addLine(" * Methods add object of class " . $t->getClassName(), 1);
 		$this->addLine(" * insert record into table " . $t->getName(), 1);
@@ -517,7 +517,7 @@ class DAOFileGenerator
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-
+		
 		$columns = array();
 		$params = array();
 		foreach($data as $c)/* @var $c Column */
@@ -534,7 +534,7 @@ class DAOFileGenerator
 		}
 		$this->addLine("\$sql  = \"INSERT INTO \" . " . $t->getSchema() . " . \"." . $t->getName() . "(" . implode(", ", $columns) . ") \";", 2);
 		$this->addLine("\$sql .= \"VALUES(:" . implode(", :", $params) . ") \";", 2);
-
+		
 		$pkSequenced = false;
 		if(count($pk) == 1)
 		{
@@ -544,10 +544,10 @@ class DAOFileGenerator
 				$this->addLine("\$sql .= \"RETURNING " . current($pk)->getName() . " INTO :" . mb_strtoupper(current($pk)->getName()) . "\";", 2);
 			}
 		}
-
+		
 		if($pkSequenced)
 		{
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),true,SQLT_INT," . current($pk)->getSize() . ");", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "());", 2);
 		}
 		foreach($data as $c)/* @var $c Column */
 		{
@@ -580,7 +580,7 @@ class DAOFileGenerator
 		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
-			$functionName = "get";// . $fk->getTable()->getClassName();
+			$functionName = "get"; // . $fk->getTable()->getClassName();
 			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
@@ -650,7 +650,7 @@ class DAOFileGenerator
 								$functionName .= $classFieldName;
 							}
 						}
-
+						
 						$this->addLine("/**", 1);
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
@@ -796,7 +796,7 @@ class DAOFileGenerator
 			}
 		}
 		$this->addLine("\$this->setReaded();", 2);
-
+		
 		$this->addLine("}", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
@@ -819,7 +819,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
-
+		
 		$this->addLine("if(!\$this->retrieve(" . implode(", ", $tmp3) . "))", 3);
 		$this->addLine("{", 3);
 		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "01 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 4);
