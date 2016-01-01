@@ -56,6 +56,7 @@ class DAOFileGenerator
 		$this->generateStaticGetByDataSourceMethod($t);
 		$this->generateIsReaded();
 		$this->generateSetters($t);
+		$this->generateSetterObject($t);
 		$this->generateGetters($t);
 		$this->generateGetKey($t);
 		$this->generateGetterCollection($t);
@@ -611,6 +612,52 @@ class DAOFileGenerator
 			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
 			$this->addLine("return " . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
+			$this->addLine("}", 1);
+			$this->addLine("// -------------------------------------------------------------------------", 1);
+		}
+	}
+	// -------------------------------------------------------------------------
+	protected function generateSetterObject(Table $table)
+	{
+		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+		{
+			$tmp1 = array();
+			$functionName = "set"; // . $fk->getTable()->getClassName();
+			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
+			{
+				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
+				{
+					if($c->getName() == $cc->pkColumnName)
+					{
+						foreach($table->getColumny() as $x)/* @var $x Column */
+						{
+							if($x->getName() == $cc->fkColumnName)
+							{
+								$tmp1[] = "\$" . lcfirst($fk->getTable()->getClassName()) . "->get" . ucfirst($x->getClassFieldName()) . "()";
+								if(substr($x->getClassFieldName(), 0, 2) == "id")
+								{
+									$functionName .= substr($x->getClassFieldName(), 2);
+								}
+								else
+								{
+									$functionName .= $x->getClassFieldName();
+								}
+							}
+						}
+					}
+				}
+			}
+			$this->addLine("/**", 1);
+			$this->addLine(" * @param " . $fk->getTable()->getClassName() . " \$" . lcfirst($fk->getTable()->getClassName()), 1);
+			$this->addLine(" */", 1);
+			$this->addLine("public function " . $functionName . "(" . $fk->getTable()->getClassName() . " \$" . lcfirst($fk->getTable()->getClassName()) . ")", 1);
+			$this->addLine("{", 1);
+			
+			foreach($tmp1 as $t)
+			{
+				$this->addLine("\$this->id" . ucfirst($fk->getTable()->getClassName()) . " = " . $t . ";", 2);
+			}
+			
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
