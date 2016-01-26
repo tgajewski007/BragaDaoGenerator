@@ -547,7 +547,7 @@ class DAOFileGenerator
 
 		if($pkSequenced)
 		{
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),true,SQLT_INT," . current($pk)->getSize() . ");", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),true," . current($pk)->getSize() . ",SQLT_INT);", 2);
 		}
 		foreach($data as $c)/* @var $c Column */
 		{
