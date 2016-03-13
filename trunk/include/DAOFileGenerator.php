@@ -803,6 +803,15 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::FLOAT:
+				$this->addLine("if(is_numeric(\$" . $c->getClassFieldName() . "))", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = \$" . $c->getClassFieldName() . ";", 3);
+				$this->addLine("}", 2);
+				$this->addLine("else", 2);
+				$this->addLine("{", 2);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = null;", 3);
+				$this->addLine("}", 2);
+				break;
 			case ColumnType::TEXT:
 			case ColumnType::ENUM:
 			default :
