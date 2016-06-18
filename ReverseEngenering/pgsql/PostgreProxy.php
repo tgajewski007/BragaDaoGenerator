@@ -102,8 +102,8 @@ class PostgreProxy implements ReverseProxy
 		$db = new DB();
 		$sql = "SELECT COLUMN_NAME ";
 		$sql .= "FROM INFORMATION_SCHEMA.TABLES t ";
-		$sql .= "LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc ON tc.table_catalog = t.table_catalog AND tc.table_schema = t.table_schema AND tc.table_name = t.table_name AND tc.constraint_type = 'PRIMARY KEY' ";
-		$sql .= "LEFT JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.table_catalog = tc.table_catalog AND kcu.table_schema = tc.table_schema AND kcu.table_name = tc.table_name AND kcu.constraint_name = tc.constraint_name ";
+		$sql .= "JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc ON tc.table_catalog = t.table_catalog AND tc.table_schema = t.table_schema AND tc.table_name = t.table_name AND tc.constraint_type = 'PRIMARY KEY' ";
+		$sql .= "JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu ON kcu.table_catalog = tc.table_catalog AND kcu.table_schema = tc.table_schema AND kcu.table_name = tc.table_name AND kcu.constraint_name = tc.constraint_name ";
 		$sql .= "WHERE t.TABLE_CATALOG = :TABLE_CATALOG ";
 		$sql .= "AND t.TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "AND t.TABLE_NAME = :TABLE_NAME ";
