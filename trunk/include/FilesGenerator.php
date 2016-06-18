@@ -49,7 +49,10 @@ class FilesGenerator
 			case DataBaseStyle::MYSQL:
 				$d = new MySQLDAOFileGenerator(self::$project);
 				break;
-			default:
+// 			case DataBaseStyle::PGSQL:
+// 				$d = new PostgreDAOFileGenerator(self::$project);
+// 				break;
+			default :
 				$d = new DAOFileGenerator(self::$project);
 				break;
 		}
@@ -98,7 +101,8 @@ class FilesGenerator
 				$d->readProject();
 			}
 			catch(Exception $e)
-			{}
+			{
+			}
 		}
 		return self::$project;
 	}
