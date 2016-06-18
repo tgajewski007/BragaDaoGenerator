@@ -49,9 +49,9 @@ class FilesGenerator
 			case DataBaseStyle::MYSQL:
 				$d = new MySQLDAOFileGenerator(self::$project);
 				break;
-// 			case DataBaseStyle::PGSQL:
-// 				$d = new PostgreDAOFileGenerator(self::$project);
-// 				break;
+			case DataBaseStyle::PGSQL:
+				$d = new PostgreDAOFileGenerator(self::$project);
+				break;
 			default :
 				$d = new DAOFileGenerator(self::$project);
 				break;
