@@ -12,7 +12,8 @@ class PostgreProxy implements ReverseProxy
 	{
 		$db = new DB();
 		$sql = "SELECT table_name, table_schema ";
-		$sql .= "FROM INFORMATION_SCHEMA.TABLES ";
+		$sql .= ",(SELECT Count(*) FROM INFORMATION_SCHEMA.COLUMNS c WHERE t.TABLE_CATALOG = c.TABLE_CATALOG AND t.TABLE_SCHEMA = c.TABLE_SCHEMA AND t.TABLE_NAME =c.TABLE_NAME  AND column_default LIKE 'nextval%'  ) ";
+		$sql .= "FROM INFORMATION_SCHEMA.TABLES t ";
 		$sql .= "WHERE TABLE_CATALOG = :TABLE_CATALOG ";
 		$sql .= "AND TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "ORDER BY TABLE_NAME ";
@@ -25,8 +26,7 @@ class PostgreProxy implements ReverseProxy
 		{
 			$tmp = new ReverseTable();
 			$tmp->tableName = $db->f(0);
-			$tmp->tableSpace = $db->f(1);
-			// $tmp->haveAutoNumberPKField = ($db->f(2) > 0);
+			$tmp->tableSpace = $db->f(1);$tmp->haveAutoNumberPKField = ($db->f(2) > 0);
 			$retval[] = $tmp;
 		}
 		return $retval;
