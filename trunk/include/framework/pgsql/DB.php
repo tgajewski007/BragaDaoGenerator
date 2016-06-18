@@ -267,6 +267,7 @@ class DB implements DataSource
 		{
 			self::$connectionObject = new PDO("pgsql:host=" . DB_HOST . ";dbname=" . DB_NAME . "", DB_USER, DB_PASS);
 			self::$connectionObject->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			self::$connectionObject->query("SET NAMES 'UTF8'");
 		}
 		if($this->transaction)
 		{
