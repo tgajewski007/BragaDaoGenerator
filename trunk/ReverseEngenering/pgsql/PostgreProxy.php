@@ -126,7 +126,7 @@ class PostgreProxy implements ReverseProxy
 	public function getForeginKeys($tableName)
 	{
 		$db = new DB();
-		$sql = "SELECT kcu.CONSTRAINT_NAME, kcu.COLUMN_NAME, ccu.COLUMN_NAME, ccu.TABLE_NAME, ccu.TABLE_SCHEMA ";
+		$sql = "SELECT DISTINCT kcu.CONSTRAINT_NAME, kcu.COLUMN_NAME, ccu.COLUMN_NAME, ccu.TABLE_NAME, ccu.TABLE_SCHEMA, ORDINAL_POSITION ";
 		$sql .= "FROM  information_schema.table_constraints AS tc ";
 		$sql .= "JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name ";
 		$sql .= "JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name ";
