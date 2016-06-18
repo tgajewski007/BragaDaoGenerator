@@ -25,14 +25,17 @@ include "ReverseCreator.php";
  * include "oracle/OracleParam.php";
  * include "oracle/OracleProxy.php";
  */
+
 /*
-define("DB_HOST", "localhost");
-define("DB_NAME", "test_database");
-define("DB_USER", "postgre");
-define("DB_PASS", "1");
-include "pgsql/DB.php";
-include "pgsql/PostgreProxy.php";
-*/
+ * define("DB_HOST", "localhost");
+ * define("DB_NAME", "postgres");
+ * define("DB_SCHEMA", "test_schema");
+ * define("DB_USER", "postgres");
+ * define("DB_PASS", "1");
+ * include "pgsql/DB.php";
+ * include "pgsql/PostgreProxy.php";
+ */
+
 define("DB_HOST", "localhost");
 define("DB_SCHEMA", "test_database");
 define("DB_USER", "root");
