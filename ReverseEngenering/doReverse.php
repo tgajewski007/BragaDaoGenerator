@@ -14,19 +14,25 @@ include "ReversePrimaryKey.php";
 include "ReverseCreator.php";
 
 /*
-define("ORA_SERVER", "localhost");
-define("ORA_PORT", "1521");
-define("ORA_SID", "xe");
-define("ORA_USERNAME", "scot");
-define("ORA_PASSWORD", "tiger");
-define("ORA_SCHEMA", "test_database");
-include "oracle/DB.php";
-include "oracle/OracleParams.php";
-include "oracle/OracleParam.php";
-include "oracle/OracleProxy.php";
+ * define("ORA_SERVER", "localhost");
+ * define("ORA_PORT", "1521");
+ * define("ORA_SID", "xe");
+ * define("ORA_USERNAME", "scot");
+ * define("ORA_PASSWORD", "tiger");
+ * define("ORA_SCHEMA", "test_database");
+ * include "oracle/DB.php";
+ * include "oracle/OracleParams.php";
+ * include "oracle/OracleParam.php";
+ * include "oracle/OracleProxy.php";
+ */
+/*
+define("DB_HOST", "localhost");
+define("DB_NAME", "test_database");
+define("DB_USER", "postgre");
+define("DB_PASS", "1");
+include "pgsql/DB.php";
+include "pgsql/PostgreProxy.php";
 */
-
-
 define("DB_HOST", "localhost");
 define("DB_SCHEMA", "test_database");
 define("DB_USER", "root");
@@ -47,6 +53,5 @@ $x = new MySQLProxy();
 $p = new ReverseCreator($project, $x);
 $p->schemaName = "DB_SCHEMA";
 $p->GO();
-
 
 ?>
