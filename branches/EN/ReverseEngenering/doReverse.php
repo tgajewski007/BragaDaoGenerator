@@ -12,7 +12,7 @@ include "ReverseTable.php";
 include "ReverseForeginKey.php";
 include "ReversePrimaryKey.php";
 include "ReverseCreator.php";
-define("ORA_SOURCE", "BRANCH"); // BRANCH|TRUNK
+define("ORA_SOURCE", "TRUNK"); // BRANCH|TRUNK
 define("ORA_SERVER", "10.32.80.71");
 define("ORA_PORT", "1521");
 define("ORA_SID", "ENDEV");
