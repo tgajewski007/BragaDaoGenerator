@@ -33,7 +33,7 @@ class MainFileGenerator
 	{
 		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			$txt = "include '" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php';";
+			$txt = "include '" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php'; // " . $t->getErrorPrefix();
 			$this->addLine($txt, 0);
 		}
 	}

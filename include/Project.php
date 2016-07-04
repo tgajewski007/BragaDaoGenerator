@@ -12,8 +12,8 @@ class Project
 	// -------------------------------------------------------------------------
 	protected $xmlFile = null;
 	protected $projectFolder = ".";
-	protected $daoFolder = "dao";
-	protected $objFolder = "obj";
+	protected $daoFolder = "dao_obj\\dao";
+	protected $objFolder = "dao_obj";
 	protected $author = null;
 	protected $dataBaseStyle = DataBaseStyle::ORACLE;
 	protected $name = "Project1";
