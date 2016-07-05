@@ -128,6 +128,13 @@ class FilesGenerator
 				self::$project->setErrorPrefix($p->getAttribute("errorPrefix"));
 			}
 		}
+		if(!is_null($p->getAttribute("errorLast")))
+		{
+			if(is_null(self::$project->getErrorLast()))
+			{
+				self::$project->setErrorLast($p->getAttribute("errorLast"));
+			}
+		}
 		if(!is_null($p->getAttribute("namespace")))
 		{
 			if(is_null(self::$project->getNameSpace()))
@@ -193,7 +200,13 @@ class FilesGenerator
 		{
 			$t = new DOMElement("table");
 			$p->appendChild($t);
+			if(is_null($table->getErrorPrefix()))
+			{
+				self::$project->setErrorLast(self::$project->getErrorLast() + 1);
+				$table->setErrorPrefix(self::$project->getErrorPrefix() . self::$project->getErrorLast());
+			}
 			$table->export($t);
+
 			foreach($table->getColumny() as $columna)/* @var $columna Column */
 			{
 				$c = new DOMElement("column");
@@ -207,6 +220,11 @@ class FilesGenerator
 				$t->appendChild($k);
 				$fk->export($k);
 			}
+		}
+		$p->setAttribute("errorLast", self::$project->getErrorLast());
+		if(defined("ORA_SCHEMA"))
+		{
+			$p->setAttribute("lastOraSchema", ORA_SCHEMA);
 		}
 	}
 	// -------------------------------------------------------------------------
