@@ -21,7 +21,6 @@ class ReverseCreator
 	 * @var Project
 	 */
 	protected $project = null;
-	protected $errorCount = 500;
 	// -------------------------------------------------------------------------
 	function __construct(Project $p, ReverseProxy $r)
 	{
@@ -43,7 +42,6 @@ class ReverseCreator
 	// -------------------------------------------------------------------------
 	protected function addTable(ReverseTable $t)
 	{
-		$this->errorCount++;
 		$table = new Table();
 		$table->setName($t->tableName);
 		$table->setSchema($this->schemaName);
@@ -55,7 +53,6 @@ class ReverseCreator
 		$table->setClassName($className);
 		$table->setTableSpace($t->tableSpace);
 		$table->setIndexTableSpace($this->indexTableSpace);
-		$table->setErrorPrefix($this->project->getErrorPrefix() . $this->errorCount);
 
 		$pk = $this->proxy->getPrimaryKeys($t->tableName);
 		$fk = $this->proxy->getForeginKeys($t->tableName);

@@ -12,7 +12,7 @@ include "ReverseTable.php";
 include "ReverseForeginKey.php";
 include "ReversePrimaryKey.php";
 include "ReverseCreator.php";
-define("ORA_SOURCE", "TRUNK"); // BRANCH|TRUNK
+define("ORA_SOURCE", "BRANCH1"); // BRANCH|TRUNK
 define("ORA_SERVER", "10.32.80.71");
 define("ORA_PORT", "1521");
 define("ORA_SID", "ENDEV");
@@ -40,9 +40,9 @@ $project = new Project();
 $project->setProjectFolder($folder);
 $project->setErrorPrefix("EN:");
 $project->setDataBaseStyle(DataBaseStyle::ORACLE);
-$project->setAuthor("PIT/DS/DRSI");
+$project->setAuthor("PIT/DS/DRSIT");
 $project->setName("EN");
-$project->setXmlFile("O:\\wwwroot\\EN_DAO\\Doc\\dao.xml");
+$project->setXmlFile("O:\\wwwroot\\ENdoc\\DAOXML\\dao.xml");
 
 //$x = new MySQLProxy();
 $x = new OracleProxy();

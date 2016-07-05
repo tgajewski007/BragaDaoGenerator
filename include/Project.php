@@ -19,6 +19,7 @@ class Project
 	protected $name = "Project1";
 	protected $nameSpace = null;
 	protected $errorPrefix = null;
+	protected $errorLast = null;
 	// -------------------------------------------------------------------------
 	protected $tables = array();
 	// -------------------------------------------------------------------------
@@ -41,6 +42,7 @@ class Project
 		foreach($table->getColumny() as $col)/* @var $col Column */
 		{
 			$table->setClassName($orgTable->getClassName());
+			$table->setErrorPrefix($orgTable->getErrorPrefix());
 			foreach($orgTable->getColumny() as $orgCol) /* @var $orgCol Column */
 			{
 				if($col->getName() == $orgCol->getName())
@@ -111,6 +113,11 @@ class Project
 		$this->errorPrefix = $errorPrefix;
 	}
 	// -------------------------------------------------------------------------
+	public function setErrorLast($errorLast)
+	{
+		$this->errorLast = $errorLast;
+	}
+	// -------------------------------------------------------------------------
 	public function setNameSpace($nameSpace)
 	{
 		$this->nameSpace = $nameSpace;
@@ -158,6 +165,11 @@ class Project
 	public function getErrorPrefix()
 	{
 		return $this->errorPrefix;
+	}
+	// -------------------------------------------------------------------------
+	public function getErrorLast()
+	{
+		return $this->errorLast;
 	}
 	// -------------------------------------------------------------------------
 	public function getNameSpace()
