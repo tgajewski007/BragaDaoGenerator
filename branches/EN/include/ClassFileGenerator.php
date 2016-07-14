@@ -48,29 +48,31 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->generateClassFooter();
 	}
 	// -------------------------------------------------------------------------
-	protected function generateCheck($t)
+	protected function generateCheck(Table $t)
 	{
 		$this->addLine("/**", 1);
-		$this->addLine(" * Methods validate data before save", 1);
+		$this->addLine(" * Metoda sprawdza poprawność atrybutów obiektu klasy " . $t->getClassName(), 1);
+		$this->addLine(" * przed zapisem rekordu w tabeli " . $t->getName(), 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function check()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("// TODO: add special validate ", 2);
+		$this->addLine("// TODO: dodaj sprawdzenie poprawności atrybutów obiektu ", 2);
 		$this->addLine("return true;", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateGetAllExample($t)
+	protected function generateGetAllExample(Table $t)
 	{
 		$this->addLine("/**", 1);
-		$this->addLine(" * This method returns a collection of objects ", 1);
+		$this->addLine(" * Metoda zrwaca kolekcję wszystkich obiektów klasy " . $t->getClassName(), 1);
+		$this->addLine(" * zapisanych jako rekordy w tabeli " . $t->getName(), 1);
 		$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function getAll()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("// TODO: this is example of method selecting multi rec from table ", 2);
+		$this->addLine("// TODO: ti jest przykład jak pobrać wiele rekordów z tabeli ", 2);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql  = \"SELECT * \";", 2);
 		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
@@ -80,24 +82,27 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateKill($t)
+	protected function generateKill(Table $t)
 	{
 		$this->addLine("/**", 1);
-		$this->addLine(" * Method removes an object of class " . $t->getClassName(), 1);
+		$this->addLine(" * Metoda usuwa obiekt klasy " . $t->getClassName(), 1);
+		$this->addLine(" * umożliwiając wykonanie przed tym niezbędnych czynności", 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public function kill()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("// TODO: this method may be changed when record can not be deleted from table", 2);
+		$this->addLine("// TODO: tą metodę można zmienić jeśli obiekt nie ma zostać usunięty jako rekord z tabeli", 2);
 		$this->addLine("return \$this->destroy();", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateSave($t)
+	protected function generateSave(Table $t)
 	{
 		$this->addLine("/**", 1);
-		$this->addLine(" * Method saves the object of the class " . $t->getClassName(), 1);
+		$this->addLine(" * Metoda zapisuje obiekt klasy " . $t->getClassName(), 1);
+		$this->addLine(" * jako rekord w tabeli " . $t->getName(), 1);
+		$this->addLine(" * (tworzy nowy lub modyfikuje istniejący", 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 
@@ -126,7 +131,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		}
 		$this->addLine("public function save()", 1);
 		$this->addLine("{", 1);
-		$this->addLine("// TODO: please set atrib independens of clients ex lastupdate", 2);
+		$this->addLine("// TODO: tu proszę ustawić atrybuty niezależne od ustawień aplikacji", 2);
 		$this->addLine("if(\$this->check())", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(\$this->isReaded())", 3);
@@ -146,9 +151,8 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateClassHead($t)
+	protected function generateClassHead(Table $t)
 	{
-		$this->addLine("include \"dao/" . $t->getClassName() . "DAO.php\";", 0);
 		$this->addLine("class " . $t->getClassName() . " extends " . $t->getClassName() . "DAO implements DAO", 0);
 		$this->addLine("{", 0);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
@@ -158,13 +162,14 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("/**", 0);
 		$this->addLine(" * Created on " . date("d-m-Y H:i:s"), 0);
-		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
-		$this->addLine(" * @package " . $this->project->getName(), 0);
+		$this->addLine(" * tabela " . $t->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
 		$this->addLine(" * max error " . $t->getErrorPrefix() . "04", 0);
 		$this->addLine(" * Generated by SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
 		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
 		$this->addLine(" * {please complete documentation}", 0);
+		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
+		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" */", 0);
 	}
 	// -------------------------------------------------------------------------
@@ -172,6 +177,7 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->fileHandle = fopen($this->file, "w");
 		$this->addLine("<?php", 0);
+		$this->addLine("include \"dao/" . $t->getClassName() . "DAO.php\";", 0);
 	}
 	// -------------------------------------------------------------------------
 }
