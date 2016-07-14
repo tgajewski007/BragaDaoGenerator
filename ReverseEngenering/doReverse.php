@@ -12,7 +12,8 @@ include "ReverseTable.php";
 include "ReverseForeginKey.php";
 include "ReversePrimaryKey.php";
 include "ReverseCreator.php";
-define("ORA_SOURCE", "BRANCH1"); // BRANCH|TRUNK
+
+define("ORA_SOURCE", "TRUNK"); // BRANCH|TRUNK
 define("ORA_SERVER", "10.32.80.71");
 define("ORA_PORT", "1521");
 define("ORA_SID", "ENDEV");
@@ -20,6 +21,14 @@ define("ORA_USERNAME", "ENDEV" . ORA_SOURCE . "_CONNECT");
 define("ORA_SCHEMA", "ENDEV" . ORA_SOURCE);
 define("ORA_PASSWORD", "1");
 
+/* define("ORA_SOURCE", "ENMG");
+define("ORA_SERVER", "127.0.0.1");
+define("ORA_PORT", "1521");
+define("ORA_SID", "XE");
+define("ORA_USERNAME", ORA_SOURCE . "_CONNECT");
+define("ORA_SCHEMA", ORA_SOURCE);
+define("ORA_PASSWORD", "1");
+ */
 include "oracle/DB.php";
 include "oracle/OracleParams.php";
 include "oracle/OracleParam.php";
