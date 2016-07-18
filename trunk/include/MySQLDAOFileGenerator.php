@@ -43,11 +43,6 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 
-		$pieces = array();
-		foreach($data as $c)/* @var $c Column */
-		{
-			$pieces[] = $c->getName();
-		}
 		$this->addLine("\$sql  = \"UPDATE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 
 		$columns = array();
@@ -82,12 +77,10 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
 		$this->addLine("{", 2);
-		$this->addLine("\$db->commit();", 3);
 		$this->addLine("return true;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("\$db->rollback();", 3);
 		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
@@ -157,14 +150,12 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		{
 			$this->addLine("\$this->set" . ucfirst(current($pk)->getClassFieldName()) . "(\$db->getLastInsertID());", 3);
 		}
-		$this->addLine("\$db->commit();", 3);
 		$this->addLine("self::updateFactoryIndex(\$this);", 3);
 		$this->addLine("\$this->setReaded();", 3);
 		$this->addLine("return true;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("\$db->rollback();", 3);
 		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
