@@ -12,27 +12,12 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateDestroy(Table $t)
 	{
-		$data = array();
 		$pk = array();
 		foreach($t->getColumny() as $c)/* @var $c Column */
 		{
 			if($c->isPK())
 			{
 				$pk[$c->getKey()] = $c;
-			}
-			elseif($c instanceof Column)
-			{
-				$data[$c->getKey()] = $c;
-			}
-			elseif($c instanceof ColumnForeginKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
 			}
 		}
 
@@ -78,27 +63,12 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateRead(Table $t)
 	{
-		$data = array();
 		$pk = array();
 		foreach($t->getColumny() as $c)/* @var $c Column */
 		{
 			if($c->isPK())
 			{
 				$pk[$c->getKey()] = $c;
-			}
-			elseif($c instanceof Column)
-			{
-				$data[$c->getKey()] = $c;
-			}
-			elseif($c instanceof ColumnForeginKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
 			}
 		}
 
@@ -180,11 +150,6 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 
-		$pieces = array();
-		foreach($data as $c)/* @var $c Column */
-		{
-			$pieces[] = $c->getName();
-		}
 		$tableName = $t->getName();
 		if($tableName != strtolower($tableName))
 		{
