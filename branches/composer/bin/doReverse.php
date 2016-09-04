@@ -9,7 +9,18 @@ use braga\daogenerator\worker\ConfigReader;
  * package frontoffice
  * error prefix
  */
-require '../vendor/autoload.php';
+
+$autoloadFiles = array(
+		__DIR__ . '/../vendor/autoload.php',
+		__DIR__ . '/../../../autoload.php');
+
+foreach($autoloadFiles as $autoloadFile)
+{
+	if(file_exists($autoloadFile))
+	{
+		require_once $autoloadFile;
+	}
+}
 
 $c = ConfigReader::readConfig();
 
@@ -18,7 +29,6 @@ define("DB_USER", $c->getUser());
 define("DB_PASS", $c->getPass());
 define("DB_SCHEMA", $c->getSchema());
 
-$folder = "O:\\wwwroot\\TestApp\\common\\";
 $project = new Project();
 $project->setProjectFolder($c->getProjectFolder());
 $project->setErrorPrefix($c->getErrorPrefix());
