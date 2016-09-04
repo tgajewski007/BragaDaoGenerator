@@ -673,7 +673,7 @@ class DAOFileGenerator
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
-						$this->addLine("return " . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
+						$this->addLine("return " . $t->getClassName() . "DAO::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -------------------------------------------------------------------------", 1);
 					}
@@ -862,7 +862,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateClassHead($t)
 	{
-		$this->addLine("class " . $t->getClassName() . "DAO", 0);
+		$this->addLine("class " . $t->getClassName() . "DAO imlements DAO", 0);
 		$this->addLine("{", 0);
 	}
 	// -------------------------------------------------------------------------
@@ -891,6 +891,7 @@ class DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
+			$this->addLine("use braga\\db\\DAO;", 0);
 			$this->addLine("use braga\\db\\DataSource;", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
 			{

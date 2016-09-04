@@ -32,7 +32,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "obj;", 0);
-			$this->addLine("use braga\db\DAO;", 0);
+			$this->addLine("use braga\db\BusinesObject;", 0);
 			$this->addLine("use braga\db\Collection;", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
 			{
@@ -136,7 +136,7 @@ class ClassFileGenerator extends DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateClassHead($t)
 	{
-		$this->addLine("class " . $t->getClassName() . " extends " . $t->getClassName() . "DAO implements DAO", 0);
+		$this->addLine("class " . $t->getClassName() . " extends " . $t->getClassName() . "DAO implements BusinesObject", 0);
 		$this->addLine("{", 0);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
