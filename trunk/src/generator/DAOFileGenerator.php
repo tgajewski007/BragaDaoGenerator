@@ -580,7 +580,7 @@ class DAOFileGenerator
 			$this->addLine(" */", 1);
 			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
-			$this->addLine("return " . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
+			$this->addLine("return " . $fk->getTable()->getClassName() . "DAO::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
@@ -617,9 +617,9 @@ class DAOFileGenerator
 				}
 			}
 			$this->addLine("/**", 1);
-			$this->addLine(" * @param " . $fk->getTable()->getClassName() . " \$" . lcfirst($fk->getTable()->getClassName()), 1);
+			$this->addLine(" * @param " . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function " . $functionName . "(" . $fk->getTable()->getClassName() . " \$" . lcfirst($fk->getTable()->getClassName()) . ")", 1);
+			$this->addLine("public function " . $functionName . "(" . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 
 			foreach($tmp1 as $t)
