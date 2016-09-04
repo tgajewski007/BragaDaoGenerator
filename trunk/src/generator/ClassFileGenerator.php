@@ -27,14 +27,25 @@ class ClassFileGenerator extends DAOFileGenerator
 		}
 	}
 	// -------------------------------------------------------------------------
-	protected function generateNameSpace()
+	protected function generateNameSpace(Table $t)
 	{
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "obj;", 0);
 			$this->addLine("use braga\db\DAO;", 0);
-			$this->addLine("use braga\db\DB;", 0);
 			$this->addLine("use braga\db\Collection;", 0);
+			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
+			{
+				$this->addLine("use braga\db\mysql\DB;", 0);
+			}
+			elseif($this->project->getDataBaseStyle() == DataBaseStyle::ORACLE)
+			{
+				$this->addLine("use braga\db\oracle\DB;", 0);
+			}
+			else
+			{
+				$this->addLine("use braga\db\mysql\DB", 0);
+			}
 		}
 	}
 	// -------------------------------------------------------------------------

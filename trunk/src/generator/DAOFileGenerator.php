@@ -892,7 +892,18 @@ class DAOFileGenerator
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
 			$this->addLine("use braga\\db\\DataSource;", 0);
-			$this->addLine("use braga\\db\\oracle\DB;", 0);
+			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
+			{
+				$this->addLine("use braga\db\mysql\DB;", 0);
+			}
+			elseif($this->project->getDataBaseStyle() == DataBaseStyle::ORACLE)
+			{
+				$this->addLine("use braga\db\oracle\DB;", 0);
+			}
+			else
+			{
+				$this->addLine("use braga\db\mysql\DB", 0);
+			}
 			$this->addLine("use braga\\db\\Collection;", 0);
 			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 0);
 		}
