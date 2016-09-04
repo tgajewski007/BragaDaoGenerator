@@ -23,7 +23,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	public function GO()
 	{
-		foreach($this->project->getTables() as $t)/* @var $t Table */
+		foreach($this->project->getTables() as $t)/* @var	 $t Table */
 		{
 			$this->open($t);
 			$this->generateNameSpace($t);

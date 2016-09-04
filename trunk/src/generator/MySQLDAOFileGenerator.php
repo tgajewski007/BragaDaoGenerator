@@ -164,7 +164,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateNameSpace()
+	protected function generateNameSpace(Table $t)
 	{
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
@@ -172,6 +172,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 			$this->addLine("use braga\\db\\DataSource;", 0);
 			$this->addLine("use braga\\db\\mysql\DB;", 0);
 			$this->addLine("use braga\\db\\Collection;", 0);
+			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 0);
 		}
 	}
 	// -------------------------------------------------------------------------
