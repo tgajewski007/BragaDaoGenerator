@@ -140,12 +140,12 @@ class ConfigReader
 	// -------------------------------------------------------------------------
 	public function getXmlFile()
 	{
-		return __DIR__ . "/" . $this->getConfigFolder() . "/dao.xml";
+		return __DIR__ . "/../../" . $this->getConfigFolder() . "/dao.xml";
 	}
 	// -------------------------------------------------------------------------
 	public function getProjectFolder()
 	{
-		return __DIR__ . "/" . $this->getOutputFolder() . "/";
+		return __DIR__ . "/../../" . $this->getOutputFolder() . "/";
 	}
 	// -------------------------------------------------------------------------
 	/**
