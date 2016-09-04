@@ -202,18 +202,20 @@ class ConfigReader
 	{
 		if(empty(self::$instance))
 		{
-			self::$instance = new self();
 			$configFilenameArray = array();
 			$configFilenameArray[] = "dbConfig.json";
+			$configFilenameArray[] = "../dbConfig.json";
 			$configFilenameArray[] = "../../dbConfig.json";
-
+			$configFilenameArray[] = "../../../dbConfig.json";
+			$configFilenameArray[] = "../../../../dbConfig.json";
 			foreach($configFilenameArray as $c)
 			{
 				if(file_exists($c))
 				{
+					self::$instance = new self();
 					$content = file_get_contents($c);
 					$content = json_decode($content, true);
-					self::$instance->setBaseFolder(basename($c));
+					self::$instance->setBaseFolder(dirname($c));
 					self::$instance->setUser($content["user"]);
 					self::$instance->setPass($content["pass"]);
 					self::$instance->setSchema($content["schema"]);
@@ -231,6 +233,7 @@ class ConfigReader
 			}
 			throw new \Exception("dbConfig.json file not found", 1);
 		}
+		return self::$instance;
 	}
 	// -------------------------------------------------------------------------
 }
