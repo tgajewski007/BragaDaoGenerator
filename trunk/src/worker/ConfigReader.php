@@ -29,6 +29,8 @@ class ConfigReader
 	protected $projectName;
 	protected $namespace;
 	// -------------------------------------------------------------------------
+	protected $baseFolder;
+	// -------------------------------------------------------------------------
 	public function getConnectonString()
 	{
 		return $this->connectonString;
@@ -138,14 +140,24 @@ class ConfigReader
 		return $this;
 	}
 	// -------------------------------------------------------------------------
+	public function getBaseFolder()
+	{
+		return $this->baseFolder;
+	}
+	// -------------------------------------------------------------------------
+	public function setBaseFolder($baseFolder)
+	{
+		$this->baseFolder = $baseFolder;
+	}
+	// -------------------------------------------------------------------------
 	public function getXmlFile()
 	{
-		return getcwd() . "/" . $this->getConfigFolder() . "/dao.xml";
+		return $this->getBaseFolder() . "/" . $this->getConfigFolder() . "/dao.xml";
 	}
 	// -------------------------------------------------------------------------
 	public function getProjectFolder()
 	{
-		return getcwd() . "/" . $this->getOutputFolder() . "/";
+		return $this->getBaseFolder() . "/" . $this->getOutputFolder() . "/";
 	}
 	// -------------------------------------------------------------------------
 	/**
@@ -191,30 +203,34 @@ class ConfigReader
 		if(empty(self::$instance))
 		{
 			self::$instance = new self();
-			$configFilename = "dbConfig.json";
-			if(file_exists($configFilename))
-			{
-				$content = file_get_contents($configFilename);
-				$content = json_decode($content, true);
-				self::$instance->setUser($content["user"]);
-				self::$instance->setPass($content["pass"]);
-				self::$instance->setSchema($content["schema"]);
-				self::$instance->setConnectonString($content["connection-string"]);
+			$configFilenameArray = array();
+			$configFilenameArray[] = "dbConfig.json";
+			$configFilenameArray[] = "../../dbConfig.json";
 
-				self::$instance->setAutor($content["author"]);
-				self::$instance->setOutputFolder($content["output-folder"]);
-				self::$instance->setConfigFolder($content["dao.xml-folder"]);
-				self::$instance->setErrorPrefix($content["error-prefix"]);
-				self::$instance->setDbDriver($content["db-driver"]);
-				self::$instance->setProjectName($content["project-name"]);
-				self::$instance->setNamespace($content["namespace"]);
-			}
-			else
+			foreach($configFilenameArray as $c)
 			{
-				throw new \Exception("dbConfig.json file not found", 1);
+				if(file_exists($c))
+				{
+					$content = file_get_contents($c);
+					$content = json_decode($content, true);
+					self::$instance->setBaseFolder(basename($c));
+					self::$instance->setUser($content["user"]);
+					self::$instance->setPass($content["pass"]);
+					self::$instance->setSchema($content["schema"]);
+					self::$instance->setConnectonString($content["connection-string"]);
+
+					self::$instance->setAutor($content["author"]);
+					self::$instance->setOutputFolder($content["output-folder"]);
+					self::$instance->setConfigFolder($content["dao.xml-folder"]);
+					self::$instance->setErrorPrefix($content["error-prefix"]);
+					self::$instance->setDbDriver($content["db-driver"]);
+					self::$instance->setProjectName($content["project-name"]);
+					self::$instance->setNamespace($content["namespace"]);
+					return self::$instance;
+				}
 			}
+			throw new \Exception("dbConfig.json file not found", 1);
 		}
-		return self::$instance;
 	}
 	// -------------------------------------------------------------------------
 }
