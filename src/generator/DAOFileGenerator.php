@@ -862,7 +862,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateClassHead($t)
 	{
-		$this->addLine("class " . $t->getClassName() . "DAO imlements DAO", 0);
+		$this->addLine("class " . $t->getClassName() . "DAO implements DAO", 0);
 		$this->addLine("{", 0);
 	}
 	// -------------------------------------------------------------------------
@@ -893,6 +893,7 @@ class DAOFileGenerator
 			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
 			$this->addLine("use braga\\db\\DAO;", 0);
 			$this->addLine("use braga\\db\\DataSource;", 0);
+			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . ";", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
 			{
 				$this->addLine("use braga\db\mysql\DB;", 0);
@@ -906,7 +907,6 @@ class DAOFileGenerator
 				$this->addLine("use braga\db\mysql\DB;", 0);
 			}
 			$this->addLine("use braga\\db\\Collection;", 0);
-			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . ";", 0);
 		}
 	}
 	// -------------------------------------------------------------------------
