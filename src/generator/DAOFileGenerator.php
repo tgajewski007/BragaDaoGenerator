@@ -891,9 +891,9 @@ class DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
-			$this->addLine("use braga\db\DataSource;", 0);
-			$this->addLine("use braga\db\DB;", 0);
-			$this->addLine("use braga\db\Collection;", 0);
+			$this->addLine("use braga\\db\\DataSource;", 0);
+			$this->addLine("use braga\\db\\oracle\DB;", 0);
+			$this->addLine("use braga\\db\\Collection;", 0);
 		}
 	}
 	// -------------------------------------------------------------------------

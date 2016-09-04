@@ -297,5 +297,16 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
+	protected function generateNameSpace()
+	{
+		if(strlen($this->project->getNameSpace()) > 0)
+		{
+			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
+			$this->addLine("use braga\\db\\DataSource;", 0);
+			$this->addLine("use braga\\db\\pgsql\DB;", 0);
+			$this->addLine("use braga\\db\\Collection;", 0);
+		}
+	}
+	// -------------------------------------------------------------------------
 }
 ?>
