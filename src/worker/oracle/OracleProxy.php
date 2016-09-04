@@ -1,5 +1,5 @@
 <?php
-braga\daogenerator\worker\oracle;
+namespace braga\daogenerator\worker\oracle;
 use braga\daogenerator\worker\ReverseColumn;
 use braga\daogenerator\worker\ReverseProxy;
 use braga\daogenerator\worker\ReverseTable;
