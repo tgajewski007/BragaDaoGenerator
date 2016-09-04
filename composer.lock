@@ -1,0 +1,86 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "2256f358a2039405531c1ef118bd5b81",
+    "content-hash": "fb63ae8b4ff55a9a8937db090b1e177e",
+    "packages": [
+        {
+            "name": "braga/db",
+            "version": "1.0.1",
+            "source": {
+                "type": "svn",
+                "url": "https://svn.code.sf.net/p/braga/code/db",
+                "reference": "/tags/1.0.1/@34"
+            },
+            "require": {
+                "braga/tools": ">=1.0.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "braga\\db\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tomasz Gajewski",
+                    "email": "tgajewski007@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "DB Wraper",
+            "homepage": "https://sourceforge.net/projects/braga/",
+            "keywords": [
+                "db",
+                "mysql",
+                "oracle",
+                "pdo"
+            ],
+            "time": "2016-09-04 13:04:23"
+        },
+        {
+            "name": "braga/tools",
+            "version": "1.0.0",
+            "source": {
+                "type": "svn",
+                "url": "https://svn.code.sf.net/p/braga/code/tools",
+                "reference": "/tags/1.0.0/@26"
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "braga\\tools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Many difrent tools lib",
+            "keywords": [
+                "libs",
+                "tools"
+            ],
+            "time": "2016-09-04 12:03:55"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
