@@ -1,7 +1,7 @@
 {
     "user": "root",
     "pass": "",
-    "schema": "hitel",
+    "schema": "test",
     "connection-string": "mysql:host=localhost",
     "author": "Tomasz Gajewski",
     "output-folder": "src",
@@ -9,5 +9,5 @@
     "error-prefix": "test",
     "db-driver": "mysql",
     "project-name": "Test",
-    "namespace": "braga\\boomerang\\"
+    "namespace": "braga\\daogenerator\\"
 }
