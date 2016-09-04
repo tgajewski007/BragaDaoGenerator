@@ -20,7 +20,7 @@
 		"orm"
 	],
 	"require" : {
-		"braga/db" : "dev-trunk"
+		"braga/db" : "1.1.0"
 	},
 	"license" : "MIT"
 }

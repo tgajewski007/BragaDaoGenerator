@@ -4,16 +4,16 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e2d3c73c388295d1ae435e01b71d0d8f",
-    "content-hash": "4337147917e8c46c17b4c468a8c5062d",
+    "hash": "59e484b12a446dba365e85294e4e894a",
+    "content-hash": "f2ca44c671101c950f7d938bb5f84236",
     "packages": [
         {
             "name": "braga/db",
-            "version": "dev-trunk",
+            "version": "1.1.0",
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/db",
-                "reference": "/trunk/@33"
+                "reference": "/tags/1.1.0/@37"
             },
             "require": {
                 "braga/tools": ">=1.0.0",
@@ -44,7 +44,7 @@
                 "oracle",
                 "pdo"
             ],
-            "time": "2016-09-04 13:03:46"
+            "time": "2016-09-04 17:20:28"
         },
         {
             "name": "braga/tools",
@@ -78,9 +78,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "braga/db": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
