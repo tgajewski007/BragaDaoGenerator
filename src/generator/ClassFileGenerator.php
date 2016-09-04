@@ -101,30 +101,6 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" * Method saves the object of the class " . $t->getClassName(), 1);
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
-
-		$data = array();
-		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
-		{
-			if($c->isPK())
-			{
-				$pk[$c->getKey()] = $c;
-			}
-			elseif($c instanceof Column)
-			{
-				$data[$c->getKey()] = $c;
-			}
-			elseif($c instanceof ColumnForeginKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
-			}
-		}
 		$this->addLine("public function save()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: please set atrib independens of clients ex lastupdate", 2);

@@ -128,7 +128,7 @@ class Table
 		}
 		else
 		{
-			throw new Exception("Nie można dodać tablicy bez nazwy");
+			throw new \Exception("Nie można dodać tablicy bez nazwy");
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -149,16 +149,16 @@ class Table
 			}
 			else
 			{
-				throw new Exception("Zbyt wczesne wywołanie. Nie okreslono nazwy klasy");
+				throw new \Exception("Zbyt wczesne wywołanie. Nie okreslono nazwy klasy");
 			}
 		}
 		else
 		{
-			throw new Exception("Zbyt wczesne wywołanie. Nie określono nazwy tabeli");
+			throw new \Exception("Zbyt wczesne wywołanie. Nie określono nazwy tabeli");
 		}
 	}
 	// -------------------------------------------------------------------------
-	static function import(DOMElement $table)
+	static function import(\DOMElement $table)
 	{
 		$t = new self();
 
@@ -179,7 +179,7 @@ class Table
 		return $t;
 	}
 	// -------------------------------------------------------------------------
-	public function export(DOMElement $t)
+	public function export(\DOMElement $t)
 	{
 		$t->setAttribute("name", $this->getName());
 		$t->setAttribute("className", $this->getClassName());

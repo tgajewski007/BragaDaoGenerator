@@ -66,7 +66,7 @@ class FilesGenerator
 		{
 			try
 			{
-				$this->xmlDocument = new DOMDocument();
+				$this->xmlDocument = new \DOMDocument();
 				$this->xmlDocument->load(self::$project->getXmlFile());
 				$this->readProject();
 				$this->createXmlDoc();
@@ -97,7 +97,7 @@ class FilesGenerator
 			try
 			{
 				$d = new self();
-				$d->xmlDocument = new DOMDocument();
+				$d->xmlDocument = new \DOMDocument();
 				$d->xmlDocument->load(self::$project->getXmlFile());
 				$d->readProject();
 			}
@@ -148,7 +148,6 @@ class FilesGenerator
 			}
 		}
 		$tables = $p->getElementsByTagName("table");
-		$existTable = self::$project->getTables();
 
 		// odczyt tablic
 		$tmp = array();
@@ -185,8 +184,8 @@ class FilesGenerator
 	// -------------------------------------------------------------------------
 	protected function createXmlDoc()
 	{
-		$this->xmlDocument = new DOMDocument("1.0", "UTF-8");
-		$p = new DOMElement("project", null);
+		$this->xmlDocument = new \DOMDocument("1.0", "UTF-8");
+		$p = new \DOMElement("project", null);
 		$this->xmlDocument->appendChild($p);
 		$p->setAttribute("name", self::$project->getName());
 		$p->setAttribute("author", self::$project->getAuthor());
@@ -196,19 +195,19 @@ class FilesGenerator
 
 		foreach(self::$project->getTables() as $table)/* @var $table Table */
 		{
-			$t = new DOMElement("table");
+			$t = new \DOMElement("table");
 			$p->appendChild($t);
 			$table->export($t);
 			foreach($table->getColumny() as $columna)/* @var $columna Column */
 			{
-				$c = new DOMElement("column");
+				$c = new \DOMElement("column");
 				$t->appendChild($c);
 				$columna->export($c);
 			}
 
 			foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 			{
-				$k = new DOMElement("fk");
+				$k = new \DOMElement("fk");
 				$t->appendChild($k);
 				$fk->export($k);
 			}

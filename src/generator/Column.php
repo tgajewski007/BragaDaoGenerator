@@ -28,7 +28,7 @@ class Column
 		$this->name = $name;
 	}
 	// -------------------------------------------------------------------------
-	static function import(DOMElement $c)
+	static function import(\DOMElement $c)
 	{
 		$t = new self();
 		$t->setName($c->getAttribute("name"));
@@ -41,7 +41,7 @@ class Column
 		return $t;
 	}
 	// -------------------------------------------------------------------------
-	public function export(DOMElement $c)
+	public function export(\DOMElement $c)
 	{
 		$c->setAttribute("name", $this->getName());
 		$c->setAttribute("classFieldName", $this->getClassFieldName());

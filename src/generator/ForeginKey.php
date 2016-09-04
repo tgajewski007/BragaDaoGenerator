@@ -88,7 +88,7 @@ class ForeginKey
 		return $this->columns;
 	}
 	// -------------------------------------------------------------------------
-	static function import(DOMElement $c)
+	static function import(\DOMElement $c)
 	{
 		$fk = new self();
 		$fk->setTableName($c->getAttribute("tableName"));
@@ -102,7 +102,7 @@ class ForeginKey
 		return $fk;
 	}
 	// -------------------------------------------------------------------------
-	public function export(DOMElement $c)
+	public function export(\DOMElement $c)
 	{
 		$c->setAttribute("tableName", $this->getTableName());
 		$c->setAttribute("tableSchema", $this->getTableSchema());
@@ -111,7 +111,7 @@ class ForeginKey
 
 		foreach($this->columns as $columna) /* @var $columna ConnectedColumn */
 		{
-			$el = new DOMElement("connectedColumn");
+			$el = new \DOMElement("connectedColumn");
 			$c->appendChild($el);
 			$el->setAttribute("fkColumnName", $columna->fkColumnName);
 			$el->setAttribute("pkColumnName", $columna->pkColumnName);
