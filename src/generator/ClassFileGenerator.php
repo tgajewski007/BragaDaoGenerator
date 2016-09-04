@@ -15,8 +15,9 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			@mkdir($this->project->getProjectFolder() . "\\" . $this->project->getObjFolder(), 0777, true);
-			$this->file = $this->project->getProjectFolder() . "\\" . $this->project->getObjFolder() . "\\" . $t->getClassName() . ".php";
+			@mkdir($this->project->getProjectFolder() . "/" . $this->project->getObjFolder(), 0777, true);
+			$this->file = $this->project->getProjectFolder() . "/" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php";
+			echo $this->file . PHP_EOL;
 			if(!file_exists($this->file))
 			{
 				$this->open($t);

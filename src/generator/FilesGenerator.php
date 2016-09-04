@@ -27,7 +27,7 @@ class FilesGenerator
 		$f->init();
 		$f->prepareDAOFile();
 		$f->prepareClassFile();
-		$f->prepareMainFile();
+		// $f->prepareMainFile();
 		$f->finish();
 	}
 	// -------------------------------------------------------------------------
