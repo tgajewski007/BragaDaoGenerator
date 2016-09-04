@@ -20,7 +20,7 @@ class ClassFileGenerator extends DAOFileGenerator
 			if(!file_exists($this->file))
 			{
 				$this->open($t);
-				$this->generateNameSpace();
+				$this->generateNameSpace($t);
 				$this->prepareClass($t);
 				$this->close();
 			}
@@ -44,7 +44,7 @@ class ClassFileGenerator extends DAOFileGenerator
 			}
 			else
 			{
-				$this->addLine("use braga\db\mysql\DB", 0);
+				$this->addLine("use braga\db\mysql\DB;", 0);
 			}
 		}
 	}
