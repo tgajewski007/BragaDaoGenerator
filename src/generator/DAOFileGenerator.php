@@ -905,7 +905,7 @@ class DAOFileGenerator
 				$this->addLine("use braga\db\mysql\DB;", 0);
 			}
 			$this->addLine("use braga\\db\\Collection;", 0);
-			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 0);
+			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . ";", 0);
 		}
 	}
 	// -------------------------------------------------------------------------
