@@ -71,7 +71,7 @@ class FilesGenerator
 				$this->readProject();
 				$this->createXmlDoc();
 			}
-			catch(Exception $e)
+			catch(\Exception $e)
 			{
 				echo $e->getMessage();
 				unlink(self::$project->getXmlFile());
@@ -101,7 +101,7 @@ class FilesGenerator
 				$d->xmlDocument->load(self::$project->getXmlFile());
 				$d->readProject();
 			}
-			catch(Exception $e)
+			catch(\Exception $e)
 			{
 			}
 		}
