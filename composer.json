@@ -19,9 +19,9 @@
 		"generator",
 		"orm"
 	],
-	"require" : {
-		"braga/db" : "dev-trunk"
-	},
 	"license" : "MIT",
-	"minimum-stability" : "dev"
+	"minimum-stability" : "stable",
+	"require" : {
+		"braga/db" : ">=2.0.0"
+	}
 }
