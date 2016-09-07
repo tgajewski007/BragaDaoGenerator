@@ -13,7 +13,7 @@
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/db",
-                "reference": "/trunk/@58"
+                "reference": "/trunk/@69"
             },
             "require": {
                 "braga/tools": "dev-trunk",
@@ -44,7 +44,7 @@
                 "oracle",
                 "pdo"
             ],
-            "time": "2016-09-05 20:39:26"
+            "time": "2016-09-07 17:29:26"
         },
         {
             "name": "braga/tools",
@@ -52,7 +52,7 @@
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/tools",
-                "reference": "/trunk/@65"
+                "reference": "/trunk/@67"
             },
             "require": {
                 "php": ">=5.4"
@@ -75,7 +75,7 @@
                 "libs",
                 "tools"
             ],
-            "time": "2016-09-07 16:42:02"
+            "time": "2016-09-07 17:06:03"
         }
     ],
     "packages-dev": [],
