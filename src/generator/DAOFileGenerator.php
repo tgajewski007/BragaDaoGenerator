@@ -673,7 +673,7 @@ class DAOFileGenerator
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
-						$this->addLine("return \\" . $this->project->getNameSpace() . "obj" . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
+						$this->addLine("return \\" . $this->project->getNameSpace() . "obj\\" . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -------------------------------------------------------------------------", 1);
 					}

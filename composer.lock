@@ -13,7 +13,7 @@
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/db",
-                "reference": "/trunk/@69"
+                "reference": "/trunk/@72"
             },
             "require": {
                 "braga/tools": "dev-trunk",
@@ -44,7 +44,7 @@
                 "oracle",
                 "pdo"
             ],
-            "time": "2016-09-07 17:29:26"
+            "time": "2016-09-07 17:38:36"
         },
         {
             "name": "braga/tools",
