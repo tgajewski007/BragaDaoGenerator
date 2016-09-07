@@ -232,7 +232,7 @@ class DAOFileGenerator
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
+			$this->addLine("public static function \\" . $this->project->getNameSpace() . "dao\\" . $functioName . "(" . $fkTable->getClassName() . " \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql  = \"SELECT * \";", 2);
