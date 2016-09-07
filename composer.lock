@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e2d3c73c388295d1ae435e01b71d0d8f",
-    "content-hash": "4337147917e8c46c17b4c468a8c5062d",
+    "hash": "c26cec6cd8d74ace1ba766599e644961",
+    "content-hash": "d87cf06d728b931d6d5098320678a171",
     "packages": [
         {
             "name": "braga/db",
@@ -13,10 +13,10 @@
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/db",
-                "reference": "/trunk/@33"
+                "reference": "/trunk/@58"
             },
             "require": {
-                "braga/tools": ">=1.0.0",
+                "braga/tools": "dev-trunk",
                 "php": ">=5.4.0"
             },
             "type": "library",
@@ -44,15 +44,15 @@
                 "oracle",
                 "pdo"
             ],
-            "time": "2016-09-04 13:03:46"
+            "time": "2016-09-05 20:39:26"
         },
         {
             "name": "braga/tools",
-            "version": "1.0.0",
+            "version": "dev-trunk",
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/tools",
-                "reference": "/tags/1.0.0/@26"
+                "reference": "/trunk/@65"
             },
             "require": {
                 "php": ">=5.4"
@@ -61,7 +61,10 @@
             "autoload": {
                 "psr-4": {
                     "braga\\tools\\": "src"
-                }
+                },
+                "files": [
+                    "src/tools/tools.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -72,12 +75,12 @@
                 "libs",
                 "tools"
             ],
-            "time": "2016-09-04 12:03:55"
+            "time": "2016-09-07 16:42:02"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "braga/db": 20
     },
