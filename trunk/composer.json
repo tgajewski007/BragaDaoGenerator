@@ -22,5 +22,6 @@
 	"require" : {
 		"braga/db" : "dev-trunk"
 	},
-	"license" : "MIT"
+	"license" : "MIT",
+	"minimum-stability" : "dev"
 }
