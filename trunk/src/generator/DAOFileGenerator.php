@@ -232,7 +232,7 @@ class DAOFileGenerator
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public static function \\" . $this->project->getNameSpace() . "dao\\" . $functioName . "(" . $fkTable->getClassName() . " \$" . lcfirst($fkTable->getClassName()) . ")", 1);
+			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql  = \"SELECT * \";", 2);
@@ -673,7 +673,7 @@ class DAOFileGenerator
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
-						$this->addLine("return " . $t->getClassName() . "DAO::" . $functionName . "(\$this);", 2);
+						$this->addLine("return \\" . $this->project->getNameSpace() . "obj" . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -------------------------------------------------------------------------", 1);
 					}
