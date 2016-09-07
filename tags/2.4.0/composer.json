@@ -1,0 +1,27 @@
+{
+	"name" : "braga/dao-generator",
+	"description" : "Object DAO generator",
+	"type" : "dao-generator",
+	"homepage" : "https://sourceforge.net/projects/simplephpdaogen/",
+	"authors" : [{
+			"name" : "Tomasz Gajewski",
+			"email" : "tgajewski007@gmail.com",
+			"role" : "Developer"
+		}
+	],
+	"autoload" : {
+		"psr-4" : {
+			"braga\\daogenerator\\" : "src"
+		}
+	},
+	"keywords" : [
+		"dao",
+		"generator",
+		"orm"
+	],
+	"license" : "MIT",
+	"minimum-stability" : "stable",
+	"require" : {
+		"braga/db" : ">=2.0.0"
+	}
+}
