@@ -906,7 +906,10 @@ class DAOFileGenerator
 			{
 				$this->addLine("use braga\db\mysql\DB;", 0);
 			}
-			$this->addLine("use braga\\db\\Collection;", 0);
+			if(count($t->getFk()) > 0)
+			{
+				$this->addLine("use braga\\db\\Collection;", 0);
+			}
 		}
 	}
 	// -------------------------------------------------------------------------

@@ -1,11 +1,12 @@
 <?php
+use braga\daogenerator\generator\ColumnType;
+
 /**
  * Created on 10-03-2013 17:15:27
  * author Tomasz Gajewski
  * package frontoffice
  * error prefix
  */
-require_once __DIR__ . "/../include/PHPDAO.php";
 class ColumnTypeTest extends PHPUnit_Framework_TestCase
 {
 	// -------------------------------------------------------------------------
