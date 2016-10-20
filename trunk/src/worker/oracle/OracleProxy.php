@@ -81,6 +81,12 @@ class OracleProxy implements ReverseProxy
 					$tmp->type = ColumnType::DATE;
 					break;
 				case "TIMESTAMP(6)":
+				case "TIMESTAMP(5)":
+				case "TIMESTAMP(4)":
+				case "TIMESTAMP(3)":
+				case "TIMESTAMP(2)":
+				case "TIMESTAMP(1)":
+				case "TIMESTAMP(0)":
 					$tmp->type = ColumnType::DATETIME;
 					break;
 				case "NUMBER":
