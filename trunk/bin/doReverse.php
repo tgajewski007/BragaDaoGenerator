@@ -24,10 +24,22 @@ foreach($autoloadFiles as $autoloadFile)
 
 $c = ConfigReader::readConfig();
 
-define("DB_CONNECTION_STRING", $c->getConnectonString());
-define("DB_USER", $c->getUser());
-define("DB_PASS", $c->getPass());
-define("DB_SCHEMA", $c->getSchema());
+if(!defined("DB_CONNECTION_STRING"))
+{
+	define("DB_CONNECTION_STRING", $c->getConnectonString());
+}
+if(!defined("DB_USER"))
+{
+	define("DB_USER", $c->getUser());
+}
+if(!defined("DB_PASS"))
+{
+	define("DB_PASS", $c->getPass());
+}
+if(!defined("DB_SCHEMA"))
+{
+	define("DB_SCHEMA", $c->getSchema());
+}
 
 $project = new Project();
 $project->setProjectFolder($c->getProjectFolder());
