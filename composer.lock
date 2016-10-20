@@ -4,19 +4,19 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a58357ee7a45919d25b5287dda8548b6",
-    "content-hash": "12897611128984469d03c66d31a86dd9",
+    "hash": "69245e17ebc5da1476b54aa98c337988",
+    "content-hash": "1f7722ac722c1806d4d13b50d72d45de",
     "packages": [
         {
             "name": "braga/db",
-            "version": "dev-trunk",
+            "version": "2.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/db",
-                "reference": "/trunk/@72"
+                "reference": "/tags/2.0.2/@82"
             },
             "require": {
-                "braga/tools": "dev-trunk",
+                "braga/tools": "~2",
                 "php": ">=5.4.0"
             },
             "type": "library",
@@ -44,15 +44,15 @@
                 "oracle",
                 "pdo"
             ],
-            "time": "2016-09-07 17:38:36"
+            "time": "2016-09-25 18:46:16"
         },
         {
             "name": "braga/tools",
-            "version": "dev-trunk",
+            "version": "2.0.2",
             "source": {
                 "type": "svn",
                 "url": "https://svn.code.sf.net/p/braga/code/tools",
-                "reference": "/trunk/@67"
+                "reference": "/tags/2.0.2/@85"
             },
             "require": {
                 "php": ">=5.4"
@@ -75,13 +75,13 @@
                 "libs",
                 "tools"
             ],
-            "time": "2016-09-07 17:06:03"
+            "time": "2016-09-25 19:00:27"
         }
     ],
     "packages-dev": [
         {
             "name": "phpunit/php-code-coverage",
-            "version": "1.2.x-dev",
+            "version": "1.2.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
@@ -142,7 +142,7 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "dev-master",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
@@ -397,34 +397,26 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "1.2.x-dev",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "c39c4511c3b007539eb170c32cbc2af49a07351a"
+                "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/c39c4511c3b007539eb170c32cbc2af49a07351a",
-                "reference": "c39c4511c3b007539eb170c32cbc2af49a07351a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5794e3c5c5ba0fb037b11d8151add2a07fa82875",
+                "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "phpunit/php-text-template": ">=1.1.1@stable"
             },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*@dev"
-            },
             "suggest": {
                 "ext-soap": "*"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
             "autoload": {
                 "classmap": [
                     "PHPUnit/"
@@ -450,11 +442,11 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2014-02-16 12:43:56"
+            "time": "2013-01-13 10:24:48"
         },
         {
             "name": "symfony/yaml",
-            "version": "2.8.x-dev",
+            "version": "v2.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -503,10 +495,8 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
-    "stability-flags": {
-        "braga/db": 20
-    },
+    "minimum-stability": "stable",
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
