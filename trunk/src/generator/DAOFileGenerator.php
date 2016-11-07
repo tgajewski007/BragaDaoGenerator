@@ -896,7 +896,7 @@ class DAOFileGenerator
 			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . ";", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
 			{
-				$this->addLine("use braga\db\mysql\DB;", 0);
+				$this->addLine("use braga\db\pgsql\DB;", 0);
 			}
 			elseif($this->project->getDataBaseStyle() == DataBaseStyle::ORACLE)
 			{
