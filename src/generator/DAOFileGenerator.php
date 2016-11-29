@@ -118,7 +118,7 @@ class DAOFileGenerator
 		$this->addLine("\$key = " . implode(" . \"_\" . ", $tmp1) . ";", 2);
 		$this->addLine("if(!isset(self::\$instance[\$key]))", 2);
 		$this->addLine("{", 2);
-		$this->addLine("self::\$instance[\$key] = new " . $t->getClassName() . "();", 3);
+		$this->addLine("self::\$instance[\$key] = new static();", 3);
 		$this->addLine("self::\$instance[\$key]->setAllFromDB(\$db);", 3);
 		$this->addLine("}", 2);
 		$this->addLine("return self::\$instance[\$key];", 2);
@@ -197,13 +197,13 @@ class DAOFileGenerator
 		$this->addLine("{", 2);
 		$this->addLine("if(!isset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]))", 3);
 		$this->addLine("{", 3);
-		$this->addLine("self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "] = new " . $t->getClassName() . "(" . implode(", ", $tmp3) . ");", 4);
+		$this->addLine("self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "] = new static(" . implode(", ", $tmp3) . ");", 4);
 		$this->addLine("}", 3);
 		$this->addLine("return self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "];", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("return self::\$instance[\"\\\$\".count(self::\$instance)] = new " . $t->getClassName() . "();", 3);
+		$this->addLine("return self::\$instance[\"\\\$\".count(self::\$instance)] = new static();", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
