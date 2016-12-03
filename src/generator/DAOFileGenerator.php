@@ -580,7 +580,7 @@ class DAOFileGenerator
 			$this->addLine(" */", 1);
 			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
-			$this->addLine("return " . $fk->getTable()->getClassName() . "DAO::get(" . implode(", ", $tmp1) . ");", 2);
+			$this->addLine("return \\" . $this->project->getNameSpace() . "obj\\" . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
