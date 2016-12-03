@@ -134,7 +134,7 @@ class DAOFileGenerator
 			$tmp1[] = "\$" . lcfirst($t->getClassName()) . "->get" . ucfirst($c->getClassFieldName()) . "()";
 		}
 
-		$this->addLine("protected static function updateFactoryIndex(" . $t->getClassName() . " \$" . lcfirst($t->getClassName()) . ")", 1);
+		$this->addLine("protected static function updateFactoryIndex(" . $t->getClassName() . "DAO \$" . lcfirst($t->getClassName()) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ",self::\$instance,true);", 2);
 		$this->addLine("if(\$key !== false)", 2);
