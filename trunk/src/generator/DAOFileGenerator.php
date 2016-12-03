@@ -269,7 +269,7 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("\$db->query(\$sql);", 2);
-			$this->addLine("return new Collection(\$db, " . $t->getClassName() . "::get());", 2);
+			$this->addLine("return new Collection(\$db, \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::get());", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
@@ -580,7 +580,7 @@ class DAOFileGenerator
 			$this->addLine(" */", 1);
 			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
-			$this->addLine("return \\" . $this->project->getNameSpace() . "obj\\" . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
+			$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
@@ -673,7 +673,7 @@ class DAOFileGenerator
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
-						$this->addLine("return \\" . $this->project->getNameSpace() . "obj\\" . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
+						$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -------------------------------------------------------------------------", 1);
 					}
@@ -893,7 +893,6 @@ class DAOFileGenerator
 			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
 			$this->addLine("use braga\\db\\DAO;", 0);
 			$this->addLine("use braga\\db\\DataSource;", 0);
-			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . ";", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
 			{
 				$this->addLine("use braga\db\pgsql\DB;", 0);
