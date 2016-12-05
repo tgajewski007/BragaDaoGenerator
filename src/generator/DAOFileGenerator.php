@@ -111,7 +111,7 @@ class DAOFileGenerator
 		}
 		$this->addLine("/**", 1);
 		$this->addLine(" * @param DataSource \$db", 1);
-		$this->addLine(" * @return " . $t->getClassName(), 1);
+		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
 		$this->addLine("static function getByDataSource(DataSource \$db)", 1);
 		$this->addLine("{", 1);
@@ -185,7 +185,7 @@ class DAOFileGenerator
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
 
-		$this->addLine(" * @return " . $t->getClassName() . "", 1);
+		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
 		$this->addLine("static function get(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
@@ -576,7 +576,7 @@ class DAOFileGenerator
 				}
 			}
 			$this->addLine("/**", 1);
-			$this->addLine(" * @return " . $fk->getTable()->getClassName(), 1);
+			$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
