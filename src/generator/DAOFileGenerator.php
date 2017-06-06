@@ -591,7 +591,6 @@ class DAOFileGenerator
 		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
-			$functionName = "set"; // . $fk->getTable()->getClassName();
 			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
@@ -602,14 +601,14 @@ class DAOFileGenerator
 						{
 							if($x->getName() == $cc->fkColumnName)
 							{
-								$tmp1[] = "\$" . lcfirst($fk->getTable()->getClassName()) . "->get" . ucfirst($x->getClassFieldName()) . "()";
+								$tmp1[] = "\$" . lcfirst($fk->getTable()->getClassName()) . "->get" . ucfirst($c->getClassFieldName()) . "()";
 								if(substr($x->getClassFieldName(), 0, 2) == "id")
 								{
-									$functionName .= substr($x->getClassFieldName(), 2);
+									$functionName = substr($x->getClassFieldName(), 2);
 								}
 								else
 								{
-									$functionName .= $x->getClassFieldName();
+									$functionName = $x->getClassFieldName();
 								}
 							}
 						}
@@ -619,12 +618,12 @@ class DAOFileGenerator
 			$this->addLine("/**", 1);
 			$this->addLine(" * @param " . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function " . $functionName . "(" . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()) . ")", 1);
+			$this->addLine("public function set" . $functionName . "(" . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 
 			foreach($tmp1 as $t)
 			{
-				$this->addLine("\$this->id" . ucfirst($fk->getTable()->getClassName()) . " = " . $t . ";", 2);
+				$this->addLine("\$this->id" . ucfirst($functionName) . " = " . $t . ";", 2);
 			}
 
 			$this->addLine("}", 1);
