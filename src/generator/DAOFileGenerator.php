@@ -191,7 +191,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("if(count(self::\$instance) > 100)", 2);
 		$this->addLine("{", 2);
-		$this->addLine("self::\$instance = null;", 3);
+		$this->addLine("self::\$instance = array();", 3);
 		$this->addLine("}", 2);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
