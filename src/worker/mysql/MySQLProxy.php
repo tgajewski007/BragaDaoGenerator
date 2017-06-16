@@ -83,6 +83,9 @@ class MySQLProxy implements ReverseProxy
 				case "mediumtext":
 				case "longtext":
 				case "text":
+				case "mediumblob":
+				case "longblob":
+				case "blob":
 					$tmp->type = ColumnType::TEXT;
 					break;
 				case "enum":
