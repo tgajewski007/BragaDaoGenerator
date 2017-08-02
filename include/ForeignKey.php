@@ -5,7 +5,7 @@
  * package frontoffice
  * error prefix
  */
-class ForeginKey
+class ForeignKey
 {
 	// -------------------------------------------------------------------------
 	protected $name = null;

@@ -128,7 +128,7 @@ class OracleProxy implements ReverseProxy
 		return $retval;
 	}
 	// -------------------------------------------------------------------------
-	public function getForeginKeys($tableName)
+	public function getForeignKeys($tableName)
 	{
 		$db = new DB();
 		$SQL = "SELECT DISTINCT a.CONSTRAINT_NAME, c.COLUMN_NAME, e.COLUMN_NAME, b.TABLE_NAME, b.OWNER, c.POSITION  ";
@@ -150,7 +150,7 @@ class OracleProxy implements ReverseProxy
 		{
 			if(!isset($retval[$db->f(0)]))
 			{
-				$retval[$db->f(0)] = new ReverseForeginKey();
+				$retval[$db->f(0)] = new ReverseForeignKey();
 				$retval[$db->f(0)]->refTableName = $db->f(3);
 				$retval[$db->f(0)]->refTableSchema = $db->f(4);
 			}

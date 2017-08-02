@@ -22,11 +22,17 @@ class MainFileGenerator
 	// -------------------------------------------------------------------------
 	public function GO()
 	{
-		$this->open();
-		$this->generateDoc();
-//		$this->generateDaoFiles();
-		$this->generateClassFiles();
-		$this->close();
+		if(strlen($this->project->getNameSpace()) > 0)
+		{
+		}
+		else
+		{
+			$this->open();
+			$this->generateDoc();
+			$this->generateDaoFiles();
+			$this->generateClassFiles();
+			$this->close();
+		}
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassFiles()

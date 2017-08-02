@@ -25,6 +25,7 @@ class FilesGenerator
 		$f = new self();
 		$f->init();
 		$f->prepareDAOFile();
+		$f->prepareDbFile();
 		$f->prepareClassFile();
 		$f->prepareMainFile();
 		$f->finish();
@@ -33,6 +34,12 @@ class FilesGenerator
 	protected function prepareMainFile()
 	{
 		$d = new MainFileGenerator(self::$project);
+		$d->GO();
+	}
+	// -------------------------------------------------------------------------
+	protected function prepareDbFile()
+	{
+		$d = new DbFileGenerator(self::$project);
 		$d->GO();
 	}
 	// -------------------------------------------------------------------------
@@ -49,7 +56,7 @@ class FilesGenerator
 			case DataBaseStyle::MYSQL:
 				$d = new MySQLDAOFileGenerator(self::$project);
 				break;
-			default:
+			default :
 				$d = new DAOFileGenerator(self::$project);
 				break;
 		}
@@ -98,7 +105,8 @@ class FilesGenerator
 				$d->readProject();
 			}
 			catch(Exception $e)
-			{}
+			{
+			}
 		}
 		return self::$project;
 	}
@@ -177,7 +185,7 @@ class FilesGenerator
 				}
 				foreach($t->getElementsByTagName("fk") as $c)/*@var $c DOMElement */
 				{
-					$fk = ForeginKey::import($c);
+					$fk = ForeignKey::import($c);
 					$tmp = self::$project->getTables();
 					$tmp[$table->getKey()]->addFK($fk);
 				}
@@ -203,7 +211,7 @@ class FilesGenerator
 			if(is_null($table->getErrorPrefix()))
 			{
 				self::$project->setErrorLast(self::$project->getErrorLast() + 1);
-				$table->setErrorPrefix(self::$project->getErrorPrefix() . self::$project->getErrorLast());
+				$table->setErrorPrefix(self::$project->getErrorPrefix() . sprintf("%03d", self::$project->getErrorLast()));
 			}
 			$table->export($t);
 
@@ -214,7 +222,7 @@ class FilesGenerator
 				$columna->export($c);
 			}
 
-			foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+			foreach($table->getFk() as $fk)/* @var $fk ForeignKey */
 			{
 				$k = new DOMElement("fk");
 				$t->appendChild($k);

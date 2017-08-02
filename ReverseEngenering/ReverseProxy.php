@@ -27,7 +27,7 @@ interface ReverseProxy
 	 *
 	 * @return Array
 	 */
-	public function getForeginKeys($tableName);
+	public function getForeignKeys($tableName);
 	// -------------------------------------------------------------------------
 }
 ?>

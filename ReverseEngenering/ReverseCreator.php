@@ -55,7 +55,7 @@ class ReverseCreator
 		$table->setIndexTableSpace($this->indexTableSpace);
 
 		$pk = $this->proxy->getPrimaryKeys($t->tableName);
-		$fk = $this->proxy->getForeginKeys($t->tableName);
+		$fk = $this->proxy->getForeignKeys($t->tableName);
 
 		foreach($this->proxy->getColumn($t->tableName) as $col)/* @var $col ReverseColumn */
 		{
@@ -76,9 +76,9 @@ class ReverseCreator
 			}
 			$table->addColumn($c);
 		}
-		foreach($fk as $key => $x)/* @var $x ReverseForeginKey */
+		foreach($fk as $key => $x)/* @var $x ReverseForeignKey */
 		{
-			$tmp = new ForeginKey();
+			$tmp = new ForeignKey();
 			$tmp->setName($key);
 			$tmp->setTableName($x->refTableName);
 			$tmp->setTableSchema($this->schemaName);

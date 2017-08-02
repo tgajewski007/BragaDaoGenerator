@@ -8,12 +8,13 @@
 class Project
 {
 	// -------------------------------------------------------------------------
-	const VERSION = "EN.2.2.1";
+	const VERSION = "ENNEW.2.2.2";
 	// -------------------------------------------------------------------------
 	protected $xmlFile = null;
 	protected $projectFolder = ".";
-	protected $daoFolder = "dao_obj\\dao";
-	protected $objFolder = "dao_obj";
+	protected $dbFolder = "db";
+	protected $daoFolder = "db\\dao";
+	protected $objFolder = "obj_dao";
 	protected $author = null;
 	protected $dataBaseStyle = DataBaseStyle::ORACLE;
 	protected $name = "Project1";
@@ -22,6 +23,7 @@ class Project
 	protected $errorLast = null;
 	// -------------------------------------------------------------------------
 	protected $tables = array();
+
 	// -------------------------------------------------------------------------
 	public function addTable(Table $table)
 	{
@@ -51,9 +53,9 @@ class Project
 				}
 			}
 		}
-		foreach ($table->getFk() as $fk) /* @var $fk ForeginKey */
+		foreach($table->getFk() as $fk) /* @var $fk ForeignKey */
 		{
-			foreach ($orgTable->getFk() as $orgFk) /* @var $orgFk ForeginKey */
+			foreach($orgTable->getFk() as $orgFk) /* @var $orgFk ForeignKey */
 			{
 				if($fk->getName() == $orgFk->getName())
 				{
@@ -82,6 +84,11 @@ class Project
 	public function setProjectFolder($projectFolder)
 	{
 		$this->projectFolder = $projectFolder;
+	}
+	// -------------------------------------------------------------------------
+	public function setDbFolder($dbFolder)
+	{
+		$this->dbFolder = $dbFolder;
 	}
 	// -------------------------------------------------------------------------
 	public function setDaoFolder($daoFolder)
@@ -135,6 +142,11 @@ class Project
 	public function getProjectFolder()
 	{
 		return $this->projectFolder;
+	}
+	// -------------------------------------------------------------------------
+	public function getDbFolder()
+	{
+		return $this->dbFolder;
 	}
 	// -------------------------------------------------------------------------
 	public function getDaoFolder()
