@@ -15,6 +15,8 @@ class DAOFileGenerator
 	protected $project = null;
 	protected $fileHandle = null;
 	// -------------------------------------------------------------------------
+	protected $file = null;
+	// -------------------------------------------------------------------------
 	function __construct(Project $p)
 	{
 		$this->project = $p;
@@ -24,10 +26,15 @@ class DAOFileGenerator
 	{
 		foreach($this->project->getTables() as $t)/* @var $t Table */
 		{
-			$this->open($t);
-			$this->generateNameSpace();
-			$this->prepareClass($t);
-			$this->close();
+			@mkdir($this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder(), 0777, true);
+			$this->file = $this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder() . "\\" . $t->getClassName() . "DAO.php";
+			if(FORCE_GEN_DB)
+			{
+				$this->open($t);
+				$this->generateNameSpace($t);
+				$this->prepareClass($t);
+				$this->close();
+			}
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -50,7 +57,7 @@ class DAOFileGenerator
 		$this->generateClassDocumentation($t);
 		$this->generateClassHead($t);
 		$this->generateProperties($t);
-		$this->generateConstruktor($t);
+		$this->generateConstructor($t);
 		$this->generateStaticGetMethod($t);
 		$this->generateUpdateFactoryIndex($t);
 		$this->generateStaticGetByDataSourceMethod($t);
@@ -66,7 +73,8 @@ class DAOFileGenerator
 		$this->generateDestroy($t);
 
 		$this->generateSetAllFromDB($t);
-		$this->generateGetAllForForeginColumn($t);
+		$this->generateGetAllExample($t);
+		$this->generateGetAllForForeignColumn($t);
 		$this->generateClassFooter();
 	}
 	// -------------------------------------------------------------------------
@@ -207,9 +215,27 @@ class DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateGetAllForForeginColumn(Table $t)
+	protected function generateGetAllExample(Table $t)
 	{
-		foreach($t->getFk() as $fk) /* @var $fk ForeginKey */
+		$this->addLine("/**", 1);
+		$this->addLine(" * Metoda zwraca kolekcję wszystkich obiektów klasy " . $t->getClassName(), 1);
+		$this->addLine(" * zapisanych jako rekordy w tabeli " . $t->getName(), 1);
+		$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
+		$this->addLine(" */", 1);
+		$this->addLine("public static function getAll()", 1);
+		$this->addLine("{", 1);
+		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$sql  = \"SELECT * \";", 2);
+		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$db->query(\$sql);", 2);
+		$this->addLine("return new Collection(\$db, self::get());", 2);
+		$this->addLine("}", 1);
+		$this->addLine("// -------------------------------------------------------------------------", 1);
+	}
+	// -------------------------------------------------------------------------
+	protected function generateGetAllForForeignColumn(Table $t)
+	{
+		foreach($t->getFk() as $fk) /* @var $fk ForeignKey */
 		{
 			$fkTable = $fk->getTable();
 			$functioName = "getAllBy";
@@ -227,7 +253,7 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("/**", 1);
-			$this->addLine(" * Metoda zrwaca kolekcję obiektów klasy " . $t->getClassName(), 1);
+			$this->addLine(" * Metoda zwraca kolekcję obiektów klasy " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
@@ -287,7 +313,7 @@ class DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeginKey)
+			elseif($c instanceof ColumnForeignKey)
 			{
 				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
 				{
@@ -348,7 +374,7 @@ class DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeginKey)
+			elseif($c instanceof ColumnForeignKey)
 			{
 				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
 				{
@@ -413,7 +439,7 @@ class DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeginKey)
+			elseif($c instanceof ColumnForeignKey)
 			{
 				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
 				{
@@ -578,10 +604,10 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateGetterObject(Table $table)
 	{
-		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+		foreach($table->getFk() as $fk)/* @var $fk ForeignKey */
 		{
 			$tmp1 = array();
-			$functionName = "get";// . $fk->getTable()->getClassName();
+			$functionName = "get"; // . $fk->getTable()->getClassName();
 			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
@@ -631,7 +657,7 @@ class DAOFileGenerator
 		{
 			if($t != $table)
 			{
-				foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
+				foreach($t->getFk() as $fk)/* @var $fk ForeignKey */
 				{
 					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
 					{
@@ -665,6 +691,30 @@ class DAOFileGenerator
 				}
 			}
 		}
+	}
+	// -------------------------------------------------------------------------
+	protected function generateUseObjects(Table $table)
+	{
+		$uses = array(
+					$table->getClassName() => $table->getClassName() );
+		foreach($this->project->getTables() as $t)
+		{
+			foreach($t->getFk() as $fk)/* @var $fk ForeignKey */
+			{
+				if($t != $table)
+				{
+					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
+					{
+						$uses[$t->getClassName()] = $t->getClassName();
+					}
+				}
+				else
+				{
+					$uses[$fk->getTable()->getClassName()] = $fk->getTable()->getClassName();
+				}
+			}
+		}
+		return $uses;
 	}
 	// -------------------------------------------------------------------------
 	protected function generateGetter($classFieldName)
@@ -798,7 +848,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		foreach($t->getColumny() as $c) /* @var $c Column */
 		{
-			if($c instanceof ColumnForeginKey)
+			if($c instanceof ColumnForeignKey)
 			{
 				$columns = $c->getTable()->getColumny();
 				foreach($c->getClassFieldName() as $key => $s)
@@ -817,7 +867,7 @@ class DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateConstruktor(Table $t)
+	protected function generateConstructor(Table $t)
 	{
 		$this->addLine("/**", 1);
 		$tmp1 = array();
@@ -858,9 +908,9 @@ class DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateClassHead($t)
+	protected function generateClassHead(Table $t)
 	{
-		$this->addLine("class " . $t->getClassName() . "DAO", 0);
+		$this->addLine("abstract class " . $t->getClassName() . "DAO", 0);
 		$this->addLine("{", 0);
 	}
 	// -------------------------------------------------------------------------
@@ -878,7 +928,7 @@ class DAOFileGenerator
 		$this->addLine(" * max error " . $t->getErrorPrefix() . "04", 0);
 		$this->addLine(" * Genreated by SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
 		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
-		$this->addLine(" * Designed by schama CRUD http://wikipedia.org/wiki/CRUD", 0);
+		$this->addLine(" * Designed by schema CRUD http://wikipedia.org/wiki/CRUD", 0);
 		$this->addLine(" * class generated automatically, please do not modify under pain of ", 0);
 		$this->addLine(" * OVERWRITTEN WITHOUT WARNING ", 0);
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
@@ -886,21 +936,26 @@ class DAOFileGenerator
 		$this->addLine(" */", 0);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateNameSpace()
+	protected function generateNameSpace(Table $t)
 	{
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
-			$this->addLine("namespace " . $this->project->getNameSpace() . ";", 0);
-			$this->addLine("use Braga\DataSource;", 0);
-			$this->addLine("use Braga\DB;", 0);
-			$this->addLine("use Braga\Collection;", 0);
+			$this->addLine("namespace " . $this->project->getNameSpace() . "\\" . $this->project->getDaoFolder() . ";\n", 0);
+			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\DB;", 0);
+			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\Collection;", 0);
+			// $this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\iface\\DAO;", 0);
+			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\iface\\DataSource;", 0);
+			$uses = $this->generateUseObjects($t);
+			foreach($uses as $obj)
+			{
+				$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getObjFolder() . "\\" . $obj . ";", 0);
+			}
 		}
 	}
 	// -------------------------------------------------------------------------
 	protected function open(Table $t)
 	{
-		@mkdir($this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder(), 0777, true);
-		$this->fileHandle = fopen($this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder() . "\\" . $t->getClassName() . "DAO.php", "w");
+		$this->fileHandle = fopen($this->file, "w");
 		$this->addLine("<?php", 0);
 	}
 	// -------------------------------------------------------------------------

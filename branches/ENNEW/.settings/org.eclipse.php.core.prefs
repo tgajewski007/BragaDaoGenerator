@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
+
 phpVersion=php7.1
+
 useShortTags=false
+include_path=0;/SimplePHPDAOGenerator_ENNEW/UnitTest\u00050;/SimplePHPDAOGenerator_ENNEW/ReverseEngenering\u00050;/SimplePHPDAOGenerator_ENNEW/include\u00055;org.eclipse.dltk.USER_LIBRARY/PEAR

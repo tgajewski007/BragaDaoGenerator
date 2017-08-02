@@ -179,7 +179,7 @@ class ProjectTest extends PHPUnit_Framework_TestCase
 		$c5->setType(ColumnType::NUMBER);
 		$c5->setSize(22);
 		
-		$fk1 = new ForeginKey();
+		$fk1 = new ForeignKey();
 		$fk1->setTableName($t->getName());
 		$fk1->setTableSchema($t->getSchema());
 		$fk1->addColumn("IDKLIENTTEST1", "IDKLIENT");

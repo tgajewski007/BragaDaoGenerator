@@ -24,7 +24,7 @@ class Table
 		$this->columns[$c->getKey()] = $c;
 	}
 	// -------------------------------------------------------------------------
-	public function addFK(ForeginKey $fk)
+	public function addFK(ForeignKey $fk)
 	{
 		$this->fk[$fk->getName()] = $fk;
 	}

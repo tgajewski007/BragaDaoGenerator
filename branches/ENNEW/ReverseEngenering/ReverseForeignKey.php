@@ -5,7 +5,7 @@
  * package frontoffice
  * error prefix
  */
-class ReverseForeginKey
+class ReverseForeignKey
 {
 	// -------------------------------------------------------------------------
 	public $refTableName = null;

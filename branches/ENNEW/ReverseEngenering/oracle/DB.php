@@ -102,8 +102,7 @@ class DB implements DataSource
 	 * query
 	 * Funkcja wykonuje właściwe zapytanie do bazy danych
 	 * @return bool true jeżeli ok false jeżeli zapytanie kończy się błędem
-	 * @var string $sql
-	 * zapytania SQL
+	 * @var string $sql zapytania SQL
 	 */
 	public function query($sql)
 	{
@@ -295,7 +294,7 @@ class DB implements DataSource
 			{
 				$this->database = "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = " . $this->serwer . ")(PORT = " . $this->port . "))(CONNECT_DATA = (SID = " . $this->sid . ")))";
 			}
-			
+
 			$this->setConnectionObject(oci_pconnect($this->userName, $this->password, $this->database, 'UTF8'));
 			if(is_resource($this->getConnectionObject()))
 			{
@@ -399,12 +398,12 @@ class DB implements DataSource
 		$message = @$ociErrors["message"];
 		$offset = @$ociErrors["offset"];
 		$sqltext = @$ociErrors["sqltext"];
-		
+
 		$txt = $errorDesc;
-		$txt .= Tags::br();
-		$txt .= Tags::p($code . " " . $message);
-		$txt .= Tags::code($sqltext);
-		AddSQLError($txt);
+		// $txt .= Tags::br();
+		// $txt .= Tags::p($code . " " . $message);
+		// $txt .= Tags::code($sqltext);
+		// AddSQLError($txt);
 		$this->error[] = $message;
 	}
 	// -------------------------------------------------------------------------
