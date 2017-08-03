@@ -28,7 +28,7 @@ class DAOFileGenerator
 		{
 			@mkdir($this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder(), 0777, true);
 			$this->file = $this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder() . "\\" . $t->getClassName() . "DAO.php";
-			if(FORCE_GEN_DB)
+			if(FORCE_GEN_DB || !file_exists($this->file))
 			{
 				$this->open($t);
 				$this->generateNameSpace($t);
@@ -118,7 +118,7 @@ class DAOFileGenerator
 		$this->addLine(" * @param DataSource \$db", 1);
 		$this->addLine(" * @return " . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
-		$this->addLine("static function getByDataSource(DataSource \$db)", 1);
+		$this->addLine("static function getByDataSource(DataSource \$db): " . $t->getClassName(), 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = " . implode(" . \"_\" . ", $tmp1) . ";", 2);
 		$this->addLine("if(!isset(self::\$instance[\$key]))", 2);
@@ -139,6 +139,9 @@ class DAOFileGenerator
 			$tmp1[] = "\$" . lcfirst($t->getClassName()) . "->get" . ucfirst($c->getClassFieldName()) . "()";
 		}
 
+		$this->addLine("/**", 1);
+		$this->addLine(" * @param " . $t->getClassName() . " \$" . lcfirst($t->getClassName()) . "", 1);
+		$this->addLine(" */", 1);
 		$this->addLine("protected static function updateFactoryIndex(" . $t->getClassName() . " \$" . lcfirst($t->getClassName()) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ",self::\$instance,true);", 2);
@@ -175,8 +178,8 @@ class DAOFileGenerator
 		$tmp3 = array();
 		foreach($pkField as $c) /* @var $c Column */
 		{
-			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
-			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
+			$this->addLine(" * @param " . $c->getPHPType() . " \$" . $c->getClassFieldName() . "", 1);
+			$tmp1[] = "?" . $c->getPHPType() . " \$" . $c->getClassFieldName() . " = null";
 			switch($c->getType())
 			{
 				case ColumnType::FLOAT:
@@ -192,24 +195,26 @@ class DAOFileGenerator
 
 		$this->addLine(" * @return " . $t->getClassName() . "", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("static function get(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("static function get(" . implode(", ", $tmp1) . "): " . $t->getClassName() . "", 1);
 		$this->addLine("{", 1);
-		$this->addLine("if(count(self::\$instance) > 100)", 2);
-		$this->addLine("{", 2);
-		$this->addLine("self::\$instance = null;", 3);
-		$this->addLine("}", 2);
+		$this->addLine("\$retval = null;", 2);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(!isset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]))", 3);
 		$this->addLine("{", 3);
 		$this->addLine("self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "] = new " . $t->getClassName() . "(" . implode(", ", $tmp3) . ");", 4);
 		$this->addLine("}", 3);
-		$this->addLine("return self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "];", 3);
+		$this->addLine("\$retval = self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "];", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("return self::\$instance[\"\\\$\".count(self::\$instance)] = new " . $t->getClassName() . "();", 3);
+		$this->addLine("\$retval = self::\$instance[\"\\\$\".count(self::\$instance)] = new " . $t->getClassName() . "();", 3);
 		$this->addLine("}", 2);
+		$this->addLine("if(count(self::\$instance) > static::CACHE_SIZE)", 2);
+		$this->addLine("{", 2);
+		$this->addLine("array_shift(self::\$instance);", 3);
+		$this->addLine("}", 2);
+		$this->addLine("return \$retval;", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
@@ -237,7 +242,7 @@ class DAOFileGenerator
 			$this->addLine(" * Metoda zwraca kolekcję obiektów klasy " . $t->getClassName(), 1);
 			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
+			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . "): Collection", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql  = \"SELECT * \";", 2);
@@ -309,9 +314,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Metoda usuwa obiekt klasy " . $t->getClassName(), 1);
 		$this->addLine(" * będącego rekordem w tabeli " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function destroy()", 1);
+		$this->addLine("protected function destroy(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql  = \"DELETE FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
@@ -371,14 +376,14 @@ class DAOFileGenerator
 		$this->addLine(" * Metoda odczytuje obiekt klasy " . $t->getClassName(), 1);
 		$this->addLine(" * (możesz odczytać każdy atrybut obiektu funkcją get...())", 1);
 		$this->addLine(" * wybrany jako rekord z tabeli " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
 		foreach($pk as $c)/* @var $c Column */
 		{
 			$tmp1[] = "\$" . $c->getClassFieldName();
 		}
-		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . "): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
@@ -435,9 +440,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Metoda modyfikuje obiekt klasy " . $t->getClassName(), 1);
 		$this->addLine(" * aktualizując rekord w tabeli " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function update()", 1);
+		$this->addLine("protected function update(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 
@@ -520,9 +525,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Metoda dodaje obiekt klasy " . $t->getClassName(), 1);
 		$this->addLine(" * wstawiając rekord do tabeli " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function create()", 1);
+		$this->addLine("protected function create(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 
@@ -616,7 +621,7 @@ class DAOFileGenerator
 			$this->addLine("/**", 1);
 			$this->addLine(" * @return " . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function " . $functionName . "()", 1);
+			$this->addLine("public function " . $functionName . "(): " . $fk->getTable()->getClassName(), 1);
 			$this->addLine("{", 1);
 			$this->addLine("return " . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
@@ -663,7 +668,7 @@ class DAOFileGenerator
 						$this->addLine(" * Metoda zwraca kolekcję obiektów klasy " . $t->getClassName(), 1);
 						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 						$this->addLine(" */", 1);
-						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
+						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "(): Collection", 1);
 						$this->addLine("{", 1);
 						$this->addLine("return " . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
@@ -686,11 +691,13 @@ class DAOFileGenerator
 				{
 					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
 					{
+						$uses["Collection"] = "Collection";
 						$uses[$t->getClassName()] = $t->getClassName();
 					}
 				}
 				else
 				{
+					$uses["Collection"] = "Collection";
 					$uses[$fk->getTable()->getClassName()] = $fk->getTable()->getClassName();
 				}
 			}
@@ -709,7 +716,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateIsReaded()
 	{
-		$this->addLine("protected function isReaded()", 1);
+		$this->addLine("protected function isReaded(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("return \$this->readed;", 2);
 		$this->addLine("}", 1);
@@ -857,10 +864,11 @@ class DAOFileGenerator
 		foreach($t->getPk() as $c) /* @var $c Column */
 		{
 			$this->addLine(" * @param " . $c->getPHPType() . " \$" . $c->getClassFieldName() . "", 1);
-			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
+			$tmp1[] = "?" . $c->getPHPType() . " \$" . $c->getClassFieldName() . " = null";
 			$tmp2[] = "!is_null(\$" . $c->getClassFieldName() . ")";
 			$tmp3[] = "\$" . $c->getClassFieldName() . "";
 		}
+		$this->addLine(" * @throws \\Exception", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function __construct(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
@@ -879,6 +887,8 @@ class DAOFileGenerator
 	protected function generateProperties(Table $table)
 	{
 		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addLine("const CACHE_SIZE = 100;", 1);
+		$this->addLine("// -------------------------------------------------------------------------", 1);
 		$this->addLine("protected static \$instance = array();", 1);
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 		foreach($table->getColumny() as $c) /* @var $c Column */
@@ -891,7 +901,7 @@ class DAOFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateClassHead(Table $t)
 	{
-		$this->addLine("abstract class " . $t->getClassName() . "DAO", 0);
+		$this->addLine("abstract class " . $t->getClassName() . "DAO implements DAO", 0);
 		$this->addLine("{", 0);
 	}
 	// -------------------------------------------------------------------------
@@ -903,15 +913,15 @@ class DAOFileGenerator
 	protected function generateClassDocumentation(Table $t)
 	{
 		$this->addLine("/**", 0);
-		$this->addLine(" * Created on " . date("d-m-Y H:i:s"), 0);
+		$this->addLine(" * Utworzono " . date("d-m-Y H:i:s"), 0);
 		$this->addLine(" * tabela " . $t->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
 		$this->addLine(" * max error " . $t->getErrorPrefix() . "04", 0);
-		$this->addLine(" * Genreated by SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
-		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
-		$this->addLine(" * Designed by schema CRUD http://wikipedia.org/wiki/CRUD", 0);
-		$this->addLine(" * class generated automatically, please do not modify under pain of ", 0);
-		$this->addLine(" * OVERWRITTEN WITHOUT WARNING ", 0);
+		$this->addLine(" * Wygenerowane przez SimplePHPDAOClassGenerator v" . Project::VERSION, 0);
+		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/code/branches/ENNEW ", 0);
+		$this->addLine(" * Utworzono zgodnie ze schematem CRUD http://wikipedia.org/wiki/CRUD", 0);
+		$this->addLine(" * Klasa wygenerowana automatycznie", 0);
+		$this->addLine(" * NIE NALEŻY MODYFIKOWAĆ KODU", 0);
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" */", 0);
@@ -923,10 +933,14 @@ class DAOFileGenerator
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "\\" . $this->project->getDaoFolder() . ";\n", 0);
 			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\DB;", 0);
-			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\Collection;", 0);
-			// $this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\iface\\DAO;", 0);
+			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\iface\\DAO;", 0);
 			$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\iface\\DataSource;", 0);
 			$uses = $this->generateUseObjects($t);
+			if(isset($uses["Collection"]))
+			{
+				$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getDbFolder() . "\\framework_dao\\Collection;", 0);
+				unset($uses["Collection"]);
+			}
 			foreach($uses as $obj)
 			{
 				$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getObjFolder() . "\\" . $obj . ";", 0);
