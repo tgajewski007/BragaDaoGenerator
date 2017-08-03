@@ -73,7 +73,6 @@ class DAOFileGenerator
 		$this->generateDestroy($t);
 
 		$this->generateSetAllFromDB($t);
-		$this->generateGetAllExample($t);
 		$this->generateGetAllForForeignColumn($t);
 		$this->generateClassFooter();
 	}
@@ -215,24 +214,6 @@ class DAOFileGenerator
 		$this->addLine("// -------------------------------------------------------------------------", 1);
 	}
 	// -------------------------------------------------------------------------
-	protected function generateGetAllExample(Table $t)
-	{
-		$this->addLine("/**", 1);
-		$this->addLine(" * Metoda zwraca kolekcję wszystkich obiektów klasy " . $t->getClassName(), 1);
-		$this->addLine(" * zapisanych jako rekordy w tabeli " . $t->getName(), 1);
-		$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
-		$this->addLine(" */", 1);
-		$this->addLine("public static function getAll()", 1);
-		$this->addLine("{", 1);
-		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$sql  = \"SELECT * \";", 2);
-		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
-		$this->addLine("\$db->query(\$sql);", 2);
-		$this->addLine("return new Collection(\$db, self::get());", 2);
-		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
-	}
-	// -------------------------------------------------------------------------
 	protected function generateGetAllForForeignColumn(Table $t)
 	{
 		foreach($t->getFk() as $fk) /* @var $fk ForeignKey */
@@ -313,16 +294,16 @@ class DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeignKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
-			}
+			// elseif($c instanceof ColumnForeignKey)
+			// {
+			// foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
+			// {
+			// if($z instanceof ColumnPrimaryKey)
+			// {
+			// $data[$z->getKey()] = $z;
+			// }
+			// }
+			// }
 		}
 
 		$this->addLine("/**", 1);
@@ -374,16 +355,16 @@ class DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeignKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
-			}
+			// elseif($c instanceof ColumnForeignKey)
+			// {
+			// foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
+			// {
+			// if($z instanceof ColumnPrimaryKey)
+			// {
+			// $data[$z->getKey()] = $z;
+			// }
+			// }
+			// }
 		}
 
 		$this->addLine("/**", 1);
@@ -439,16 +420,16 @@ class DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeignKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
-			}
+			// elseif($c instanceof ColumnForeignKey)
+			// {
+			// foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
+			// {
+			// if($z instanceof ColumnPrimaryKey)
+			// {
+			// $data[$z->getKey()] = $z;
+			// }
+			// }
+			// }
 		}
 
 		$this->addLine("/**", 1);
@@ -848,18 +829,18 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		foreach($t->getColumny() as $c) /* @var $c Column */
 		{
-			if($c instanceof ColumnForeignKey)
-			{
-				$columns = $c->getTable()->getColumny();
-				foreach($c->getClassFieldName() as $key => $s)
-				{
-					$this->addLine("\$this->set" . ucfirst($s) . "(\$db->f(\"" . $columns[$key]->getName() . "\"));", 2);
-				}
-			}
-			else
-			{
-				$this->addLine("\$this->set" . ucfirst($c->getClassFieldName()) . "(\$db->f(\"" . $c->getKey() . "\"));", 2);
-			}
+			// if($c instanceof ColumnForeignKey)
+			// {
+			// $columns = $c->getTable()->getColumny();
+			// foreach($c->getClassFieldName() as $key => $s)
+			// {
+			// $this->addLine("\$this->set" . ucfirst($s) . "(\$db->f(\"" . $columns[$key]->getName() . "\"));", 2);
+			// }
+			// }
+			// else
+			// {
+			$this->addLine("\$this->set" . ucfirst($c->getClassFieldName()) . "(\$db->f(\"" . $c->getKey() . "\"));", 2);
+			// }
 		}
 		$this->addLine("\$this->setReaded();", 2);
 
