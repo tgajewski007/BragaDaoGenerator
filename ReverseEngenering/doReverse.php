@@ -15,8 +15,8 @@ $name = "EN";
 $xmlFile = $folder . "dao.xml";
 $nameSpace = "pp\\en";
 // ------------------------------------------------------------------------------
-define("FORCE_GEN_CLASS", false);
-define("FORCE_GEN_DB", false);
+define("FORCE_GEN_CLASS", true);
+define("FORCE_GEN_DB", true);
 define("FORCE_GEN_DAO", true);
 // ------------------------------------------------------------------------------
 

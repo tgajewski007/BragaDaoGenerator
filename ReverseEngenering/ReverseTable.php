@@ -11,6 +11,7 @@ class ReverseTable
 	public $tableName;
 	public $tableSpace;
 	public $haveAutoNumberPKField = false;
+	public $tableType;
 	// -------------------------------------------------------------------------
 }
 ?>

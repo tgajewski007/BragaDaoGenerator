@@ -50,7 +50,7 @@ class DbFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("abstract class " . $t->getClassName() . "DB extends " . $t->getClassName() . "DAO", 0);
 		$this->addLine("{", 0);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassDocumentation(Table $t)
@@ -90,7 +90,7 @@ class DbFileGenerator extends DAOFileGenerator
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("return new Collection(\$db, " . $t->getClassName() . "::get());", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 }

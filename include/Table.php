@@ -14,10 +14,30 @@ class Table
 	protected $tableSpace = null;
 	protected $indexTableSpace = null;
 	protected $errorPrefix = null;
+	protected $tableType = null;
 	// -------------------------------------------------------------------------
 	protected $columns = array();
 	protected $fk = array();
 	protected $pk = null;
+	// -------------------------------------------------------------------------
+	/**
+	 *
+	 * @return mixed
+	 */
+	public function getTableType()
+	{
+		return $this->tableType;
+	}
+	// -------------------------------------------------------------------------
+	/**
+	 *
+	 * @param mixed $tableType
+	 */
+	public function setTableType($tableType)
+	{
+		$this->tableType = $tableType;
+	}
+
 	// -------------------------------------------------------------------------
 	public function addColumn(Column $c)
 	{
@@ -166,6 +186,7 @@ class Table
 		$className = $table->getAttribute("className");
 		$tableSpace = $table->getAttribute("tableSpace");
 		$indexTableSpace = $table->getAttribute("indexTableSpace");
+		$tableType = $table->getAttribute("tableType");
 		$errorPrefix = $table->getAttribute("errorPrefix");
 
 		$t->setName($name);
@@ -173,6 +194,7 @@ class Table
 		$t->setClassName($className);
 		$t->setTableSpace($tableSpace);
 		$t->setIndexTableSpace($indexTableSpace);
+		$t->setTableType($tableType);
 		$t->setErrorPrefix($errorPrefix);
 
 		return $t;
@@ -184,6 +206,7 @@ class Table
 		$t->setAttribute("className", $this->getClassName());
 		$t->setAttribute("tableSpace", $this->getTableSpace());
 		$t->setAttribute("indexTableSpace", $this->getIndexTableSpace());
+		$t->setAttribute("tableSpace", $this->getTableType());
 		$t->setAttribute("errorPrefix", $this->getErrorPrefix());
 		$t->setAttribute("schema", $this->getSchema());
 	}

@@ -52,13 +52,21 @@ class ReverseCreator
 		}
 		$table->setClassName($className);
 		$table->setTableSpace($t->tableSpace);
+		$table->setTableType($t->tableType);
 		$table->setIndexTableSpace($this->indexTableSpace);
 
 		$pk = $this->proxy->getPrimaryKeys($t->tableName);
 		$fk = $this->proxy->getForeignKeys($t->tableName);
 
-		foreach($this->proxy->getColumn($t->tableName) as $col)/* @var $col ReverseColumn */
+		$pkCnt = count($pk);
+		foreach($this->proxy->getColumn($t->tableName, $t->tableType) as $col)/* @var $col ReverseColumn */
 		{
+			if($t->tableType == 'mview' && $pkCnt == 0)
+			{
+				$tmp = new ReversePrimaryKey();
+				$tmp->name = $col->name;
+				$pk[$tmp->name] = $tmp;
+			}
 			$c = new Column();
 			$c->setName($col->name);
 			$classFieldName = Column::convertFieldNameToClassName($col->name);

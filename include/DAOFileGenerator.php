@@ -28,7 +28,7 @@ class DAOFileGenerator
 		{
 			@mkdir($this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder(), 0777, true);
 			$this->file = $this->project->getProjectFolder() . "\\" . $this->project->getDaoFolder() . "\\" . $t->getClassName() . "DAO.php";
-			if(FORCE_GEN_DB || !file_exists($this->file))
+			if(FORCE_GEN_DAO || !file_exists($this->file))
 			{
 				$this->open($t);
 				$this->generateNameSpace($t);
@@ -52,6 +52,31 @@ class DAOFileGenerator
 		fwrite($this->fileHandle, $tmp);
 	}
 	// -------------------------------------------------------------------------
+	/**
+	 * Dodaje linię podkreślenia &lt;$indent&gt;// &lt;$spacer&gt; x &lt;$cols&gt;
+	 * @param string $spacer
+	 * @param number $indent
+	 * @param number $cols
+	 */
+	protected function addSpacer($spacer = "-", $indent = 1, $cols = 73)
+	{
+		$this->addLine("// " . str_repeat($spacer, $cols), $indent);
+	}
+	// -------------------------------------------------------------------------
+	protected function addPhpDoc(array $linie, int $indent = 0)
+	{
+		$this->addLine("/**", $indent);
+		foreach($linie as $linia)
+		{
+			$ls = explode("\n", $linia);
+			foreach($ls as $l)
+			{
+				$this->addLine(" * " . $l, $indent);
+			}
+		}
+		$this->addLine(" */", $indent);
+	}
+	// -------------------------------------------------------------------------
 	protected function prepareClass(Table $t)
 	{
 		$this->generateClassDocumentation($t);
@@ -68,10 +93,16 @@ class DAOFileGenerator
 		$this->generateGetterCollection($t);
 		$this->generateGetterObject($t);
 		$this->generateRead($t);
-		$this->generateCreate($t);
-		$this->generateUpdate($t);
-		$this->generateDestroy($t);
-
+		if($t->getTableType() == 'table')
+		{
+			$this->generateCreate($t);
+			$this->generateUpdate($t);
+			$this->generateDestroy($t);
+		}
+		else
+		{
+			$this->generateFakeSave();
+		}
 		$this->generateSetAllFromDB($t);
 		$this->generateGetAllForForeignColumn($t);
 		$this->generateClassFooter();
@@ -96,7 +127,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("return " . implode(" . \"_\" . ", $tmp1) . ";", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateStaticGetByDataSourceMethod($t)
@@ -128,7 +159,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("return self::\$instance[\$key];", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateUpdateFactoryIndex(Table $t)
@@ -158,7 +189,7 @@ class DAOFileGenerator
 		$this->addLine("self::\$instance[" . implode(" . \"_\" . ", $tmp1) . "] = \$" . lcfirst($t->getClassName()) . ";", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateStaticGetMethod(Table $t)
@@ -216,7 +247,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("return \$retval;", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateGetAllForForeignColumn(Table $t)
@@ -281,7 +312,7 @@ class DAOFileGenerator
 			$this->addLine("\$db->query(\$sql);", 2);
 			$this->addLine("return new Collection(\$db, " . $t->getClassName() . "::get());", 2);
 			$this->addLine("}", 1);
-			$this->addLine("// -------------------------------------------------------------------------", 1);
+			$this->addSpacer();
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -343,7 +374,7 @@ class DAOFileGenerator
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateRead(Table $t)
@@ -408,7 +439,7 @@ class DAOFileGenerator
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateUpdate(Table $t)
@@ -499,7 +530,7 @@ class DAOFileGenerator
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateCreate(Table $t)
@@ -585,7 +616,7 @@ class DAOFileGenerator
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateGetterObject(Table $table)
@@ -625,7 +656,7 @@ class DAOFileGenerator
 			$this->addLine("{", 1);
 			$this->addLine("return " . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
 			$this->addLine("}", 1);
-			$this->addLine("// -------------------------------------------------------------------------", 1);
+			$this->addSpacer();
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -672,7 +703,7 @@ class DAOFileGenerator
 						$this->addLine("{", 1);
 						$this->addLine("return " . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
 						$this->addLine("}", 1);
-						$this->addLine("// -------------------------------------------------------------------------", 1);
+						$this->addSpacer();
 					}
 				}
 			}
@@ -711,7 +742,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("return \$this->" . $classFieldName . ";", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateIsReaded()
@@ -720,24 +751,32 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("return \$this->readed;", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 		$this->addLine("protected function setReaded()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$this->readed = true;", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
-	protected function generateSetter(Column $c)
+	protected function generateSetter(Column $c, $private = false)
 	{
-		if($c->isAutoGenerated() && $c->isPK())
+		if($private == false)
 		{
-			$this->addLine("protected function set" . ucfirst($c->getClassFieldName()) . "(\$" . $c->getClassFieldName() . ")", 1);
+			if($c->isAutoGenerated() && $c->isPK())
+			{
+				$use = "protected";
+			}
+			else
+			{
+				$use = "public";
+			}
 		}
 		else
 		{
-			$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(\$" . $c->getClassFieldName() . ")", 1);
+			$use = "private";
 		}
+		$this->addLine($use . " function set" . ucfirst($c->getClassFieldName()) . "(\$" . $c->getClassFieldName() . ")", 1);
 		$this->addLine("{", 1);
 		switch($c->getType())
 		{
@@ -814,14 +853,14 @@ class DAOFileGenerator
 				break;
 		}
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateSetters(Table $t)
 	{
 		foreach($t->getColumny() as $c)/* @var $c Column */
 		{
-			$this->generateSetter($c);
+			$this->generateSetter($c, $t->getTableType() != 'table');
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -852,7 +891,7 @@ class DAOFileGenerator
 		$this->addLine("\$this->setReaded();", 2);
 
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateConstructor(Table $t)
@@ -881,22 +920,25 @@ class DAOFileGenerator
 		$this->addLine("}", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateProperties(Table $table)
 	{
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
+		$this->addPhpDoc(array(
+								"Ilość rekordów pamiętanych w cache",
+								"@var integer" ), 1);
 		$this->addLine("const CACHE_SIZE = 100;", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 		$this->addLine("protected static \$instance = array();", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 		foreach($table->getColumny() as $c) /* @var $c Column */
 		{
 			$this->addLine("protected \$" . $c->getClassFieldName() . " = null;", 1);
 		}
 		$this->addLine("protected \$readed = false;", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassHead(Table $t)
@@ -946,6 +988,16 @@ class DAOFileGenerator
 				$this->addLine("use " . $this->project->getNameSpace() . "\\" . $this->project->getObjFolder() . "\\" . $obj . ";", 0);
 			}
 		}
+	}
+	private function generateFakeSave()
+	{
+		$this->addPhpDoc(array(
+								"Metoda niedozwolona w tym obiekcie\nzamarkowana tylko dla zgodności z interface DAO" ), 1);
+		$this->addLine("public function save(): bool", 1);
+		$this->addLine("{", 1);
+		$this->addLine("return false;", 2);
+		$this->addLine("}", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function open(Table $t)

@@ -17,7 +17,7 @@ interface ReverseProxy
 	 *
 	 * @return Array
 	 */
-	public function getColumn($tableName);
+	public function getColumn($tableName, $tableType = 'table');
 	/**
 	 *
 	 * @return Array
