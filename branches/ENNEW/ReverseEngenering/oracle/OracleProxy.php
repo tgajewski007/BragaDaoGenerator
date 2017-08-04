@@ -28,6 +28,19 @@ class OracleProxy implements ReverseProxy
 			$trigger[$db->f(0)] = true;
 		}
 
+		$SQL = "SELECT mview_name, container_name ";
+		$SQL .= "FROM all_mviews ";
+		$SQL .= "WHERE owner = :ORA_SCHEMA ";
+		$SQL .= "ORDER BY mview_name ";
+		$db->setParam("ORA_SCHEMA", ORA_SCHEMA, true);
+		echo "selecting materialized views ....\n";
+		$db->query($SQL);
+		$mviews = array();
+		while($db->nextRecord())
+		{
+			$mviews[$db->f(0)] = true;
+		}
+
 		$SQL = "SELECT table_name, tablespace_name ";
 		$SQL .= "FROM all_tables ";
 		$SQL .= "WHERE owner = :ORA_SCHEMA ";
@@ -42,12 +55,31 @@ class OracleProxy implements ReverseProxy
 			$tmp->tableName = $db->f(0);
 			$tmp->tableSpace = $db->f(1);
 			$tmp->haveAutoNumberPKField = isset($trigger[$db->f(0)]);
+			$tmp->tableType = isset($mviews[$db->f(0)]) ? 'mview' : 'table';
 			$retval[] = $tmp;
 		}
+
+		$SQL = "SELECT view_name ";
+		$SQL .= "FROM all_views ";
+		$SQL .= "WHERE owner = :ORA_SCHEMA ";
+		$SQL .= "ORDER BY view_name ";
+		$db->setParam("ORA_SCHEMA", ORA_SCHEMA, true);
+		echo "selecting views ....\n";
+		$db->query($SQL);
+		while($db->nextRecord())
+		{
+			$tmp = new ReverseTable();
+			$tmp->tableName = $db->f(0);
+			$tmp->tableSpace = '';
+			$tmp->haveAutoNumberPKField = false;
+			$tmp->tableType = 'view';
+			$retval[] = $tmp;
+		}
+
 		return $retval;
 	}
 	// -------------------------------------------------------------------------
-	public function getColumn($tableName)
+	public function getColumn($tableName, $tableType = 'table')
 	{
 		$db = new DB();
 		$SQL = "SELECT column_name, data_type, char_length, data_precision, data_scale ";
@@ -58,7 +90,7 @@ class OracleProxy implements ReverseProxy
 
 		$db->setParam("ORA_SCHEMA", ORA_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
-		echo "columns for table " . str_pad($tableName, 40, ".", STR_PAD_RIGHT) . " ";
+		echo "columns for " . $tableType . " " . str_pad($tableName, 40, ".", STR_PAD_RIGHT) . " ";
 		$db->query($SQL);
 		$retval = array();
 		while($db->nextRecord())

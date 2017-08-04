@@ -28,9 +28,12 @@ class ClassFileGenerator extends DbFileGenerator
 	{
 		$this->generateClassDocumentation($t);
 		$this->generateClassHead($t);
-		$this->generateCheck($t);
-		$this->generateSave($t);
-		$this->generateKill($t);
+		if($t->getTableType() == 'table')
+		{
+			$this->generateCheck($t);
+			$this->generateSave($t);
+			$this->generateKill($t);
+		}
 		$this->generateClassFooter();
 	}
 	// -------------------------------------------------------------------------
@@ -57,7 +60,7 @@ class ClassFileGenerator extends DbFileGenerator
 	{
 		$this->addLine("final class " . $t->getClassName() . " extends " . $t->getClassName() . "DB", 0);
 		$this->addLine("{", 0);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateClassDocumentation(Table $t)
@@ -89,7 +92,7 @@ class ClassFileGenerator extends DbFileGenerator
 		$this->addLine("// TODO: dodaj sprawdzenie poprawności atrybutów obiektu ", 2);
 		$this->addLine("return \$retval;", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateKill(Table $t)
@@ -104,7 +107,7 @@ class ClassFileGenerator extends DbFileGenerator
 		$this->addLine("// TODO: tą metodę można zmienić jeśli obiekt nie ma zostać usunięty jako rekord z tabeli " . $t->getName(), 2);
 		$this->addLine("return \$this->destroy();", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 	// -------------------------------------------------------------------------
 	protected function generateSave(Table $t)
@@ -156,7 +159,7 @@ class ClassFileGenerator extends DbFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("return \$retval;", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addSpacer();
 	}
 }
 ?>
