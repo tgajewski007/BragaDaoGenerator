@@ -23,16 +23,6 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 			{
 				$data[$c->getKey()] = $c;
 			}
-			elseif($c instanceof ColumnForeginKey)
-			{
-				foreach($c->getTable()->getColumny() as $z)/* @var $z Column */
-				{
-					if($z instanceof ColumnPrimaryKey)
-					{
-						$data[$z->getKey()] = $z;
-					}
-				}
-			}
 		}
 
 		$this->addLine("/**", 1);
