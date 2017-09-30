@@ -16,7 +16,7 @@ class FilesGenerator
 	static $project = null;
 	/**
 	 *
-	 * @var DOMDocument
+	 * @var \DOMDocument
 	 */
 	protected $xmlDocument = null;
 	// -------------------------------------------------------------------------
