@@ -230,7 +230,7 @@ class DAOFileGenerator
 
 			$this->addLine("/**", 1);
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
-			$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
+			$this->addLine(" * @return \\braga\\db\\Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
@@ -269,7 +269,7 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("\$db->query(\$sql);", 2);
-			$this->addLine("return new Collection(\$db, \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::get());", 2);
+			$this->addLine("return new \\braga\\db\\Collection(\$db, \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::get());", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -------------------------------------------------------------------------", 1);
 		}
@@ -658,7 +658,7 @@ class DAOFileGenerator
 
 						$this->addLine("/**", 1);
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
-						$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
+						$this->addLine(" * @return \\braga\\db\\Collection &lt;" . $t->getClassName() . "&gt; ", 1);
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
@@ -789,18 +789,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		foreach($t->getColumny() as $c) /* @var $c Column */
 		{
-			if($c instanceof ColumnForeginKey)
-			{
-				$columns = $c->getTable()->getColumny();
-				foreach($c->getClassFieldName() as $key => $s)
-				{
-					$this->addLine("\$this->set" . ucfirst($s) . "(\$db->f(\"" . $columns[$key]->getName() . "\"));", 2);
-				}
-			}
-			else
-			{
-				$this->addLine("\$this->set" . ucfirst($c->getClassFieldName()) . "(\$db->f(\"" . $c->getKey() . "\"));", 2);
-			}
+			$this->addLine("\$this->set" . ucfirst($c->getClassFieldName()) . "(\$db->f(\"" . $c->getKey() . "\"));", 2);
 		}
 		$this->addLine("\$this->setReaded();", 2);
 
@@ -893,10 +882,6 @@ class DAOFileGenerator
 			else
 			{
 				$this->addLine("use braga\db\mysql\DB;", 0);
-			}
-			if(count($t->getFk()) > 0)
-			{
-				$this->addLine("use braga\\db\\Collection;", 0);
 			}
 		}
 	}
