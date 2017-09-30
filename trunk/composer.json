@@ -26,5 +26,5 @@
 		"phpunit/phpunit" : "3.7.38"
 	},
 	"license" : "MIT",
-	"minimum-stability" : "dev"
+	"minimum-stability" : "stable"
 }
