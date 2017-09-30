@@ -20,11 +20,11 @@
 		"orm"
 	],
 	"require" : {
-		"braga/db" : "~2"
+		"braga/db" : "dev-trunk"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "3.7.38"
 	},
 	"license" : "MIT",
-	"minimum-stability" : "stable"
+	"minimum-stability" : "dev"
 }
