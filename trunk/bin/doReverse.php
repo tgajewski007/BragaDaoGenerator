@@ -11,8 +11,8 @@ use braga\daogenerator\worker\ConfigReader;
  */
 
 $autoloadFiles = array(
-		__DIR__ . '/../vendor/autoload.php',
-		__DIR__ . '/../../../autoload.php');
+				__DIR__ . '/../vendor/autoload.php',
+				__DIR__ . '/../../../autoload.php' );
 
 foreach($autoloadFiles as $autoloadFile)
 {
@@ -39,6 +39,10 @@ if(!defined("DB_PASS"))
 if(!defined("DB_SCHEMA"))
 {
 	define("DB_SCHEMA", $c->getSchema());
+}
+if(!defined("DB_NAME"))
+{
+	define("DB_NAME", $c->getDbName());
 }
 
 $project = new Project();
