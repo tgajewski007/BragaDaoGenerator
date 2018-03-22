@@ -140,7 +140,7 @@ class MySQLProxy implements ReverseProxy
 		$sql .= "WHERE TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "AND TABLE_NAME = :TABLE_NAME ";
 		$sql .= "AND REFERENCED_COLUMN_NAME IS NOT NULL ";
-		$sql .= "ORDER BY ORDINAL_POSITION ";
+		$sql .= "ORDER BY REFERENCED_TABLE_NAME ";
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
 		echo "fk, ";
