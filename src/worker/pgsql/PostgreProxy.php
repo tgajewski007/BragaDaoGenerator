@@ -145,7 +145,7 @@ class PostgreProxy implements ReverseProxy
 		$sql .= "AND tc.TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "AND tc.TABLE_NAME = :TABLE_NAME ";
 		$sql .= "AND CONSTRAINT_TYPE = 'FOREIGN KEY'";
-		$sql .= "ORDER BY ORDINAL_POSITION ";
+		$sql .= "ORDER BY ccu.TABLE_NAME ";
 		$db->setParam("TABLE_CATALOG", DB_NAME);
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
