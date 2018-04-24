@@ -95,7 +95,8 @@ class ForeginKey
 		$fk->setTableSchema($c->getAttribute("tableSchema"));
 		$fk->setClassFieldName($c->getAttribute("classFieldName"));
 		$fk->setName($c->getAttribute("name"));
-		foreach($c->getElementsByTagName("connectedColumn") as $value)/* @var $value DOMElement */
+		foreach($c->getElementsByTagName("connectedColumn") as $value)
+		/** @var DOMElement $value  */
 		{
 			$fk->addColumn($value->getAttribute("fkColumnName"), $value->getAttribute("pkColumnName"));
 		}

@@ -92,8 +92,9 @@ class ReverseCreator
 			$tmp->setName($key);
 			$tmp->setTableName($x->refTableName);
 			$tmp->setTableSchema($this->schemaName);
-			foreach($x->columns as $fkCol) /* @var $fkCol ConnectedColumn */
-				{
+			foreach($x->columns as $fkCol)
+			/** @var ConnectedColumn $fkCol  */
+			{
 				$tmp->addColumn($fkCol->fkColumnName, $fkCol->pkColumnName);
 			}
 			$tmp->setClassFieldName(ucfirst(Column::convertFieldNameToClassName($x->refTableName)));

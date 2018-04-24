@@ -151,7 +151,8 @@ class FilesGenerator
 
 		// odczyt tablic
 		$tmp = array();
-		foreach($tables as $t) /* @var $t DOMElement */
+		foreach($tables as $t)
+		/** @var DOMElement  $t  */
 		{
 			$table = Table::import($t);
 			if(!self::$project->isTableExists($table))
@@ -161,18 +162,21 @@ class FilesGenerator
 			}
 		}
 		// odczyt column
-		foreach($tables as $t) /* @var $t DOMElement */
+		foreach($tables as $t)
+		/** @var DOMElement $t  */
 		{
 			$table = Table::import($t);
 			if(isset($tmp[$table->getKey()]))
 			{
-				foreach($t->getElementsByTagName("column") as $c)/*@var $c DOMElement */
+				foreach($t->getElementsByTagName("column") as $c)
+				/** @var DOMElement $c  */
 				{
 					$column = Column::import($c);
 					$tmp = self::$project->getTables();
 					$tmp[$table->getKey()]->addColumn($column);
 				}
-				foreach($t->getElementsByTagName("fk") as $c)/*@var $c DOMElement */
+				foreach($t->getElementsByTagName("fk") as $c)
+				/** @var DOMElement $c  */
 				{
 					$fk = ForeginKey::import($c);
 					$tmp = self::$project->getTables();
