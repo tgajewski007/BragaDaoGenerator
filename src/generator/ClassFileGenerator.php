@@ -8,9 +8,9 @@ namespace braga\daogenerator\generator;
  */
 class ClassFileGenerator extends DAOFileGenerator
 {
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected $file = null;
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	public function GO()
 	{
 		foreach($this->project->getTables() as $t)/* @var $t Table */
@@ -26,7 +26,7 @@ class ClassFileGenerator extends DAOFileGenerator
 			}
 		}
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateNameSpace(Table $t)
 	{
 		if(strlen($this->project->getNameSpace()) > 0)
@@ -49,7 +49,7 @@ class ClassFileGenerator extends DAOFileGenerator
 			}
 		}
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function prepareClass(Table $t)
 	{
 		$this->generateClassDocumentation($t);
@@ -60,7 +60,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->generateGetAllExample($t);
 		$this->generateClassFooter();
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateCheck($t)
 	{
 		$this->addLine("/**", 1);
@@ -72,14 +72,14 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("// TODO: add special validate ", 2);
 		$this->addLine("return true;", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateGetAllExample($t)
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * This method returns a collection of objects ", 1);
-		$this->addLine(" * @return Collection &lt;" . $t->getClassName() . "&gt; ", 1);
+		$this->addLine(" * @return \\braga\\db\\Collection|" . "\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "[] ", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function getAll()", 1);
 		$this->addLine("{", 1);
@@ -90,9 +90,9 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("return new Collection(\$db, self::get());", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateKill($t)
 	{
 		$this->addLine("/**", 1);
@@ -104,9 +104,9 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("// TODO: this method may be changed when record can not be deleted from table", 2);
 		$this->addLine("return \$this->destroy();", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateSave($t)
 	{
 		$this->addLine("/**", 1);
@@ -132,16 +132,16 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateClassHead($t)
 	{
 		$this->addLine("class " . $t->getClassName() . " extends " . $t->getClassName() . "DAO implements BusinesObject", 0);
 		$this->addLine("{", 0);
-		$this->addLine("// -------------------------------------------------------------------------", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateClassDocumentation(Table $t)
 	{
 		$this->addLine("/**", 0);
@@ -154,12 +154,12 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" * {please complete documentation}", 0);
 		$this->addLine(" */", 0);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	protected function open(Table $t)
 	{
 		$this->fileHandle = fopen($this->file, "w");
 		$this->addLine("<?php", 0);
 	}
-	// -------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 }
 ?>
