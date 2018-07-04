@@ -253,6 +253,10 @@ class DAOFileGenerator
 		$this->addLine("unset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]);", 4);
 		$this->addLine("}", 3);
 		$this->addLine("}", 2);
+		$this->addLine("else", 2);
+		$this->addLine("{", 2);
+		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "05 Empty or wrong object id type\");", 3);
+		$this->addLine("}", 2);
 		$pk = array();
 		foreach($t->getColumny() as $c)/* @var $c Column */
 		{
@@ -281,7 +285,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "05 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
+		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "06 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
