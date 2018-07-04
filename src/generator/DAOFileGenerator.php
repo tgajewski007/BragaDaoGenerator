@@ -266,14 +266,15 @@ class DAOFileGenerator
 			}
 		}
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$sql  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql  = \"SELECT * \";", 2);
+		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$separator = "WHERE";
 		foreach($pk as $c)
 		{
 			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
-		$this->addLine("\$sql  = \"FOR UPDATE \";", 2);
+		$this->addLine("\$sql .= \"FOR UPDATE \";", 2);
 		foreach($pk as $c)/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
@@ -425,7 +426,8 @@ class DAOFileGenerator
 		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$sql  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql  = \"SELECT * \";", 2);
+		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 		$separator = "WHERE";
 		foreach($pk as $c)
 		{
