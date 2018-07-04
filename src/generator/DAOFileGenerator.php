@@ -153,7 +153,7 @@ class DAOFileGenerator
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	protected function generateStaticGetMethod($t)
+	protected function generateStaticGetMethod(Table $t)
 	{
 		$pkField = array();
 		foreach($t->getColumny() as $c) /* @var $c Column */
@@ -205,6 +205,84 @@ class DAOFileGenerator
 		$this->addLine("{", 2);
 		$this->addLine("return self::\$instance[\"\\\$\".count(self::\$instance)] = new static();", 3);
 		$this->addLine("}", 2);
+		$this->addLine("}", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
+	}
+	// -----------------------------------------------------------------------------------------------------------------
+	protected function generateStaticGetForUpdateMethod(Table $t)
+	{
+		$pkField = array();
+		foreach($t->getColumny() as $c) /* @var $c Column */
+		{
+			if($c->isPK())
+			{
+				$pkField[] = $c;
+			}
+		}
+
+		$this->addLine("/**", 1);
+		$tmp1 = array();
+		$tmp2 = array();
+		$tmp3 = array();
+		foreach($pkField as $c) /* @var $c Column */
+		{
+			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
+			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
+			switch($c->getType())
+			{
+				case ColumnType::FLOAT:
+				case ColumnType::NUMBER:
+					$tmp2[] = "is_numeric(\$" . $c->getClassFieldName() . ")";
+					break;
+				default :
+					$tmp2[] = "!empty(\$" . $c->getClassFieldName() . ")";
+					break;
+			}
+			$tmp3[] = "\$" . $c->getClassFieldName();
+		}
+
+		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
+		$this->addLine(" */", 1);
+		$this->addLine("static function getForUpdate(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("{", 1);
+		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
+		$this->addLine("{", 2);
+		$this->addLine("if(isset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]))", 3);
+		$this->addLine("{", 3);
+		$this->addLine("unset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]);", 4);
+		$this->addLine("}", 3);
+		$this->addLine("}", 2);
+		$pk = array();
+		foreach($t->getColumny() as $c)/* @var $c Column */
+		{
+			if($c->isPK())
+			{
+				$pk[$c->getKey()] = $c;
+			}
+		}
+		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$sql  = \"SELECT * FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$separator = "WHERE";
+		foreach($pk as $c)
+		{
+			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
+			$separator = "AND";
+		}
+		$this->addLine("\$sql  = \"FOR UPDATE \";", 2);
+		foreach($pk as $c)/* @var $c Column */
+		{
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
+		}
+		$this->addLine("\$db->query(\$sql);", 2);
+		$this->addLine("if(\$db->nextRecord())", 2);
+		$this->addLine("{", 2);
+		$this->addLine("return self::getByDataSource(\$db);", 3);
+		$this->addLine("}", 2);
+		$this->addLine("else", 2);
+		$this->addLine("{", 2);
+		$this->addLine("throw new \Exception(\"\")", 3);
+		$this->addLine("}", 2);
+
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
