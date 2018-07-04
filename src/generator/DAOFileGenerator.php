@@ -53,6 +53,7 @@ class DAOFileGenerator
 		$this->generateProperties($t);
 		$this->generateConstruktor($t);
 		$this->generateStaticGetMethod($t);
+		$this->generateStaticGetForUpdateMethod($t);
 		$this->generateUpdateFactoryIndex($t);
 		$this->generateStaticGetByDataSourceMethod($t);
 		$this->generateIsReaded();
