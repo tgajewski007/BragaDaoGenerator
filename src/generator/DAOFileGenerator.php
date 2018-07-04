@@ -281,9 +281,8 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \Exception(\"\")", 3);
+		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "05 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
 		$this->addLine("}", 2);
-
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
