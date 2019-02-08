@@ -10,7 +10,6 @@ class DAOFileGenerator
 {
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
-	 *
 	 * @var Project
 	 */
 	protected $project = null;
@@ -936,11 +935,11 @@ class DAOFileGenerator
 	protected function generateClassDocumentation(Table $t)
 	{
 		$this->addLine("/**", 0);
-		$this->addLine(" * Created on " . date("d-m-Y H:i:s"), 0);
+		// $this->addLine(" * Created on " . date("d-m-Y H:i:s"), 0);
 		$this->addLine(" * @author " . $this->project->getAuthor(), 0);
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
-		$this->addLine(" * Genreated by SimplePHPDAOClassGenerator ver " . Project::VERSION, 0);
+		$this->addLine(" * Genreated by BragaDaoGenereator ver " . Project::VERSION, 0);
 		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
 		$this->addLine(" * Designed by schama CRUD http://wikipedia.org/wiki/CRUD", 0);
 		$this->addLine(" * class generated automatically, please do not modify under pain of ", 0);
