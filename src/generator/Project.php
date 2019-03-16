@@ -21,6 +21,9 @@ class Project
 	protected $nameSpace = null;
 	protected $errorPrefix = null;
 	// -------------------------------------------------------------------------
+	/**
+	 * @var Table[]
+	 */
 	protected $tables = array();
 	// -------------------------------------------------------------------------
 	public function addTable(Table $table)
@@ -164,6 +167,21 @@ class Project
 	public function getNameSpace()
 	{
 		return $this->nameSpace;
+	}
+	// -------------------------------------------------------------------------
+	public function getErrorNumberForTableName($tableName)
+	{
+		$errNumber = 0;
+		foreach($this->tables as $t)
+		{
+			$tableErrNumber = mb_substr($t->getErrorPrefix(), mb_strlen($this->getErrorPrefix()));
+			if($t->getName() == $tableName)
+			{
+				return $tableErrNumber;
+			}
+			$errNumber = max($errNumber, $tableErrNumber);
+		}
+		return $errNumber;
 	}
 	// -------------------------------------------------------------------------
 }
