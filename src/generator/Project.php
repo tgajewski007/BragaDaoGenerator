@@ -171,7 +171,7 @@ class Project
 	// -------------------------------------------------------------------------
 	public function getErrorNumberForTableName($tableName)
 	{
-		$errNumber = 0;
+		$errNumber = 100;
 		foreach($this->tables as $t)
 		{
 			$tableErrNumber = mb_substr($t->getErrorPrefix(), mb_strlen($this->getErrorPrefix()));
@@ -181,7 +181,7 @@ class Project
 			}
 			$errNumber = max($errNumber, $tableErrNumber);
 		}
-		return $errNumber;
+		return $errNumber + 1;
 	}
 	// -------------------------------------------------------------------------
 }

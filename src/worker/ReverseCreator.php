@@ -26,7 +26,6 @@ class ReverseCreator
 	 * @var Project
 	 */
 	protected $project = null;
-	protected $errorCount = 100;
 	// -------------------------------------------------------------------------
 	function __construct(Project $p, ReverseProxy $r)
 	{
