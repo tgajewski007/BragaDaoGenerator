@@ -20,7 +20,7 @@
 		"orm"
 	],
 	"require" : {
-		"braga/db" : "~2"
+		"braga/db" : "~3"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "3.7.38"

@@ -1,5 +1,7 @@
 <?php
+
 namespace braga\daogenerator\generator;
+
 /**
  * Created on 23-03-2013 07:57:30
  * author Tomasz Gajewski
@@ -394,7 +396,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "04 Delete record from table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "04 Delete record from table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -518,7 +520,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
@@ -611,7 +613,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("AddAlert(\"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
 		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
