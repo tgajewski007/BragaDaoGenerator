@@ -1,10 +1,13 @@
 <?php
+
 namespace braga\daogenerator\worker;
+
 use braga\daogenerator\generator\Project;
 use braga\daogenerator\generator\FilesGenerator;
 use braga\daogenerator\generator\Table;
 use braga\daogenerator\generator\Column;
 use braga\daogenerator\generator\ForeginKey;
+use braga\daogenerator\generator\ConnectedColumn;
 
 /**
  * Created on 07-04-2013 19:31:40

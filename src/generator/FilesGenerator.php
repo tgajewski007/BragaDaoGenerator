@@ -1,5 +1,7 @@
 <?php
+
 namespace braga\daogenerator\generator;
+
 /**
  * Created on 10-03-2013 17:00:08
  * author Tomasz Gajewski
@@ -10,12 +12,10 @@ class FilesGenerator
 {
 	// -------------------------------------------------------------------------
 	/**
-	 *
 	 * @var Project
 	 */
 	static $project = null;
 	/**
-	 *
 	 * @var \DOMDocument
 	 */
 	protected $xmlDocument = null;
@@ -85,7 +85,6 @@ class FilesGenerator
 	}
 	// -------------------------------------------------------------------------
 	/**
-	 *
 	 * @param Project $p
 	 * @return Project
 	 */
@@ -152,7 +151,7 @@ class FilesGenerator
 		// odczyt tablic
 		$tmp = array();
 		foreach($tables as $t)
-		/** @var DOMElement  $t  */
+		/** @var \DOMElement  $t  */
 		{
 			$table = Table::import($t);
 			if(!self::$project->isTableExists($table))
@@ -163,20 +162,20 @@ class FilesGenerator
 		}
 		// odczyt column
 		foreach($tables as $t)
-		/** @var DOMElement $t  */
+		/** @var \DOMElement $t  */
 		{
 			$table = Table::import($t);
 			if(isset($tmp[$table->getKey()]))
 			{
 				foreach($t->getElementsByTagName("column") as $c)
-				/** @var DOMElement $c  */
+				/** @var \DOMElement $c  */
 				{
 					$column = Column::import($c);
 					$tmp = self::$project->getTables();
 					$tmp[$table->getKey()]->addColumn($column);
 				}
 				foreach($t->getElementsByTagName("fk") as $c)
-				/** @var DOMElement $c  */
+				/** @var \DOMElement $c  */
 				{
 					$fk = ForeginKey::import($c);
 					$tmp = self::$project->getTables();

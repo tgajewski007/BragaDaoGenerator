@@ -1,5 +1,7 @@
 <?php
+
 namespace braga\daogenerator\generator;
+
 /**
  * Created on 10-03-2013 19:25:39
  * author Tomasz Gajewski
@@ -14,7 +16,6 @@ class ForeginKey
 	protected $columns = array();
 	// -------------------------------------------------------------------------
 	/**
-	 *
 	 * @var Table
 	 */
 	protected $table = null;
@@ -96,7 +97,7 @@ class ForeginKey
 		$fk->setClassFieldName($c->getAttribute("classFieldName"));
 		$fk->setName($c->getAttribute("name"));
 		foreach($c->getElementsByTagName("connectedColumn") as $value)
-		/** @var DOMElement $value  */
+		/** @var \DOMElement $value  */
 		{
 			$fk->addColumn($value->getAttribute("fkColumnName"), $value->getAttribute("pkColumnName"));
 		}
