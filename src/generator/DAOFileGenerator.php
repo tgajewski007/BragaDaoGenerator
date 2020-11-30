@@ -1,5 +1,4 @@
 <?php
-
 namespace braga\daogenerator\generator;
 
 /**
@@ -397,7 +396,6 @@ class DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "04 Delete record from table " . $t->getName() . " fail\");", 3);
-		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -447,7 +445,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("return false;", 3);
+		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "07 Read record from table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -521,7 +519,6 @@ class DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
-		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -614,7 +611,6 @@ class DAOFileGenerator
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
 		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
-		$this->addLine("return false;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -855,7 +851,7 @@ class DAOFileGenerator
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -----------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------------------
 	protected function generateSetters(Table $t)
 	{
 		foreach($t->getColumny() as $c)/* @var $c Column */
@@ -863,7 +859,7 @@ class DAOFileGenerator
 			$this->generateSetter($c);
 		}
 	}
-	// -----------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------------------
 	protected function generateSetAllFromDB(Table $t)
 	{
 		$this->addLine("/**", 1);
@@ -881,7 +877,7 @@ class DAOFileGenerator
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
-	// -----------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------------------
 	protected function generateConstruktor(Table $t)
 	{
 		$this->addLine("/**", 1);
