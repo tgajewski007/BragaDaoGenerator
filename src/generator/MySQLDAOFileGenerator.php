@@ -72,7 +72,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -146,7 +146,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$this, \"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
