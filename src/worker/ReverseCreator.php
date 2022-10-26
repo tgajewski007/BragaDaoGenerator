@@ -39,7 +39,8 @@ class ReverseCreator
 	public function GO()
 	{
 		echo "starting...\n";
-		foreach($this->proxy->getTables() as $table)/* @var $table ReverseTable */
+		foreach($this->proxy->getTables() as $table)
+			/* @var $table ReverseTable */
 		{
 			$this->addTable($table);
 		}
@@ -66,7 +67,8 @@ class ReverseCreator
 		$pk = $this->proxy->getPrimaryKeys($t->tableName);
 		$fk = $this->proxy->getForeginKeys($t->tableName);
 
-		foreach($this->proxy->getColumn($t->tableName) as $col)/* @var $col ReverseColumn */
+		foreach($this->proxy->getColumn($t->tableName) as $col)
+			/* @var $col ReverseColumn */
 		{
 			$c = new Column();
 			$c->setName($col->name);
@@ -75,7 +77,8 @@ class ReverseCreator
 			$c->setType($col->type);
 			$c->setSize($col->size);
 			$c->setScale($col->scale);
-			foreach($pk as $x)/* @var $x ReversePrimaryKey */
+			foreach($pk as $x)
+				/* @var $x ReversePrimaryKey */
 			{
 				if($x->name == $col->name)
 				{
@@ -85,14 +88,15 @@ class ReverseCreator
 			}
 			$table->addColumn($c);
 		}
-		foreach($fk as $key => $x)/* @var $x ReverseForeginKey */
+		foreach($fk as $key => $x)
+			/* @var $x ReverseForeginKey */
 		{
 			$tmp = new ForeginKey();
 			$tmp->setName($key);
 			$tmp->setTableName($x->refTableName);
 			$tmp->setTableSchema($this->schemaName);
 			foreach($x->columns as $fkCol)
-			/** @var ConnectedColumn $fkCol  */
+				/** @var ConnectedColumn $fkCol */
 			{
 				$tmp->addColumn($fkCol->fkColumnName, $fkCol->pkColumnName);
 			}
@@ -116,4 +120,3 @@ class ReverseCreator
 	}
 	// -------------------------------------------------------------------------
 }
-?>

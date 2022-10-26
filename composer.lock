@@ -1,0 +1,73 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "9aea0f047ad476865aa9d9254be9c958",
+    "packages": [
+        {
+            "name": "braga/db",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tgajewski007/BragaDB.git",
+                "reference": "3448a20129faf4b7553b6989c73b8e2b5d90010c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tgajewski007/BragaDB/zipball/3448a20129faf4b7553b6989c73b8e2b5d90010c",
+                "reference": "3448a20129faf4b7553b6989c73b8e2b5d90010c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": ">=8.1"
+            },
+            "suggest": {
+                "braga/tools": "Generator for dao object"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "braga\\db\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tomasz Gajewski",
+                    "email": "tgajewski007@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "DB Wraper",
+            "keywords": [
+                "db",
+                "mysql",
+                "oracle",
+                "pdo"
+            ],
+            "support": {
+                "issues": "https://github.com/tgajewski007/BragaDB/issues",
+                "source": "https://github.com/tgajewski007/BragaDB/tree/4.0.0"
+            },
+            "time": "2022-10-26T21:07:39+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "ext-dom": "*",
+        "ext-json": "*"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}

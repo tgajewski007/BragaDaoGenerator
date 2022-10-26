@@ -146,16 +146,15 @@ class Column
 	{
 		switch($this->getType())
 		{
+			case ColumnType::NUMBER:
+				return "int";
 			case ColumnType::CHAR:
 			case ColumnType::DATE:
 			case ColumnType::DATETIME:
 			case ColumnType::VARCHAR:
 			case ColumnType::TEXT:
+			default:
 				return "string";
-				break;
-			case ColumnType::NUMBER:
-				return "int";
-				break;
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -180,4 +179,3 @@ class Column
 	}
 	// -------------------------------------------------------------------------
 }
-?>

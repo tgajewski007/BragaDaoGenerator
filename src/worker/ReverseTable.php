@@ -14,4 +14,3 @@ class ReverseTable
 	public $haveAutoNumberPKField = false;
 	// -------------------------------------------------------------------------
 }
-?>

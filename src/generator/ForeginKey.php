@@ -14,6 +14,8 @@ class ForeginKey
 	protected $name = null;
 	protected $classFieldName = null;
 	protected $columns = array();
+	protected $tableName;
+	protected $tableSchema;
 	// -------------------------------------------------------------------------
 	/**
 	 * @var Table

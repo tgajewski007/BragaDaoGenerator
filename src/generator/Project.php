@@ -40,7 +40,6 @@ class Project
 	// -------------------------------------------------------------------------
 	protected function mergeTable(Table $table)
 	{
-		/* @var $orgTable Table */
 		$orgTable = $this->tables[$table->getKey()];
 		foreach($table->getColumny() as $col)/* @var $col Column */
 		{
@@ -185,4 +184,3 @@ class Project
 	}
 	// -------------------------------------------------------------------------
 }
-?>

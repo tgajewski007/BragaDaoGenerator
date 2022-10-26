@@ -11,24 +11,23 @@ interface ReverseProxy
 	// -------------------------------------------------------------------------
 	/**
 	 *
-	 * @return Array
+	 * @return array
 	 */
 	public function getTables();
 	/**
 	 *
-	 * @return Array
+	 * @return array
 	 */
 	public function getColumn($tableName);
 	/**
 	 *
-	 * @return Array
+	 * @return array
 	 */
 	public function getPrimaryKeys($tableName);
 	/**
 	 *
-	 * @return Array
+	 * @return array
 	 */
 	public function getForeginKeys($tableName);
 	// -------------------------------------------------------------------------
 }
-?>

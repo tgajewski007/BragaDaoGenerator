@@ -13,4 +13,3 @@ class ConnectedColumn
 	public $pkColumnName = null;
 	// -------------------------------------------------------------------------
 }
-?>

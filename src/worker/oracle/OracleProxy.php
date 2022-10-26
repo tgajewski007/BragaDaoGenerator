@@ -100,7 +100,6 @@ class OracleProxy implements ReverseProxy
 					break;
 				case "BLOB":
 					continue 2;
-					break;
 				default :
 					$tmp->type = ColumnType::VARCHAR;
 					break;

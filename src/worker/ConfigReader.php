@@ -188,14 +188,11 @@ class ConfigReader
 		{
 			case "oracle":
 				return new OracleProxy();
-				break;
 			case "pgsql":
 				return new PostgreProxy();
-				break;
 			case "mysql":
 			default :
 				return new MySQLProxy();
-				break;
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
@@ -205,14 +202,11 @@ class ConfigReader
 		{
 			case "oracle":
 				return DataBaseStyle::ORACLE;
-				break;
 			case "pgsql":
 				return DataBaseStyle::PGSQL;
-				break;
 			case "mysql":
 			default :
 				return DataBaseStyle::MYSQL;
-				break;
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
