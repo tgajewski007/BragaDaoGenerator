@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9aea0f047ad476865aa9d9254be9c958",
+    "content-hash": "3b75972bf99a3d60244199c64ff35d64",
     "packages": [
         {
             "name": "braga/db",
@@ -65,8 +65,10 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
+        "php": ">=8.1",
         "ext-dom": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-mbstring": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
