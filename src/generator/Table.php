@@ -35,7 +35,8 @@ class Table
 		if(is_null($this->pk))
 		{
 			$this->pk = array();
-			foreach($this->getColumny() as $c)/* @var $c Column */
+			foreach($this->getColumny() as $c)
+				/* @var $c Column */
 			{
 				if($c->isPK())
 				{
@@ -181,12 +182,12 @@ class Table
 	// -------------------------------------------------------------------------
 	public function export(\DOMElement $t)
 	{
-		$t->setAttribute("name", $this->getName());
-		$t->setAttribute("className", $this->getClassName());
-		$t->setAttribute("tableSpace", $this->getTableSpace());
-		$t->setAttribute("indexTableSpace", $this->getIndexTableSpace());
-		$t->setAttribute("errorPrefix", $this->getErrorPrefix());
-		$t->setAttribute("schema", $this->getSchema());
+		$t->setAttribute("name", $this->getName() ?? "");
+		$t->setAttribute("className", $this->getClassName() ?? "");
+		$t->setAttribute("tableSpace", $this->getTableSpace() ?? "");
+		$t->setAttribute("indexTableSpace", $this->getIndexTableSpace() ?? "");
+		$t->setAttribute("errorPrefix", $this->getErrorPrefix() ?? "");
+		$t->setAttribute("schema", $this->getSchema() ?? "");
 	}
 	// -------------------------------------------------------------------------
 }
