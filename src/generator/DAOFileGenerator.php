@@ -327,7 +327,7 @@ class DAOFileGenerator
 
 			$this->addLine("/**", 1);
 			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
-			$this->addLine(" * @return \\braga\\db\\Collection|\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
+			$this->addLine(" * @return \\braga\\db\\Collection|static[]", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
