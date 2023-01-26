@@ -33,6 +33,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "obj;", 0);
+			$this->addLine("", 0);
 			$this->addLine("use braga\db\BusinesObject;", 0);
 			$this->addLine("use braga\db\Collection;", 0);
 			$this->addLine("use " . $this->project->getNameSpace() . $this->project->getDaoFolder() . "\\" . $t->getClassName() . "DAO;", 0);
