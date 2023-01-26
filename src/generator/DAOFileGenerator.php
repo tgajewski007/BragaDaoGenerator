@@ -23,7 +23,8 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	public function GO()
 	{
-		foreach($this->project->getTables() as $t)/* @var	 $t Table */
+		foreach($this->project->getTables() as $t)
+			/* @var     $t Table */
 		{
 			$this->open($t);
 			$this->generateNameSpace($t);
@@ -76,7 +77,8 @@ class DAOFileGenerator
 	protected function generateGetKey($t)
 	{
 		$pkField = array();
-		foreach($t->getColumny() as $c) /* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -84,7 +86,8 @@ class DAOFileGenerator
 			}
 		}
 		$tmp1 = array();
-		foreach($pkField as $c) /* @var $c Column */
+		foreach($pkField as $c)
+			/* @var $c Column */
 		{
 			$tmp1[] = "\$this->get" . ucfirst($c->getClassFieldName()) . "()";
 		}
@@ -98,7 +101,8 @@ class DAOFileGenerator
 	protected function generateStaticGetByDataSourceMethod($t)
 	{
 		$pkField = array();
-		foreach($t->getColumny() as $c) /* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -106,7 +110,8 @@ class DAOFileGenerator
 			}
 		}
 		$tmp1 = array();
-		foreach($pkField as $c) /* @var $c Column */
+		foreach($pkField as $c)
+			/* @var $c Column */
 		{
 			$tmp1[] = "\$db->f(\"" . $c->getName() . "\")";
 		}
@@ -114,7 +119,7 @@ class DAOFileGenerator
 		$this->addLine(" * @param DataSource \$db", 1);
 		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
-		$this->addLine("static function getByDataSource(DataSource \$db)", 1);
+		$this->addLine("public static function getByDataSource(DataSource \$db)", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = " . implode(" . \"_\" . ", $tmp1) . ";", 2);
 		$this->addLine("if(!isset(self::\$instance[\$key]))", 2);
@@ -130,7 +135,8 @@ class DAOFileGenerator
 	protected function generateUpdateFactoryIndex(Table $t)
 	{
 		$tmp1 = array();
-		foreach($t->getPk() as $c) /* @var $c Column */
+		foreach($t->getPk() as $c)
+			/* @var $c Column */
 		{
 			$tmp1[] = "\$" . lcfirst($t->getClassName()) . "->get" . ucfirst($c->getClassFieldName()) . "()";
 		}
@@ -157,7 +163,8 @@ class DAOFileGenerator
 	protected function generateStaticGetMethod(Table $t)
 	{
 		$pkField = array();
-		foreach($t->getColumny() as $c) /* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -169,7 +176,8 @@ class DAOFileGenerator
 		$tmp1 = array();
 		$tmp2 = array();
 		$tmp3 = array();
-		foreach($pkField as $c) /* @var $c Column */
+		foreach($pkField as $c)
+			/* @var $c Column */
 		{
 			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
 			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
@@ -188,7 +196,7 @@ class DAOFileGenerator
 
 		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
-		$this->addLine("static function get(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("public static function get(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("if(count(self::\$instance) > 100)", 2);
 		$this->addLine("{", 2);
@@ -213,7 +221,8 @@ class DAOFileGenerator
 	protected function generateStaticGetForUpdateMethod(Table $t)
 	{
 		$pkField = array();
-		foreach($t->getColumny() as $c) /* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -225,7 +234,8 @@ class DAOFileGenerator
 		$tmp1 = array();
 		$tmp2 = array();
 		$tmp3 = array();
-		foreach($pkField as $c) /* @var $c Column */
+		foreach($pkField as $c)
+			/* @var $c Column */
 		{
 			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
 			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
@@ -244,7 +254,7 @@ class DAOFileGenerator
 
 		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
 		$this->addLine(" */", 1);
-		$this->addLine("static function getForUpdate(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("public static function getForUpdate(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
@@ -258,7 +268,8 @@ class DAOFileGenerator
 		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "05 Empty or wrong object id type\");", 3);
 		$this->addLine("}", 2);
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -275,7 +286,8 @@ class DAOFileGenerator
 			$separator = "AND";
 		}
 		$this->addLine("\$sql .= \"FOR UPDATE \";", 2);
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
 		}
@@ -294,11 +306,13 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateGetAllForForeginColumn($t)
 	{
-		foreach($t->getFk() as $fk) /* @var $fk ForeginKey */
+		foreach($t->getFk() as $fk)
+			/* @var $fk ForeginKey */
 		{
 			$fkTable = $fk->getTable();
 			$functioName = "getAllBy";
-			foreach($fk->getColumn() as $c) /* @var $c ConnectedColumn */
+			foreach($fk->getColumn() as $c)
+				/* @var $c ConnectedColumn */
 			{
 				$classFieldName = Column::convertFieldNameToClassName($c->fkColumnName);
 				if(substr($classFieldName, 0, 2) == "id")
@@ -322,9 +336,11 @@ class DAOFileGenerator
 			$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
 
 			$separator = "WHERE";
-			foreach($fk->getColumn() as $c)/* @var $c ConnectedColumn */
+			foreach($fk->getColumn() as $c)
+				/* @var $c ConnectedColumn */
 			{
-				foreach($t->getColumny() as $i)/* @var $i Column */
+				foreach($t->getColumny() as $i)
+					/* @var $i Column */
 				{
 					if($c->fkColumnName == $i->getName())
 					{
@@ -334,13 +350,16 @@ class DAOFileGenerator
 				}
 			}
 
-			foreach($fk->getColumn() as $c)/* @var $c ConnectedColumn */
+			foreach($fk->getColumn() as $c)
+				/* @var $c ConnectedColumn */
 			{
-				foreach($t->getColumny() as $i)/* @var $i Column */
+				foreach($t->getColumny() as $i)
+					/* @var $i Column */
 				{
 					if($c->fkColumnName == $i->getName())
 					{
-						foreach($fk->getTable()->getPk() as $pk)/* @var $pk Column */
+						foreach($fk->getTable()->getPk() as $pk)
+							/* @var $pk Column */
 						{
 							if($pk->getName() == $c->pkColumnName)
 							{
@@ -361,7 +380,8 @@ class DAOFileGenerator
 	protected function generateDestroy(Table $t)
 	{
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -384,7 +404,8 @@ class DAOFileGenerator
 			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
@@ -404,7 +425,8 @@ class DAOFileGenerator
 	protected function generateRead(Table $t)
 	{
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -418,7 +440,8 @@ class DAOFileGenerator
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$tmp1[] = "\$" . $c->getClassFieldName();
 		}
@@ -433,7 +456,8 @@ class DAOFileGenerator
 			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
 		}
@@ -455,7 +479,8 @@ class DAOFileGenerator
 	{
 		$data = array();
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -480,13 +505,17 @@ class DAOFileGenerator
 
 		$columns = array();
 		$params = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
-
 			if($c->getName() == strtoupper($c->getName()))
+			{
 				$columns[$c->getName()] = $c->getName();
+			}
 			else
+			{
 				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+			}
 			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
 			if(strlen($params[$c->getName()]) == 0)
 			{
@@ -507,7 +536,8 @@ class DAOFileGenerator
 			$separator = "AND";
 		}
 		$tmp = $pk + $data;
-		foreach($tmp as $c)/* @var $c Column */
+		foreach($tmp as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
@@ -528,7 +558,8 @@ class DAOFileGenerator
 	{
 		$data = array();
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -555,12 +586,17 @@ class DAOFileGenerator
 
 		$columns = array();
 		$params = array();
-		foreach($data as $c)/* @var $c Column */
+		foreach($data as $c)
+			/* @var $c Column */
 		{
 			if($c->getName() == strtoupper($c->getName()))
+			{
 				$columns[$c->getName()] = $c->getName();
+			}
 			else
+			{
 				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+			}
 			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
 			if(strlen($params[$c->getName()]) == 0)
 			{
@@ -593,7 +629,8 @@ class DAOFileGenerator
 
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),false," . $size . ");", 2);
 		}
-		foreach($data as $c)/* @var $c Column */
+		foreach($data as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
@@ -618,17 +655,21 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateGetterObject(Table $table)
 	{
-		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+		foreach($table->getFk() as $fk)
+			/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
 			$functionName = "get"; // . $fk->getTable()->getClassName();
-			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
+			foreach($fk->getTable()->getPk() as $c)
+				/* @var $c Column */
 			{
-				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
+				foreach($fk->getColumn() as $cc)
+					/* @var $cc ConnectedColumn */
 				{
 					if($c->getName() == $cc->pkColumnName)
 					{
-						foreach($table->getColumny() as $x)/* @var $x Column */
+						foreach($table->getColumny() as $x)
+							/* @var $x Column */
 						{
 							if($x->getName() == $cc->fkColumnName)
 							{
@@ -659,16 +700,20 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateSetterObject(Table $table)
 	{
-		foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+		foreach($table->getFk() as $fk)
+			/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
-			foreach($fk->getTable()->getPk() as $c) /* @var $c Column */
+			foreach($fk->getTable()->getPk() as $c)
+				/* @var $c Column */
 			{
-				foreach($fk->getColumn() as $cc)/* @var $cc ConnectedColumn */
+				foreach($fk->getColumn() as $cc)
+					/* @var $cc ConnectedColumn */
 				{
 					if($c->getName() == $cc->pkColumnName)
 					{
-						foreach($table->getColumny() as $x)/* @var $x Column */
+						foreach($table->getColumny() as $x)
+							/* @var $x Column */
 						{
 							if($x->getName() == $cc->fkColumnName)
 							{
@@ -704,7 +749,8 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateGetters(Table $t)
 	{
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			$this->generateGetter($c->getClassFieldName());
 		}
@@ -716,13 +762,15 @@ class DAOFileGenerator
 		{
 			if($t != $table)
 			{
-				foreach($t->getFk() as $fk)/* @var $fk ForeginKey */
+				foreach($t->getFk() as $fk)
+					/* @var $fk ForeginKey */
 				{
 					if($fk->getTableName() == $table->getName() && $fk->getTableSchema() == $table->getSchema())
 					{
 						$functionName = "getAllBy";
 						$objectName = "";
-						foreach($fk->getColumn() as $c) /* @var $c ConnectedColumn */
+						foreach($fk->getColumn() as $c)
+							/* @var $c ConnectedColumn */
 						{
 							$classFieldName = Column::convertFieldNameToClassName($c->fkColumnName);
 							if(substr($classFieldName, 0, 2) == "id")
@@ -854,7 +902,8 @@ class DAOFileGenerator
 	// ------------------------------------------------------------------------------------------------------------------
 	protected function generateSetters(Table $t)
 	{
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			$this->generateSetter($c);
 		}
@@ -868,7 +917,8 @@ class DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function setAllFromDB(DataSource \$db)", 1);
 		$this->addLine("{", 1);
-		foreach($t->getColumny() as $c) /* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$this->set" . ucfirst($c->getClassFieldName()) . "(\$db->f(\"" . $c->getKey() . "\"));", 2);
 		}
@@ -884,7 +934,8 @@ class DAOFileGenerator
 		$tmp1 = array();
 		$tmp2 = array();
 		$tmp3 = array();
-		foreach($t->getPk() as $c) /* @var $c Column */
+		foreach($t->getPk() as $c)
+			/* @var $c Column */
 		{
 			$this->addLine(" * @param " . $c->getPHPType() . " \$" . $c->getClassFieldName() . "", 1);
 			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
@@ -911,7 +962,8 @@ class DAOFileGenerator
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		$this->addLine("protected static \$instance = array();", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
-		foreach($table->getColumny() as $c) /* @var $c Column */
+		foreach($table->getColumny() as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("protected \$" . $c->getClassFieldName() . " = null;", 1);
 		}
