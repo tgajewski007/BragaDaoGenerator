@@ -9,7 +9,7 @@ namespace braga\daogenerator\generator;
 class Project
 {
 	// -------------------------------------------------------------------------
-	const VERSION = "4.0.11";
+	const VERSION = "4.0.12";
 	// -------------------------------------------------------------------------
 	protected $xmlFile = null;
 	protected $projectFolder = ".";
