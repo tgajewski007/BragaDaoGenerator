@@ -9,7 +9,7 @@ namespace braga\daogenerator\generator;
 class Project
 {
 	// -------------------------------------------------------------------------
-	const VERSION = "2.2.0";
+	const VERSION = "4.0.4";
 	// -------------------------------------------------------------------------
 	protected $xmlFile = null;
 	protected $projectFolder = ".";
@@ -41,10 +41,12 @@ class Project
 	protected function mergeTable(Table $table)
 	{
 		$orgTable = $this->tables[$table->getKey()];
-		foreach($table->getColumny() as $col)/* @var $col Column */
+		foreach($table->getColumny() as $col)
+			/* @var $col Column */
 		{
 			$table->setClassName($orgTable->getClassName());
-			foreach($orgTable->getColumny() as $orgCol) /* @var $orgCol Column */
+			foreach($orgTable->getColumny() as $orgCol)
+				/* @var $orgCol Column */
 			{
 				if($col->getName() == $orgCol->getName())
 				{
@@ -52,9 +54,11 @@ class Project
 				}
 			}
 		}
-		foreach($table->getFk() as $fk) /* @var $fk ForeginKey */
+		foreach($table->getFk() as $fk)
+			/* @var $fk ForeginKey */
 		{
-			foreach($orgTable->getFk() as $orgFk) /* @var $orgFk ForeginKey */
+			foreach($orgTable->getFk() as $orgFk)
+				/* @var $orgFk ForeginKey */
 			{
 				if($fk->getName() == $orgFk->getName())
 				{

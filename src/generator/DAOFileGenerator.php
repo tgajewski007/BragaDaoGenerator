@@ -993,10 +993,7 @@ class DAOFileGenerator
 		$this->addLine(" * @package " . $this->project->getName(), 0);
 		$this->addLine(" * error prefix " . $t->getErrorPrefix(), 0);
 		$this->addLine(" * Genreated by BragaDaoGenereator ver " . Project::VERSION, 0);
-		$this->addLine(" * https://sourceforge.net/projects/simplephpdaogen/ ", 0);
-		$this->addLine(" * Designed by schama CRUD http://wikipedia.org/wiki/CRUD", 0);
-		$this->addLine(" * class generated automatically, please do not modify under pain of ", 0);
-		$this->addLine(" * OVERWRITTEN WITHOUT WARNING ", 0);
+		$this->addLine(" * class generated automatically, please do not modify under pain of OVERWRITTEN WITHOUT WARNING", 0);
 		$this->addLine(" */", 0);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
