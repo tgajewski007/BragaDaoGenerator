@@ -117,7 +117,7 @@ class DAOFileGenerator
 		}
 		$this->addLine("/**", 1);
 		$this->addLine(" * @param DataSource \$db", 1);
-		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
+		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function getByDataSource(DataSource \$db)", 1);
 		$this->addLine("{", 1);
