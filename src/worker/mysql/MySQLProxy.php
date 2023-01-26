@@ -21,8 +21,8 @@ class MySQLProxy implements ReverseProxy
 	public function getTables()
 	{
 		$db = new DB();
-		$sql = "SELECT table_name, table_schema  ";
-		$sql .= "(SELECT extra FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :TABLE_SCHEMA AND TABLE_NAME = TABLES.table_name AND COLUMN_KEY = 'PRI') ";
+		$sql = "SELECT table_name, table_schema ";
+		$sql .= ", (SELECT extra FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = :TABLE_SCHEMA AND TABLE_NAME = TABLES.table_name AND COLUMN_KEY = 'PRI') ";
 		$sql .= "FROM INFORMATION_SCHEMA.TABLES ";
 		$sql .= "WHERE TABLE_SCHEMA = :TABLE_SCHEMA ";
 		$sql .= "ORDER BY TABLE_NAME";
