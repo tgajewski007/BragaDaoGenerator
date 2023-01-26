@@ -194,7 +194,7 @@ class DAOFileGenerator
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
 
-		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
+		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function get(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
@@ -252,7 +252,7 @@ class DAOFileGenerator
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
 
-		$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName(), 1);
+		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function getForUpdate(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
@@ -960,6 +960,9 @@ class DAOFileGenerator
 	protected function generateProperties(Table $table)
 	{
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
+		$this->addLine("/**", 1);
+		$this->addLine(" * @var static[]", 1);
+		$this->addLine(" */", 1);
 		$this->addLine("protected static \$instance = array();", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		foreach($table->getColumny() as $c)
