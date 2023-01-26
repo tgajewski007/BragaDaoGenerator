@@ -1005,6 +1005,7 @@ class DAOFileGenerator
 		if(strlen($this->project->getNameSpace()) > 0)
 		{
 			$this->addLine("namespace " . $this->project->getNameSpace() . "dao;", 0);
+			$this->addLine("", 0);
 			$this->addLine("use braga\\db\\DAO;", 0);
 			$this->addLine("use braga\\db\\DataSource;", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
