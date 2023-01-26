@@ -688,7 +688,7 @@ class DAOFileGenerator
 				}
 			}
 			$this->addLine("/**", 1);
-			$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
+			$this->addLine(" * @return static", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public function " . $functionName . "()", 1);
 			$this->addLine("{", 1);
@@ -787,7 +787,7 @@ class DAOFileGenerator
 
 						$this->addLine("/**", 1);
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
-						$this->addLine(" * @return \\braga\\db\\Collection|" . "\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "[] ", 1);
+						$this->addLine(" * @return Collection|static[] ", 1);
 						$this->addLine(" */", 1);
 						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
 						$this->addLine("{", 1);
