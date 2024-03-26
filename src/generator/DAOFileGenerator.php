@@ -198,10 +198,6 @@ class DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("public static function get(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("if(count(self::\$instance) > 100)", 2);
-		$this->addLine("{", 2);
-		$this->addLine("self::\$instance = array();", 3);
-		$this->addLine("}", 2);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(!isset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]))", 3);
@@ -212,7 +208,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("return self::\$instance[\"\\\$\".count(self::\$instance)] = new static();", 3);
+		$this->addLine("return new static();", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
