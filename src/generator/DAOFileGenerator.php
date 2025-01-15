@@ -143,7 +143,7 @@ class DAOFileGenerator
 
 		$this->addLine("protected static function updateFactoryIndex(" . $t->getClassName() . "DAO \$" . lcfirst($t->getClassName()) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ",self::\$instance,true);", 2);
+		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ", self::\$instance,true);", 2);
 		$this->addLine("if(\$key !== false)", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(\$key !== " . implode(" . \"_\" . ", $tmp1) . ")", 3);
@@ -846,7 +846,7 @@ class DAOFileGenerator
 			case ColumnType::NUMBER:
 				$this->addLine("if(is_numeric(\$" . $c->getClassFieldName() . "))", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(\$" . $c->getClassFieldName() . "," . intval($c->getScale()) . ");", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(\$" . $c->getClassFieldName() . ", " . intval($c->getScale()) . ");", 3);
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
