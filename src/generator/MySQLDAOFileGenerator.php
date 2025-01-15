@@ -127,6 +127,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("INSERT INTO {$t->getName()} (" . implode(", ", $columns) . ") ", 3);
 		$this->addLine("VALUES (:" . implode(", :", $params) . ") ", 3);
 
+		$this->addLine("SQL;", 0);
 		$pkSequenced = false;
 		if(count($pk) == 1)
 		{

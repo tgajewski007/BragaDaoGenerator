@@ -449,7 +449,7 @@ class DAOFileGenerator
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql = <<<SQL", 2);
 		$this->addLine("SELECT * ", 3);
-		$this->addLine("FROM {$t->getName()} ", 2);
+		$this->addLine("FROM {$t->getName()} ", 3);
 		$separator = "WHERE";
 		$tab = 3;
 		foreach($pk as $column)
