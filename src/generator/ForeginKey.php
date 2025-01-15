@@ -13,7 +13,10 @@ class ForeginKey
 	// -------------------------------------------------------------------------
 	protected $name = null;
 	protected $classFieldName = null;
-	protected $columns = array();
+	/**
+	 * @var ConnectedColumn[]
+	 */
+	protected $columns = [];
 	protected $tableName;
 	protected $tableSchema;
 	// -------------------------------------------------------------------------
@@ -66,7 +69,8 @@ class ForeginKey
 	{
 		if(is_null($this->table))
 		{
-			foreach(FilesGenerator::$project->getTables() as $t)/* @var $t Table */
+			foreach(FilesGenerator::$project->getTables() as $t)
+				/* @var $t Table */
 			{
 				if($this->getTableName() == $t->getName() and $this->getTableSchema() == $t->getSchema())
 				{
@@ -99,7 +103,7 @@ class ForeginKey
 		$fk->setClassFieldName($c->getAttribute("classFieldName"));
 		$fk->setName($c->getAttribute("name"));
 		foreach($c->getElementsByTagName("connectedColumn") as $value)
-		/** @var \DOMElement $value  */
+			/** @var \DOMElement $value */
 		{
 			$fk->addColumn($value->getAttribute("fkColumnName"), $value->getAttribute("pkColumnName"));
 		}
@@ -113,7 +117,8 @@ class ForeginKey
 		$c->setAttribute("classFieldName", $this->getClassFieldName());
 		$c->setAttribute("name", $this->getName());
 
-		foreach($this->columns as $columna) /* @var $columna ConnectedColumn */
+		foreach($this->columns as $columna)
+			/* @var $columna ConnectedColumn */
 		{
 			$el = new \DOMElement("connectedColumn");
 			$c->appendChild($el);

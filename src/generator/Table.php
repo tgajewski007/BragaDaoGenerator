@@ -16,8 +16,17 @@ class Table
 	protected $indexTableSpace = null;
 	protected $errorPrefix = null;
 	// -------------------------------------------------------------------------
-	protected $columns = array();
-	protected $fk = array();
+	/**
+	 * @var Column[]
+	 */
+	protected $columns = [];
+	/**
+	 * @var ForeginKey[]
+	 */
+	protected $fk = [];
+	/**
+	 * @var Column[]
+	 */
 	protected $pk = null;
 	// -------------------------------------------------------------------------
 	public function addColumn(Column $c)
@@ -36,7 +45,6 @@ class Table
 		{
 			$this->pk = array();
 			foreach($this->getColumny() as $c)
-				/* @var $c Column */
 			{
 				if($c->isPK())
 				{

@@ -214,15 +214,14 @@ class DAOFileGenerator
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	protected function generateStaticGetForUpdateMethod(Table $t)
+	protected function generateStaticGetForUpdateMethod(Table $table)
 	{
 		$pkField = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		foreach($table->getColumny() as $column)
 		{
-			if($c->isPK())
+			if($column->isPK())
 			{
-				$pkField[] = $c;
+				$pkField[] = $column;
 			}
 		}
 
@@ -230,22 +229,21 @@ class DAOFileGenerator
 		$tmp1 = array();
 		$tmp2 = array();
 		$tmp3 = array();
-		foreach($pkField as $c)
-			/* @var $c Column */
+		foreach($pkField as $column)
 		{
-			$this->addLine(" * @param int \$" . $c->getClassFieldName() . "", 1);
-			$tmp1[] = "\$" . $c->getClassFieldName() . " = null";
-			switch($c->getType())
+			$this->addLine(" * @param int \$" . $column->getClassFieldName() . "", 1);
+			$tmp1[] = "\$" . $column->getClassFieldName() . " = null";
+			switch($column->getType())
 			{
 				case ColumnType::FLOAT:
 				case ColumnType::NUMBER:
-					$tmp2[] = "is_numeric(\$" . $c->getClassFieldName() . ")";
+					$tmp2[] = "is_numeric(\$" . $column->getClassFieldName() . ")";
 					break;
 				default :
-					$tmp2[] = "!empty(\$" . $c->getClassFieldName() . ")";
+					$tmp2[] = "!empty(\$" . $column->getClassFieldName() . ")";
 					break;
 			}
-			$tmp3[] = "\$" . $c->getClassFieldName();
+			$tmp3[] = "\$" . $column->getClassFieldName();
 		}
 
 		$this->addLine(" * @return static", 1);
@@ -261,31 +259,34 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "05 Empty or wrong object id type\");", 3);
+		$this->addLine("throw new \Exception(\"" . $table->getErrorPrefix() . "05 Empty or wrong object id type\");", 3);
 		$this->addLine("}", 2);
 		$pk = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		foreach($table->getColumny() as $column)
 		{
-			if($c->isPK())
+			if($column->isPK())
 			{
-				$pk[$c->getKey()] = $c;
+				$pk[$column->getKey()] = $column;
 			}
 		}
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$sql  = \"SELECT * \";", 2);
-		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql = <<<SQL", 2);
+		$this->addLine("SELECT * ", 3);
+		$this->addLine("FROM {$table->getName()} ", 3);
 		$separator = "WHERE";
-		foreach($pk as $c)
+		$i = 3;
+		foreach($pk as $column)
 		{
-			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
+			$val = mb_strtoupper($column->getName());
+			$this->addLine("{$separator} {$column->getName()} = :{$val} ", $i);
+			$i = 4;
 			$separator = "AND";
 		}
-		$this->addLine("\$sql .= \"FOR UPDATE \";", 2);
-		foreach($pk as $c)
-			/* @var $c Column */
+		$this->addLine("FOR UPDATE ", 3);
+		$this->addLine("SQL;", 0);
+		foreach($pk as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$" . $column->getClassFieldName() . ");", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(\$db->nextRecord())", 2);
@@ -294,16 +295,15 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \Exception(\"" . $t->getErrorPrefix() . "06 \" . " . $t->getSchema() . " . \"." . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
+		$this->addLine("throw new \Exception(\"" . $table->getErrorPrefix() . "06 \" . " . $table->getSchema() . " . \"." . $table->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	protected function generateGetAllForForeginColumn($t)
+	protected function generateGetAllForForeginColumn(Table $table)
 	{
-		foreach($t->getFk() as $fk)
-			/* @var $fk ForeginKey */
+		foreach($table->getFk() as $fk)
 		{
 			$fkTable = $fk->getTable();
 			$functioName = "getAllBy";
@@ -322,44 +322,44 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("/**", 1);
-			$this->addLine(" * Methods return colection of  " . $t->getClassName(), 1);
-			$this->addLine(" * @return \\braga\\db\\Collection|\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "[]", 1);
+			$this->addLine(" * Methods return colection of  " . $table->getClassName(), 1);
+			$this->addLine(" * @return \\braga\\db\\Collection|\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "[]", 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$db = new DB();", 2);
-			$this->addLine("\$sql  = \"SELECT * \";", 2);
-			$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+			$this->addLine("\$sql = <<<SQL", 2);
+			$this->addLine("SELECT * ", 3);
+			$this->addLine("FROM {$table->getName()} ", 3);
 
 			$separator = "WHERE";
+			$tab = 3;
 			foreach($fk->getColumn() as $c)
-				/* @var $c ConnectedColumn */
 			{
-				foreach($t->getColumny() as $i)
-					/* @var $i Column */
+				foreach($table->getColumny() as $column)
 				{
-					if($c->fkColumnName == $i->getName())
+					if($c->fkColumnName == $column->getName())
 					{
-						$this->addLine("\$sql .= \"" . $separator . " " . $i->getName() . " = :" . mb_strtoupper($i->getName()) . " \";", 2);
+						$val = mb_strtoupper($column->getName());
+						$this->addLine("{$separator} {$column->getName()} = :{$val} ", $tab);
 						$separator = "AND";
+						$tab = 4;
 					}
 				}
 			}
+			$this->addLine("SQL;", 0);
 
-			foreach($fk->getColumn() as $c)
-				/* @var $c ConnectedColumn */
+			foreach($fk->getColumn() as $connectedColumn)
 			{
-				foreach($t->getColumny() as $i)
-					/* @var $i Column */
+				foreach($table->getColumny() as $column)
 				{
-					if($c->fkColumnName == $i->getName())
+					if($connectedColumn->fkColumnName == $column->getName())
 					{
-						foreach($fk->getTable()->getPk() as $pk)
-							/* @var $pk Column */
+						foreach($fk->getTable()->getPk() as $pkColumn)
 						{
-							if($pk->getName() == $c->pkColumnName)
+							if($pkColumn->getName() == $connectedColumn->pkColumnName)
 							{
-								$this->addLine("\$db->setParam(\"" . mb_strtoupper($i->getName()) . "\", \$" . lcfirst($fkTable->getClassName()) . "->get" . ucfirst($pk->getClassFieldName()) . "());", 2);
+								$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$" . lcfirst($fkTable->getClassName()) . "->get" . ucfirst($pkColumn->getClassFieldName()) . "());", 2);
 							}
 						}
 					}
@@ -367,7 +367,7 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("\$db->query(\$sql);", 2);
-			$this->addLine("return new \\braga\\db\\Collection(\$db, \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::get());", 2);
+			$this->addLine("return new \\braga\\db\\Collection(\$db, \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "::get());", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		}
@@ -376,12 +376,11 @@ class DAOFileGenerator
 	protected function generateDestroy(Table $t)
 	{
 		$pk = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		foreach($t->getColumny() as $column)
 		{
-			if($c->isPK())
+			if($column->isPK())
 			{
-				$pk[$c->getKey()] = $c;
+				$pk[$column->getKey()] = $column;
 			}
 		}
 
@@ -393,17 +392,22 @@ class DAOFileGenerator
 		$this->addLine("protected function destroy()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$sql  = \"DELETE FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql = <<<SQL", 2);
+		$this->addLine("DELETE ", 3);
+		$this->addLine("FROM {$t->getName()} ", 3);
 		$separator = "WHERE";
-		foreach($pk as $c)
+		$tab = 3;
+		foreach($pk as $column)
 		{
-			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
+			$val = mb_strtoupper($column->getName());
+			$this->addLine("{$separator} {$column->getName()} = :{$val} ", $tab);
 			$separator = "AND";
+			$tab = 4;
 		}
-		foreach($pk as $c)
-			/* @var $c Column */
+		$this->addLine("SQL;", 0);
+		foreach($pk as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -421,12 +425,11 @@ class DAOFileGenerator
 	protected function generateRead(Table $t)
 	{
 		$pk = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		foreach($t->getColumny() as $column)
 		{
-			if($c->isPK())
+			if($column->isPK())
 			{
-				$pk[$c->getKey()] = $c;
+				$pk[$column->getKey()] = $column;
 			}
 		}
 
@@ -436,26 +439,30 @@ class DAOFileGenerator
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
-		foreach($pk as $c)
-			/* @var $c Column */
+		foreach($pk as $column)
+			/* @var $column Column */
 		{
-			$tmp1[] = "\$" . $c->getClassFieldName();
+			$tmp1[] = "\$" . $column->getClassFieldName();
 		}
 		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
-		$this->addLine("\$sql  = \"SELECT * \";", 2);
-		$this->addLine("\$sql .= \"FROM \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
+		$this->addLine("\$sql = <<<SQL", 2);
+		$this->addLine("SELECT * ", 3);
+		$this->addLine("FROM {$t->getName()} ", 2);
 		$separator = "WHERE";
-		foreach($pk as $c)
+		$tab = 3;
+		foreach($pk as $column)
 		{
-			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
+			$val = mb_strtoupper($column->getName());
+			$this->addLine("{$separator} {$column->getName()} = :{$val} ", $tab);
 			$separator = "AND";
+			$tab = 4;
 		}
-		foreach($pk as $c)
-			/* @var $c Column */
+		$this->addLine("SQL;", 0);
+		foreach($pk as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$" . $column->getClassFieldName() . ");", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(\$db->nextRecord())", 2);
@@ -473,18 +480,17 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateUpdate(Table $t)
 	{
-		$data = array();
-		$pk = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		$data = [];
+		$pk = [];
+		foreach($t->getColumny() as $column)
 		{
-			if($c->isPK())
+			if($column->isPK())
 			{
-				$pk[$c->getKey()] = $c;
+				$pk[$column->getKey()] = $column;
 			}
-			elseif($c instanceof Column)
+			elseif($column instanceof Column)
 			{
-				$data[$c->getKey()] = $c;
+				$data[$column->getKey()] = $column;
 			}
 		}
 
@@ -496,46 +502,48 @@ class DAOFileGenerator
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$sql = <<<SQL", 2);
+		$this->addLine("UPDATE {$t->getName()} ", 3);
 
-		$this->addLine("\$sql  = \"UPDATE \" . " . $t->getSchema() . " . \"." . $t->getName() . " \";", 2);
-
-		$columns = array();
-		$params = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		$columns = [];
+		$params = [];
+		foreach($t->getColumny() as $column)
 		{
-			if($c->getName() == strtoupper($c->getName()))
+			if($column->getName() == strtoupper($column->getName()))
 			{
-				$columns[$c->getName()] = $c->getName();
+				$columns[$column->getName()] = $column->getName();
 			}
 			else
 			{
-				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+				$columns[$column->getName()] = "\\\"" . $column->getName() . "\\\"";
 			}
-			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
-			if(strlen($params[$c->getName()]) == 0)
+			$params[$column->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($column->getName()));
+			if(strlen($params[$column->getName()]) == 0)
 			{
-				$params[$c->getName()] = RandomStringLetterOnly(8);
+				$params[$column->getName()] = RandomStringLetterOnly(8);
 			}
 		}
 
 		$separator = "SET";
-		foreach($data as $c)
+		foreach($data as $column)
 		{
-			$this->addLine("\$sql .= \"" . $separator . " " . $columns[$c->getName()] . " = :" . $params[$c->getName()] . " \";", 2);
-			$separator = " ,";
+			$this->addLine("{$separator} {$columns[$column->getName()]} = :{$params[$column->getName()]} ", 3);
+			$separator = ", ";
 		}
 		$separator = "WHERE";
-		foreach($pk as $c)
+		$tab = 3;
+		foreach($pk as $column)
 		{
-			$this->addLine("\$sql .= \"" . $separator . " " . $columns[$c->getName()] . " = :" . $params[$c->getName()] . " \";", 2);
+			$val = mb_strtoupper($column->getName());
+			$this->addLine("{$separator} {$column->getName()} = :{$val} ", $tab);
 			$separator = "AND";
+			$tab = 4;
 		}
+		$this->addLine("SQL;", 0);
 		$tmp = $pk + $data;
-		foreach($tmp as $c)
-			/* @var $c Column */
+		foreach($tmp as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\",\$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -554,20 +562,19 @@ class DAOFileGenerator
 	{
 		$data = array();
 		$pk = array();
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		foreach($t->getColumny() as $column)
 		{
-			if($c->isPK())
+			if($column->isPK())
 			{
-				$pk[$c->getKey()] = $c;
-				if(!$c->isAutoGenerated())
+				$pk[$column->getKey()] = $column;
+				if(!$column->isAutoGenerated())
 				{
-					$data[$c->getKey()] = $c;
+					$data[$column->getKey()] = $column;
 				}
 			}
 			else
 			{
-				$data[$c->getKey()] = $c;
+				$data[$column->getKey()] = $column;
 			}
 		}
 
@@ -579,28 +586,28 @@ class DAOFileGenerator
 		$this->addLine("protected function create()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
+		$this->addLine("\$sql = <<<SQL", 2);
 
 		$columns = array();
 		$params = array();
-		foreach($data as $c)
-			/* @var $c Column */
+		foreach($data as $column)
 		{
-			if($c->getName() == strtoupper($c->getName()))
+			if($column->getName() == strtoupper($column->getName()))
 			{
-				$columns[$c->getName()] = $c->getName();
+				$columns[$column->getName()] = $column->getName();
 			}
 			else
 			{
-				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+				$columns[$column->getName()] = "\\\"" . $column->getName() . "\\\"";
 			}
-			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
-			if(strlen($params[$c->getName()]) == 0)
+			$params[$column->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($column->getName()));
+			if(strlen($params[$column->getName()]) == 0)
 			{
-				$params[$c->getName()] = RandomStringLetterOnly(8);
+				$params[$column->getName()] = RandomStringLetterOnly(8);
 			}
 		}
-		$this->addLine("\$sql  = \"INSERT INTO \" . " . $t->getSchema() . " . \"." . $t->getName() . "(" . implode(", ", $columns) . ") \";", 2);
-		$this->addLine("\$sql .= \"VALUES(:" . implode(", :", $params) . ") \";", 2);
+		$this->addLine("INSERT INTO {$t->getName()} (" . implode(", ", $columns) . ") ", 3);
+		$this->addLine("VALUES (:" . implode(", :", $params) . ") ", 3);
 
 		$pkSequenced = false;
 		if(count($pk) == 1)
@@ -608,9 +615,10 @@ class DAOFileGenerator
 			if(current($pk)->isAutoGenerated())
 			{
 				$pkSequenced = true;
-				$this->addLine("\$sql .= \"RETURNING " . current($pk)->getName() . " INTO :" . mb_strtoupper(current($pk)->getName()) . "\";", 2);
+				$this->addLine("RETURNING " . current($pk)->getName() . " INTO :" . mb_strtoupper(current($pk)->getName()) . " ", 3);
 			}
 		}
+		$this->addLine("SQL;", 0);
 
 		if($pkSequenced)
 		{
@@ -625,10 +633,9 @@ class DAOFileGenerator
 
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),false," . $size . ");", 2);
 		}
-		foreach($data as $c)
-			/* @var $c Column */
+		foreach($data as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\",\$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -898,10 +905,9 @@ class DAOFileGenerator
 	// ------------------------------------------------------------------------------------------------------------------
 	protected function generateSetters(Table $t)
 	{
-		foreach($t->getColumny() as $c)
-			/* @var $c Column */
+		foreach($t->getColumny() as $column)
 		{
-			$this->generateSetter($c);
+			$this->generateSetter($column);
 		}
 	}
 	// ------------------------------------------------------------------------------------------------------------------
