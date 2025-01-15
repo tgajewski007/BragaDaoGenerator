@@ -543,7 +543,7 @@ class DAOFileGenerator
 		$tmp = $pk + $data;
 		foreach($tmp as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\",\$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -631,11 +631,11 @@ class DAOFileGenerator
 				$size = current($pk)->getSize();
 			}
 
-			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\",\$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),false," . $size . ");", 2);
+			$this->addLine("\$db->setParam(\"" . mb_strtoupper(current($pk)->getName()) . "\", \$this->get" . ucfirst(current($pk)->getClassFieldName()) . "(),false," . $size . ");", 2);
 		}
 		foreach($data as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\",\$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);

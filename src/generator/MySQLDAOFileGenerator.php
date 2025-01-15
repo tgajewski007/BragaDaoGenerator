@@ -68,7 +68,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$tmp = $pk + $data;
 		foreach($tmp as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\",\$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -138,7 +138,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		}
 		foreach($data as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\",\$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);

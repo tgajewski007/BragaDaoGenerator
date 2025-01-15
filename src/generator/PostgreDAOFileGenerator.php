@@ -13,7 +13,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 	protected function generateDestroy(Table $t)
 	{
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -41,7 +42,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
@@ -63,7 +65,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 	protected function generateRead(Table $t)
 	{
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -77,7 +80,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 		$this->addLine(" * @return boolean", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$tmp1[] = "\$" . $c->getClassFieldName();
 		}
@@ -96,7 +100,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 			$this->addLine("\$sql .= \"" . $separator . " " . $c->getName() . " = :" . mb_strtoupper($c->getName()) . " \";", 2);
 			$separator = "AND";
 		}
-		foreach($pk as $c)/* @var $c Column */
+		foreach($pk as $c)
+			/* @var $c Column */
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($c->getName()) . "\", \$" . $c->getClassFieldName() . ");", 2);
 		}
@@ -118,7 +123,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 	{
 		$data = array();
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -148,13 +154,17 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 
 		$columns = array();
 		$params = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
-
 			if($c->getName() == strtolower($c->getName()))
+			{
 				$columns[$c->getName()] = $c->getName();
+			}
 			else
+			{
 				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+			}
 			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
 			if(strlen($params[$c->getName()]) == 0)
 			{
@@ -175,9 +185,10 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 			$separator = "AND";
 		}
 		$tmp = $pk + $data;
-		foreach($tmp as $c)/* @var $c Column */
+		foreach($tmp as $c)
+			/* @var $c Column */
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\", \$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -198,7 +209,8 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 	{
 		$data = array();
 		$pk = array();
-		foreach($t->getColumny() as $c)/* @var $c Column */
+		foreach($t->getColumny() as $c)
+			/* @var $c Column */
 		{
 			if($c->isPK())
 			{
@@ -225,12 +237,17 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 
 		$columns = array();
 		$params = array();
-		foreach($data as $c)/* @var $c Column */
+		foreach($data as $c)
+			/* @var $c Column */
 		{
 			if($c->getName() == strtolower($c->getName()))
+			{
 				$columns[$c->getName()] = $c->getName();
+			}
 			else
+			{
 				$columns[$c->getName()] = "\\\"" . $c->getName() . "\\\"";
+			}
 			$params[$c->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($c->getName()));
 			if(strlen($params[$c->getName()]) == 0)
 			{
@@ -255,9 +272,10 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 			}
 		}
 
-		foreach($data as $c)/* @var $c Column */
+		foreach($data as $c)
+			/* @var $c Column */
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\",\$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
+			$this->addLine("\$db->setParam(\"" . $params[$c->getName()] . "\", \$this->get" . ucfirst($c->getClassFieldName()) . "());", 2);
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
