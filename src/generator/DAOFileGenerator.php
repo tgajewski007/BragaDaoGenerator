@@ -143,7 +143,7 @@ class DAOFileGenerator
 
 		$this->addLine("protected static function updateFactoryIndex(" . $t->getClassName() . "DAO \$" . lcfirst($t->getClassName()) . ")", 1);
 		$this->addLine("{", 1);
-		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ", self::\$instance,true);", 2);
+		$this->addLine("\$key = array_search(\$" . lcfirst($t->getClassName()) . ", self::\$instance, true);", 2);
 		$this->addLine("if(\$key !== false)", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(\$key !== " . implode(" . \"_\" . ", $tmp1) . ")", 3);
@@ -840,7 +840,7 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = mb_substr(\$" . $c->getClassFieldName() . ",0," . $c->getSize() . ");", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = mb_substr(\$" . $c->getClassFieldName() . ", 0, " . $c->getSize() . ");", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::NUMBER:
@@ -860,7 +860,7 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATE_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATE_FORMAT, strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::TIME:
@@ -870,7 +870,7 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_TIME_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_TIME_FORMAT, strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::DATETIME:
@@ -880,7 +880,7 @@ class DAOFileGenerator
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATETIME_FORMAT,strtotime(\$" . $c->getClassFieldName() . "));", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = date(PHP_DATETIME_FORMAT, strtotime(\$" . $c->getClassFieldName() . "));", 3);
 				$this->addLine("}", 2);
 				break;
 			case ColumnType::FLOAT:
