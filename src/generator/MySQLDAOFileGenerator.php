@@ -59,8 +59,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$tab = 3;
 		foreach($pk as $column)
 		{
-			$val = mb_strtoupper($column->getName());
-			$this->addLine("{$separator} {$column->getName()} = :{$val} ", $tab);
+			$this->addLine("{$separator} {$column->getName()} = :{$params[$column->getName()]} ", $tab);
 			$separator = "AND";
 			$tab = 4;
 		}
