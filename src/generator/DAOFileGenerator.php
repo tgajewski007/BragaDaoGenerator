@@ -259,7 +259,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \braga\db\exception\ExecutionSqlException(\"" . $table->getErrorPrefix() . "05 Empty or wrong object id type\");", 3);
+		$this->addLine("throw new \\braga\\tools\\exception\\BragaException(\"" . $table->getErrorPrefix() . "05 Empty or wrong object id type\");", 3);
 		$this->addLine("}", 2);
 		$pk = array();
 		foreach($table->getColumny() as $column)
@@ -295,7 +295,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\"" . $table->getErrorPrefix() . "06 " . $table->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
+		$this->addLine("throw new \\braga\\tools\\exception\\BragaException(\"" . $table->getErrorPrefix() . "06 " . $table->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -952,7 +952,7 @@ class DAOFileGenerator
 
 		$this->addLine("if(!\$this->retrieve(" . implode(", ", $tmp3) . "))", 3);
 		$this->addLine("{", 3);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\"" . $t->getErrorPrefix() . "01 " . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 4);
+		$this->addLine("throw new \\braga\\tools\\exception\\BragaException(\"" . $t->getErrorPrefix() . "01 " . $t->getName() . "(\" . " . implode(" . \", \".", $tmp3) . " . \")  does not exists\");", 4);
 		$this->addLine("}", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
