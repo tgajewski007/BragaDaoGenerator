@@ -90,6 +90,9 @@ class ForeginKey
 		$this->columns[] = $tmp;
 	}
 	// -------------------------------------------------------------------------
+	/**
+	 * @return ConnectedColumn[]
+	 */
 	public function getColumn()
 	{
 		return $this->columns;

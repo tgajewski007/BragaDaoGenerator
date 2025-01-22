@@ -39,11 +39,14 @@ class Table
 		$this->fk[$fk->getName()] = $fk;
 	}
 	// -------------------------------------------------------------------------
+	/**
+	 * @return array|Column[]
+	 */
 	public function getPk()
 	{
 		if(is_null($this->pk))
 		{
-			$this->pk = array();
+			$this->pk = [];
 			foreach($this->getColumny() as $c)
 			{
 				if($c->isPK())
@@ -55,11 +58,17 @@ class Table
 		return $this->pk;
 	}
 	// -------------------------------------------------------------------------
+	/**
+	 * @return Column[]
+	 */
 	public function getColumny()
 	{
 		return $this->columns;
 	}
 	// -------------------------------------------------------------------------
+	/**
+	 * @return ForeginKey[]
+	 */
 	public function getFk()
 	{
 		return $this->fk;
