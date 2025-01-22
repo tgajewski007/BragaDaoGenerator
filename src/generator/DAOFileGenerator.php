@@ -674,7 +674,7 @@ class DAOFileGenerator
 						{
 							if($x->getName() == $cc->fkColumnName)
 							{
-								$tmp1[] = "\$this->get" . ucfirst($x->getClassFieldName()) . "(\$forUpdate = false)";
+								$tmp1[] = "\$this->get" . ucfirst($x->getClassFieldName()) . "()";
 								if(substr($x->getClassFieldName(), 0, 2) == "id")
 								{
 									$functionName .= substr($x->getClassFieldName(), 2);
@@ -691,15 +691,15 @@ class DAOFileGenerator
 			$this->addLine("/**", 1);
 			$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function " . $functionName . "()", 1);
+			$this->addLine("public function " . $functionName . "(\$forUpdate = false)", 1);
 			$this->addLine("{", 1);
 			$this->addLine("if(\$forUpdate)", 2);
 			$this->addLine("{", 2);
-			$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName() . "::getForUpdate(" . implode(", ", $tmp1) . ");", 2);
+			$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName() . "::getForUpdate(" . implode(", ", $tmp1) . ");", 3);
 			$this->addLine("}", 2);
 			$this->addLine("else", 2);
 			$this->addLine("{", 2);
-			$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 2);
+			$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName() . "::get(" . implode(", ", $tmp1) . ");", 3);
 			$this->addLine("}", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -709,19 +709,15 @@ class DAOFileGenerator
 	protected function generateSetterObject(Table $table)
 	{
 		foreach($table->getFk() as $fk)
-			/* @var $fk ForeginKey */
 		{
 			$tmp1 = array();
 			foreach($fk->getTable()->getPk() as $c)
-				/* @var $c Column */
 			{
 				foreach($fk->getColumn() as $cc)
-					/* @var $cc ConnectedColumn */
 				{
 					if($c->getName() == $cc->pkColumnName)
 					{
 						foreach($table->getColumny() as $x)
-							/* @var $x Column */
 						{
 							if($x->getName() == $cc->fkColumnName)
 							{
