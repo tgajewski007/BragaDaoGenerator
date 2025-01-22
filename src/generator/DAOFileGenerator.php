@@ -293,7 +293,7 @@ class DAOFileGenerator
 		$this->addLine("{", 2);
 		$this->addLine("\$retval = self::getByDataSource(\$db); ", 3);
 		$this->addLine("\$retval->forUpdate = true; ", 3);
-		$this->addLine("return \$retval", 3);
+		$this->addLine("return \$retval;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
