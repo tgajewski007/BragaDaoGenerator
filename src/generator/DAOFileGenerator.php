@@ -291,7 +291,9 @@ class DAOFileGenerator
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(\$db->nextRecord())", 2);
 		$this->addLine("{", 2);
-		$this->addLine("return self::getByDataSource(\$db);", 3);
+		$this->addLine("\$retval = self::getByDataSource(\$db); ", 3);
+		$this->addLine("\$retval->forUpdate = true; ", 3);
+		$this->addLine("return \$retval", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
@@ -816,7 +818,7 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateIsReaded()
 	{
-		$this->addLine("protected function isReaded()", 1);
+		$this->addLine("protected function isReaded() :bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("return \$this->readed;", 2);
 		$this->addLine("}", 1);
@@ -824,6 +826,11 @@ class DAOFileGenerator
 		$this->addLine("protected function setReaded()", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$this->readed = true;", 2);
+		$this->addLine("}", 1);
+		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
+		$this->addLine("public function isForUpdate() :bool", 1);
+		$this->addLine("{", 1);
+		$this->addLine("return \$this->forUpdate;", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
@@ -974,7 +981,8 @@ class DAOFileGenerator
 		{
 			$this->addLine("protected \$" . $c->getClassFieldName() . " = null;", 1);
 		}
-		$this->addLine("protected \$readed = false;", 1);
+		$this->addLine("protected bool \$readed = false;", 1);
+		$this->addLine("protected bool \$forUpdate = false;", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
