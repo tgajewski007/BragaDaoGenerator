@@ -505,7 +505,7 @@ class DAOFileGenerator
 		$this->addLine("{", 1);
 		$this->addLine("if(!\$this->forUpdate)", 2);
 		$this->addLine("{", 2);
-		$this->addLine("\\braga\\graylogger\\BaseLogger::debug(\"SaveWithoutLock\", [ \"id\" => \$this->getKey(), \"class\" => \"" . $t->getClassName() . "\" ]);", 3);
+		$this->addLine("\\braga\\graylogger\\BaseLogger::exception(new \\braga\\tools\\exception\\BragaException(\"" . $t->getErrorPrefix() . "09 SaveWithoutLock\", -1), \\Monolog\\Level::Critical, [ \"id\" => \$this->getKey(), \"class\" => \"" . $t->getClassName() . "\" ]);", 3);
 		$this->addLine("}", 2);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql = <<<SQL", 2);
