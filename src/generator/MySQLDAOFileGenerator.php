@@ -33,6 +33,10 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update()", 1);
 		$this->addLine("{", 1);
+		$this->addLine("if(!\$this->forUpdate)", 2);
+		$this->addLine("{", 2);
+		$this->addLine("\\braga\\graylogger\\BaseLogger::debug(\"SaveWithoutLock\", [ \"id\" => \$this->getKey(), \"class\" => \"" . $t->getClassName() . "\" ]);", 3);
+		$this->addLine("}", 2);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql = <<<SQL", 2);
 		$this->addLine("UPDATE {$t->getName()} ", 3);
