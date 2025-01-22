@@ -254,7 +254,14 @@ class DAOFileGenerator
 		$this->addLine("{", 2);
 		$this->addLine("if(isset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]))", 3);
 		$this->addLine("{", 3);
-		$this->addLine("unset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]);", 4);
+		$this->addLine("if(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]->forUpdate)", 4);
+		$this->addLine("{", 4);
+		$this->addLine("return self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "];", 5);
+		$this->addLine("}", 4);
+		$this->addLine("else", 4);
+		$this->addLine("}", 4);
+		$this->addLine("unset(self::\$instance[" . implode(" . \"_\" . ", $tmp3) . "]);", 5);
+		$this->addLine("}", 4);
 		$this->addLine("}", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
