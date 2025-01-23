@@ -334,8 +334,10 @@ class DAOFileGenerator
 			$this->addLine(" * Methods return colection of  " . $table->getClassName(), 1);
 			$this->addLine(" * @return \\braga\\db\\Collection|\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "[]", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ")", 1);
+			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ", \$forUpdate = false)", 1);
 			$this->addLine("{", 1);
+			$this->addLine("\$prototype = \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "::get();", 2);
+			$this->addLine("\$prototype->forUpdate = \$forUpdate;", 2);
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql = <<<SQL", 2);
 			$this->addLine("SELECT * ", 3);
@@ -357,6 +359,10 @@ class DAOFileGenerator
 				}
 			}
 			$this->addLine("SQL;", 0);
+			$this->addLine("if(\$forUpdate)", 2);
+			$this->addLine("{", 2);
+			$this->addLine("\$sql .= \"FOR UPDATE \";", 3);
+			$this->addLine("}", 2);
 
 			foreach($fk->getColumn() as $connectedColumn)
 			{
@@ -376,7 +382,7 @@ class DAOFileGenerator
 			}
 
 			$this->addLine("\$db->query(\$sql);", 2);
-			$this->addLine("return new \\braga\\db\\Collection(\$db, \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "::get());", 2);
+			$this->addLine("return new \\braga\\db\\Collection(\$db, \$prototype);", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		}
@@ -803,9 +809,9 @@ class DAOFileGenerator
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 						$this->addLine(" * @return \\braga\\db\\Collection|" . "\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "[]", 1);
 						$this->addLine(" */", 1);
-						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "()", 1);
+						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "(\$forUpdate = false)", 1);
 						$this->addLine("{", 1);
-						$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::" . $functionName . "(\$this);", 2);
+						$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::" . $functionName . "(\$this, \$forUpdate);", 2);
 						$this->addLine("}", 1);
 						$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 					}
