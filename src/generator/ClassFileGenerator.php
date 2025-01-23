@@ -90,7 +90,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine("\$sql = <<<SQL", 2);
 		$this->addLine("SELECT * ", 3);
 		$this->addLine("FROM {$t->getName()} ", 3);
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("return new Collection(\$db, static::get());", 2);
 		$this->addLine("}", 1);

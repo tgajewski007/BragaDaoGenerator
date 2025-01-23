@@ -67,7 +67,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 			$separator = "AND";
 			$tab = 4;
 		}
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		$tmp = $pk + $data;
 		foreach($tmp as $column)
 		{
@@ -130,7 +130,7 @@ class MySQLDAOFileGenerator extends DAOFileGenerator
 		$this->addLine("INSERT INTO {$t->getName()} (" . implode(", ", $columns) . ") ", 3);
 		$this->addLine("VALUES (:" . implode(", :", $params) . ") ", 3);
 
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		$pkSequenced = false;
 		if(count($pk) == 1)
 		{

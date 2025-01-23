@@ -290,7 +290,7 @@ class DAOFileGenerator
 			$separator = "AND";
 		}
 		$this->addLine("FOR UPDATE ", 3);
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		foreach($pk as $column)
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$" . $column->getClassFieldName() . ");", 2);
@@ -358,10 +358,10 @@ class DAOFileGenerator
 					}
 				}
 			}
-			$this->addLine("SQL;", 0);
+			$this->addLine("SQL;", 3);
 			$this->addLine("if(\$forUpdate)", 2);
 			$this->addLine("{", 2);
-			$this->addLine("\$sql .= \"FOR UPDATE \";", 3);
+			$this->addLine("\$sql .= \"\\ntFOR UPDATE \";", 3);
 			$this->addLine("}", 2);
 
 			foreach($fk->getColumn() as $connectedColumn)
@@ -419,7 +419,7 @@ class DAOFileGenerator
 			$separator = "AND";
 			$tab = 4;
 		}
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		foreach($pk as $column)
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
@@ -474,7 +474,7 @@ class DAOFileGenerator
 			$separator = "AND";
 			$tab = 4;
 		}
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		foreach($pk as $column)
 		{
 			$this->addLine("\$db->setParam(\"" . mb_strtoupper($column->getName()) . "\", \$" . $column->getClassFieldName() . ");", 2);
@@ -558,7 +558,7 @@ class DAOFileGenerator
 			$separator = "AND";
 			$tab = 4;
 		}
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 		$tmp = $pk + $data;
 		foreach($tmp as $column)
 		{
@@ -637,7 +637,7 @@ class DAOFileGenerator
 				$this->addLine("RETURNING " . current($pk)->getName() . " INTO :" . mb_strtoupper(current($pk)->getName()) . " ", 3);
 			}
 		}
-		$this->addLine("SQL;", 0);
+		$this->addLine("SQL;", 3);
 
 		if($pkSequenced)
 		{
