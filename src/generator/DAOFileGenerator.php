@@ -298,8 +298,8 @@ class DAOFileGenerator
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(\$db->nextRecord())", 2);
 		$this->addLine("{", 2);
-		$this->addLine("\$retval = self::getByDataSource(\$db); ", 3);
-		$this->addLine("\$retval->forUpdate = true; ", 3);
+		$this->addLine("\$retval = self::getByDataSource(\$db);", 3);
+		$this->addLine("\$retval->forUpdate = true;", 3);
 		$this->addLine("return \$retval;", 3);
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
