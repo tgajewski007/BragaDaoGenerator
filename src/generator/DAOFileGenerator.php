@@ -361,7 +361,7 @@ class DAOFileGenerator
 			$this->addLine("SQL;", 3);
 			$this->addLine("if(\$forUpdate)", 2);
 			$this->addLine("{", 2);
-			$this->addLine("\$sql .= \"\\ntFOR UPDATE \";", 3);
+			$this->addLine("\$sql .= \"\\nFOR UPDATE \";", 3);
 			$this->addLine("}", 2);
 
 			foreach($fk->getColumn() as $connectedColumn)
