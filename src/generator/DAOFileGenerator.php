@@ -708,6 +708,8 @@ class DAOFileGenerator
 				}
 			}
 			$this->addLine("/**", 1);
+			$this->addLine(" * @throws BragaException", 1);
+			$this->addLine(" * @throws ExecutionSqlException", 1);
 			$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
 			$this->addLine("public function " . $functionName . "(\$forUpdate = false): \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
