@@ -148,6 +148,8 @@ class Column
 		{
 			case ColumnType::NUMBER:
 				return "int";
+			case ColumnType::FLOAT:
+				return "float";
 			case ColumnType::CHAR:
 			case ColumnType::DATE:
 			case ColumnType::DATETIME:

@@ -429,7 +429,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "04 Delete record from table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "04 Delete record from table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -485,7 +485,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "07 Read record from table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "07 Read record from table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -569,7 +569,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "03 Update record in table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -667,7 +667,7 @@ class DAOFileGenerator
 		$this->addLine("}", 2);
 		$this->addLine("else", 2);
 		$this->addLine("{", 2);
-		$this->addLine("throw new \\braga\\db\\exception\\ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
+		$this->addLine("throw new ExecutionSqlException(\$db, \"" . $t->getErrorPrefix() . "02 Insert record into table " . $t->getName() . " fail\");", 3);
 		$this->addLine("}", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
@@ -985,12 +985,12 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * @var static[]", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected static \$instance = array();", 1);
+		$this->addLine("protected static array \$instance = [];", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		foreach($table->getColumny() as $c)
 			/* @var $c Column */
 		{
-			$this->addLine("protected \$" . $c->getClassFieldName() . " = null;", 1);
+			$this->addLine("protected {$c->getPHPType()} \${$c->getClassFieldName()} = null;", 1);
 		}
 		$this->addLine("protected bool \$readed = false;", 1);
 		$this->addLine("protected bool \$forUpdate = false;", 1);
@@ -1028,6 +1028,7 @@ class DAOFileGenerator
 			$this->addLine("", 0);
 			$this->addLine("use braga\\db\\DAO;", 0);
 			$this->addLine("use braga\\db\\DataSource;", 0);
+			$this->addLine("use braga\\db\\exception\\ExecutionSqlException;", 0);
 			if($this->project->getDataBaseStyle() == DataBaseStyle::PGSQL)
 			{
 				$this->addLine("use braga\db\pgsql\DB;", 0);
@@ -1040,6 +1041,7 @@ class DAOFileGenerator
 			{
 				$this->addLine("use braga\db\mysql\DB;", 0);
 			}
+			$this->addLine("use braga\\tools\\exception\\BragaException;", 0);
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
