@@ -1078,8 +1078,8 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function open(Table $t)
 	{
-		@mkdir($this->project->getProjectFolder() . DIRECTORY_SEPARATOR . $this->project->getDaoFolder(), 0777, true);
-		$this->fileHandle = fopen($this->project->getProjectFolder() . DIRECTORY_SEPARATOR . $this->project->getDaoFolder() . DIRECTORY_SEPARATOR . $t->getClassName() . "DAO.php", "w");
+		@mkdir($this->project->getProjectFolder() . $this->project->getDaoFolder(), 0777, true);
+		$this->fileHandle = fopen($this->project->getProjectFolder() . $this->project->getDaoFolder() . DIRECTORY_SEPARATOR . $t->getClassName() . "DAO.php", "w");
 		$this->addLine("<?php", 0);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
