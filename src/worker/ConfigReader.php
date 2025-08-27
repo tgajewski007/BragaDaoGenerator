@@ -220,10 +220,12 @@ class ConfigReader
 			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
 			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
 			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
 			foreach($configFilenameArray as $c)
 			{
-				$filename = realpath(__DIR__ . DIRECTORY_SEPARATOR . $c);
-				if(file_exists($filename . DIRECTORY_SEPARATOR . "dbConfig.json"))
+				$realpath = realpath(__DIR__ . DIRECTORY_SEPARATOR . $c);
+				if(file_exists($realpath . DIRECTORY_SEPARATOR . "dbConfig.json"))
 				{
 					self::$instance = new self();
 					$content = file_get_contents($c);
