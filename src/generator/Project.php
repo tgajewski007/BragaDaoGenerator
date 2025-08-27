@@ -127,7 +127,7 @@ class Project
 	{
 		if(is_null($this->xmlFile))
 		{
-			return $this->getProjectFolder() . "\\dao.xml";
+			return $this->getProjectFolder() . DIRECTORY_SEPARATOR . "dao.xml";
 		}
 		return $this->xmlFile;
 	}

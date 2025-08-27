@@ -32,7 +32,8 @@ class MainFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateClassFiles()
 	{
-		foreach($this->project->getTables() as $t)/* @var $t Table */
+		foreach($this->project->getTables() as $t)
+			/* @var $t Table */
 		{
 			$txt = "require_once '" . $this->project->getObjFolder() . "/" . $t->getClassName() . ".php';";
 			$this->addLine($txt, 0);
@@ -41,7 +42,8 @@ class MainFileGenerator
 	// -------------------------------------------------------------------------
 	protected function generateDaoFiles()
 	{
-		foreach($this->project->getTables() as $t)/* @var $t Table */
+		foreach($this->project->getTables() as $t)
+			/* @var $t Table */
 		{
 			$txt = "require_once '" . $this->project->getDaoFolder() . "/" . $t->getClassName() . "DAO.php';";
 			$this->addLine($txt, 0);
@@ -74,7 +76,7 @@ class MainFileGenerator
 	protected function open()
 	{
 		@mkdir($this->project->getProjectFolder(), 0777, true);
-		$this->fileHandle = fopen($this->project->getProjectFolder() . "\\" . "objdao.php", "w");
+		$this->fileHandle = fopen($this->project->getProjectFolder() . DIRECTORY_SEPARATOR . "objdao.php", "w");
 		$this->addLine("<?php", 0);
 	}
 	// -------------------------------------------------------------------------
