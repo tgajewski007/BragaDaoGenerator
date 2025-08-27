@@ -170,12 +170,12 @@ class ConfigReader
 	// -----------------------------------------------------------------------------------------------------------------
 	public function getXmlFile()
 	{
-		return $this->getBaseFolder() . "/" . $this->getConfigFolder() . "/dao.xml";
+		return $this->getBaseFolder() . DIRECTORY_SEPARATOR . $this->getConfigFolder() . DIRECTORY_SEPARATOR . "dao.xml";
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	public function getProjectFolder()
 	{
-		return $this->getBaseFolder() . "/" . $this->getOutputFolder() . "/";
+		return $this->getBaseFolder() . DIRECTORY_SEPARATOR . $this->getOutputFolder() . DIRECTORY_SEPARATOR;
 	}
 	// -----------------------------------------------------------------------------------------------------------------
 	/**
@@ -231,7 +231,7 @@ class ConfigReader
 					self::$instance = new self();
 					$content = file_get_contents($filename);
 					$content = json_decode($content, true);
-					self::$instance->setBaseFolder(dirname($realpath));
+					self::$instance->setBaseFolder($realpath);
 					self::$instance->setUser($content["user"]);
 					self::$instance->setPass($content["pass"]);
 					self::$instance->setSchema($content["schema"]);
