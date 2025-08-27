@@ -338,6 +338,7 @@ class DAOFileGenerator
 			$this->addLine("{", 1);
 			$this->addLine("\$prototype = \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "::get();", 2);
 			$this->addLine("\$prototype->forUpdate = \$forUpdate;", 2);
+			$this->addLine("\$forUpdateString = \$forUpdate ? \"FOR UPDATE \" : \"\";", 2);
 			$this->addLine("\$db = new DB();", 2);
 			$this->addLine("\$sql = <<<SQL", 2);
 			$this->addLine("SELECT * ", 3);
@@ -358,11 +359,8 @@ class DAOFileGenerator
 					}
 				}
 			}
+			$this->addLine("{\$forUpdateString};", 3);
 			$this->addLine("SQL;", 3);
-			$this->addLine("if(\$forUpdate)", 2);
-			$this->addLine("{", 2);
-			$this->addLine("\$sql .= \"\\nFOR UPDATE \";", 3);
-			$this->addLine("}", 2);
 
 			foreach($fk->getColumn() as $connectedColumn)
 			{
@@ -831,7 +829,7 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateIsReaded()
 	{
-		$this->addLine("protected function isReaded() :bool", 1);
+		$this->addLine("protected function isReaded(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("return \$this->readed;", 2);
 		$this->addLine("}", 1);
@@ -841,7 +839,7 @@ class DAOFileGenerator
 		$this->addLine("\$this->readed = true;", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
-		$this->addLine("public function isForUpdate() :bool", 1);
+		$this->addLine("public function isForUpdate(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("return \$this->forUpdate;", 2);
 		$this->addLine("}", 1);
