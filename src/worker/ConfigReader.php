@@ -216,13 +216,14 @@ class ConfigReader
 		{
 			$configFilenameArray = array();
 			$configFilenameArray[] = "dbConfig.json";
-			$configFilenameArray[] = "../dbConfig.json";
-			$configFilenameArray[] = "../../dbConfig.json";
-			$configFilenameArray[] = "../../../dbConfig.json";
-			$configFilenameArray[] = "../../../../dbConfig.json";
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
 			foreach($configFilenameArray as $c)
 			{
-				if(file_exists($c))
+				$filename = __DIR__ . DIRECTORY_SEPARATOR . $c;
+				if(file_exists($filename))
 				{
 					self::$instance = new self();
 					$content = file_get_contents($c);
