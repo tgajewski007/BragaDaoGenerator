@@ -990,7 +990,7 @@ class DAOFileGenerator
 		foreach($table->getColumny() as $c)
 			/* @var $c Column */
 		{
-			$this->addLine("protected {$c->getPHPType()} \${$c->getClassFieldName()} = null;", 1);
+			$this->addLine("protected ?{$c->getPHPType()} \${$c->getClassFieldName()} = null;", 1);
 		}
 		$this->addLine("protected bool \$readed = false;", 1);
 		$this->addLine("protected bool \$forUpdate = false;", 1);
