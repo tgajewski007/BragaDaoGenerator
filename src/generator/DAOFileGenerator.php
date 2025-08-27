@@ -194,6 +194,8 @@ class DAOFileGenerator
 			$tmp3[] = "\$" . $c->getClassFieldName();
 		}
 
+		$this->addLine(" * @throws BragaException", 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function get(" . implode(", ", $tmp1) . "): static", 1);
@@ -246,6 +248,8 @@ class DAOFileGenerator
 			$tmp3[] = "\$" . $column->getClassFieldName();
 		}
 
+		$this->addLine(" * @throws BragaException", 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("public static function getForUpdate(" . implode(", ", $tmp1) . "): static", 1);
@@ -689,7 +693,7 @@ class DAOFileGenerator
 						{
 							if($x->getName() == $cc->fkColumnName)
 							{
-								$tmp1[] = "\$this->get" . ucfirst($x->getClassFieldName()) . "()";
+								$tmp1[] = "\$this->get" . ucfirst($x->getClassFieldName()) . "() ";
 								if(substr($x->getClassFieldName(), 0, 2) == "id")
 								{
 									$functionName .= substr($x->getClassFieldName(), 2);
@@ -770,7 +774,7 @@ class DAOFileGenerator
 	{
 		foreach($table->getColumny() as $column)
 		{
-			$this->generateGetter($column->getClassFieldName());
+			$this->generateGetter($column);
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
@@ -818,11 +822,11 @@ class DAOFileGenerator
 		}
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	protected function generateGetter($classFieldName)
+	protected function generateGetter(Column $c)
 	{
-		$this->addLine("public function get" . ucfirst($classFieldName) . "()", 1);
+		$this->addLine("public function get" . ucfirst($c->getName()) . "(): ?{$c->getPHPType()}", 1);
 		$this->addLine("{", 1);
-		$this->addLine("return \$this->" . $classFieldName . ";", 2);
+		$this->addLine("return \$this->" . $c->getName() . ";", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
@@ -964,6 +968,8 @@ class DAOFileGenerator
 			$tmp2[] = "!is_null(\$" . $c->getClassFieldName() . ")";
 			$tmp3[] = "\$" . $c->getClassFieldName() . "";
 		}
+		$this->addLine(" * @throws BragaException", 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function __construct(" . implode(", ", $tmp1) . ")", 1);
 		$this->addLine("{", 1);
