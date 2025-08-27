@@ -514,6 +514,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method change object of class " . $t->getClassName(), 1);
 		$this->addLine(" * update record in table " . $t->getName(), 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
+		$this->addLine(" * @throws \\Throwable", 1);
+		$this->addLine(" * @throws \\braga\\db\\exception\\GeneralSqlException", 1);
 		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function update(): bool", 1);
@@ -602,6 +605,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Methods add object of class " . $t->getClassName(), 1);
 		$this->addLine(" * insert record into table " . $t->getName(), 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
+		$this->addLine(" * @throws \\Throwable", 1);
+		$this->addLine(" * @throws \\braga\\db\\exception\\GeneralSqlException", 1);
 		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function create(): bool", 1);
