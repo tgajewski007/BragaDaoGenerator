@@ -222,7 +222,7 @@ class ConfigReader
 			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
 			foreach($configFilenameArray as $c)
 			{
-				$filename = __DIR__ . DIRECTORY_SEPARATOR . $c;
+				$filename = realpath(__DIR__ . DIRECTORY_SEPARATOR . $c);
 				if(file_exists($filename))
 				{
 					self::$instance = new self();
