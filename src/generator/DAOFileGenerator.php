@@ -872,6 +872,10 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateSetter(Column $c)
 	{
+		$this->addLine("/**", 1);
+		$this->addLine(" * @param {$c->getPHPType()}|null {$c->getClassFieldName()}", 1);
+		$this->addLine(" * @return static", 1);
+		$this->addLine(" */", 1);
 		$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(?{$c->getPHPType()} \$" . $c->getClassFieldName() . "): static", 1);
 		$this->addLine("{", 1);
 		switch($c->getType())
