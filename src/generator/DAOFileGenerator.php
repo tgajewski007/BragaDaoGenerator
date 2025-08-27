@@ -404,6 +404,10 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method removes object of class " . $t->getClassName(), 1);
 		$this->addLine(" * removed are record from table " . $t->getName(), 1);
+		$this->addLine(" * @throws BragaException", 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
+		$this->addLine(" * @throws \\Throwable", 1);
+		$this->addLine(" * @throws \\braga\\db\\exception\\GeneralSqlException", 1);
 		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
 		$this->addLine("protected function destroy(): bool", 1);
@@ -453,6 +457,10 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method read object of class " . $t->getClassName() . " you can read all of atrib by get...() function", 1);
 		$this->addLine(" * select record from table " . $t->getName(), 1);
+		$this->addLine(" * @throws BragaException", 1);
+		$this->addLine(" * @throws ExecutionSqlException", 1);
+		$this->addLine(" * @throws \\Throwable", 1);
+		$this->addLine(" * @throws \\braga\\db\\exception\\GeneralSqlException", 1);
 		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
