@@ -225,10 +225,11 @@ class ConfigReader
 			foreach($configFilenameArray as $c)
 			{
 				$realpath = realpath(__DIR__ . DIRECTORY_SEPARATOR . $c);
-				if(file_exists($realpath . DIRECTORY_SEPARATOR . "dbConfig.json"))
+				$filename = $realpath . DIRECTORY_SEPARATOR . "dbConfig.json";
+				if(file_exists($filename))
 				{
 					self::$instance = new self();
-					$content = file_get_contents($c);
+					$content = file_get_contents($filename);
 					$content = json_decode($content, true);
 					self::$instance->setBaseFolder(dirname($c));
 					self::$instance->setUser($content["user"]);
