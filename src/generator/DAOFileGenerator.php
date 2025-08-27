@@ -824,9 +824,13 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateGetter(Column $c)
 	{
-		$this->addLine("public function get" . ucfirst($c->getName()) . "(): ?{$c->getPHPType()}", 1);
+		$this->addLine("/**", 1);
+		$this->addLine(" * @return ?{$c->getPHPType()}", 1);
+		$this->addLine(" */", 1);
+
+		$this->addLine("public function get" . ucfirst($c->getClassFieldName()) . "(): ?{$c->getPHPType()}", 1);
 		$this->addLine("{", 1);
-		$this->addLine("return \$this->" . $c->getName() . ";", 2);
+		$this->addLine("return \$this->" . $c->getClassFieldName() . ";", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
