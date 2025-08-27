@@ -231,7 +231,7 @@ class ConfigReader
 					self::$instance = new self();
 					$content = file_get_contents($filename);
 					$content = json_decode($content, true);
-					self::$instance->setBaseFolder(dirname($c));
+					self::$instance->setBaseFolder(dirname($realpath));
 					self::$instance->setUser($content["user"]);
 					self::$instance->setPass($content["pass"]);
 					self::$instance->setSchema($content["schema"]);
