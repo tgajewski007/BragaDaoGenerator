@@ -119,7 +119,7 @@ class DAOFileGenerator
 		$this->addLine(" * @param DataSource \$db", 1);
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public static function getByDataSource(DataSource \$db)", 1);
+		$this->addLine("public static function getByDataSource(DataSource \$db): static", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$key = " . implode(" . \"_\" . ", $tmp1) . ";", 2);
 		$this->addLine("if(!isset(self::\$instance[\$key]))", 2);
@@ -196,7 +196,7 @@ class DAOFileGenerator
 
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public static function get(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("public static function get(" . implode(", ", $tmp1) . "): static", 1);
 		$this->addLine("{", 1);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
@@ -248,7 +248,7 @@ class DAOFileGenerator
 
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public static function getForUpdate(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("public static function getForUpdate(" . implode(", ", $tmp1) . "): static", 1);
 		$this->addLine("{", 1);
 		$this->addLine("if(" . implode(" && ", $tmp2) . ")", 2);
 		$this->addLine("{", 2);
@@ -334,7 +334,7 @@ class DAOFileGenerator
 			$this->addLine(" * Methods return colection of  " . $table->getClassName(), 1);
 			$this->addLine(" * @return \\braga\\db\\Collection|\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "[]", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ", \$forUpdate = false)", 1);
+			$this->addLine("public static function " . $functioName . "(" . $fkTable->getClassName() . "DAO \$" . lcfirst($fkTable->getClassName()) . ", \$forUpdate = false): \\braga\\db\\Collection", 1);
 			$this->addLine("{", 1);
 			$this->addLine("\$prototype = \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $table->getClassName() . "::get();", 2);
 			$this->addLine("\$prototype->forUpdate = \$forUpdate;", 2);
@@ -400,9 +400,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method removes object of class " . $t->getClassName(), 1);
 		$this->addLine(" * removed are record from table " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function destroy()", 1);
+		$this->addLine("protected function destroy(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql = <<<SQL", 2);
@@ -449,7 +449,7 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method read object of class " . $t->getClassName() . " you can read all of atrib by get...() function", 1);
 		$this->addLine(" * select record from table " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
 		$tmp1 = array();
 		foreach($pk as $column)
@@ -457,7 +457,7 @@ class DAOFileGenerator
 		{
 			$tmp1[] = "\$" . $column->getClassFieldName();
 		}
-		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . ")", 1);
+		$this->addLine("protected function retrieve(" . implode(", ", $tmp1) . "): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql = <<<SQL", 2);
@@ -510,9 +510,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method change object of class " . $t->getClassName(), 1);
 		$this->addLine(" * update record in table " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function update()", 1);
+		$this->addLine("protected function update(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("if(!\$this->forUpdate)", 2);
 		$this->addLine("{", 2);
@@ -598,9 +598,9 @@ class DAOFileGenerator
 		$this->addLine("/**", 1);
 		$this->addLine(" * Methods add object of class " . $t->getClassName(), 1);
 		$this->addLine(" * insert record into table " . $t->getName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function create()", 1);
+		$this->addLine("protected function create(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("\$db = new DB();", 2);
 		$this->addLine("\$sql = <<<SQL", 2);
@@ -706,7 +706,7 @@ class DAOFileGenerator
 			$this->addLine("/**", 1);
 			$this->addLine(" * @return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function " . $functionName . "(\$forUpdate = false)", 1);
+			$this->addLine("public function " . $functionName . "(\$forUpdate = false): \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $fk->getTable()->getClassName(), 1);
 			$this->addLine("{", 1);
 			$this->addLine("if(\$forUpdate)", 2);
 			$this->addLine("{", 2);
@@ -807,7 +807,7 @@ class DAOFileGenerator
 						$this->addLine(" * Methods returns colection of objects " . $t->getClassName(), 1);
 						$this->addLine(" * @return \\braga\\db\\Collection|" . "\\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "[]", 1);
 						$this->addLine(" */", 1);
-						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "(\$forUpdate = false)", 1);
+						$this->addLine("public function get" . $t->getClassName() . "sFor" . $objectName . "(\$forUpdate = false): \\braga\\db\\Collection", 1);
 						$this->addLine("{", 1);
 						$this->addLine("return \\" . $this->project->getNameSpace() . $this->project->getObjFolder() . "\\" . $t->getClassName() . "::" . $functionName . "(\$this, \$forUpdate);", 2);
 						$this->addLine("}", 1);
@@ -937,7 +937,7 @@ class DAOFileGenerator
 		$this->addLine(" * Methods set all atributes in object of class " . $t->getClassName() . " from object class DB", 1);
 		$this->addLine(" * @return void", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function setAllFromDB(DataSource \$db)", 1);
+		$this->addLine("protected function setAllFromDB(DataSource \$db): void", 1);
 		$this->addLine("{", 1);
 		foreach($t->getColumny() as $c)
 			/* @var $c Column */

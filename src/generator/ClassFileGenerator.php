@@ -67,9 +67,9 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * Methods validate data before save", 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("protected function check()", 1);
+		$this->addLine("protected function check(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: add special validate ", 2);
 		$this->addLine("return true;", 2);
@@ -81,9 +81,9 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * This method returns a collection of objects ", 1);
-		$this->addLine(" * @return Collection|" . "static[]", 1);
+		$this->addLine(" * @return Collection|static[]", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public static function getAll()", 1);
+		$this->addLine("public static function getAll(): Collection", 1);
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: this is example of method selecting multi rec from table ", 2);
 		$this->addLine("\$db = new DB();", 2);
@@ -101,9 +101,9 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method removes an object of class " . $t->getClassName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public function kill()", 1);
+		$this->addLine("public function kill(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: this method may be changed when record can not be deleted from table", 2);
 		$this->addLine("return \$this->destroy();", 2);
@@ -115,9 +115,9 @@ class ClassFileGenerator extends DAOFileGenerator
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * Method saves the object of the class " . $t->getClassName(), 1);
-		$this->addLine(" * @return boolean", 1);
+		$this->addLine(" * @return bool", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public function save()", 1);
+		$this->addLine("public function save(): bool", 1);
 		$this->addLine("{", 1);
 		$this->addLine("// TODO: please set atrib independens of clients ex lastupdate", 2);
 		$this->addLine("if(\$this->check())", 2);
