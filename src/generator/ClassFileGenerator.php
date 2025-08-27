@@ -119,7 +119,7 @@ class ClassFileGenerator extends DAOFileGenerator
 		$this->addLine(" */", 1);
 		$this->addLine("public function save(): bool", 1);
 		$this->addLine("{", 1);
-		$this->addLine("// TODO: please set atrib independens of clients ex lastupdate", 2);
+		$this->addLine("// TODO: please set attrib independens of clients ex lastupdate", 2);
 		$this->addLine("if(\$this->check())", 2);
 		$this->addLine("{", 2);
 		$this->addLine("if(\$this->isReaded())", 3);
