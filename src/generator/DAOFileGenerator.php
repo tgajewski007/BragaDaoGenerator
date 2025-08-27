@@ -772,8 +772,9 @@ class DAOFileGenerator
 			}
 			$this->addLine("/**", 1);
 			$this->addLine(" * @param " . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()), 1);
+			$this->addLine(" * @return static", 1);
 			$this->addLine(" */", 1);
-			$this->addLine("public function set" . $functionName . "(" . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()) . ")", 1);
+			$this->addLine("public function set" . $functionName . "(" . $fk->getTable()->getClassName() . "DAO \$" . lcfirst($fk->getTable()->getClassName()) . "): static", 1);
 			$this->addLine("{", 1);
 
 			foreach($tmp1 as $t)
@@ -781,6 +782,7 @@ class DAOFileGenerator
 				$this->addLine("\$this->id" . ucfirst($functionName) . " = " . $t . ";", 2);
 			}
 
+			$this->addLine("return \$this", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		}
