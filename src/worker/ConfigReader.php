@@ -215,15 +215,15 @@ class ConfigReader
 		if(empty(self::$instance))
 		{
 			$configFilenameArray = array();
-			$configFilenameArray[] = "dbConfig.json";
-			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
-			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
-			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
-			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "dbConfig.json";
+			$configFilenameArray[] = "";
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR;
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+			$configFilenameArray[] = ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
 			foreach($configFilenameArray as $c)
 			{
 				$filename = realpath(__DIR__ . DIRECTORY_SEPARATOR . $c);
-				if(file_exists($filename))
+				if(file_exists($filename . DIRECTORY_SEPARATOR . "dbConfig.json"))
 				{
 					self::$instance = new self();
 					$content = file_get_contents($c);
