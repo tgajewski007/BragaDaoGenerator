@@ -872,7 +872,7 @@ class DAOFileGenerator
 	// -----------------------------------------------------------------------------------------------------------------
 	protected function generateSetter(Column $c)
 	{
-		$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(\$" . $c->getClassFieldName() . ")", 1);
+		$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(?{$c->getPHPType()} \$" . $c->getClassFieldName() . "): static", 1);
 		$this->addLine("{", 1);
 		switch($c->getType())
 		{
@@ -943,6 +943,7 @@ class DAOFileGenerator
 				$this->addLine("\$this->" . $c->getClassFieldName() . " = \$" . $c->getClassFieldName() . ";", 2);
 				break;
 		}
+		$this->addLine("return \$this;", 2);
 		$this->addLine("}", 1);
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
