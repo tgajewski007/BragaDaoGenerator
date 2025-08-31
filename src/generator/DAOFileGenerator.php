@@ -782,7 +782,7 @@ class DAOFileGenerator
 				$this->addLine("\$this->id" . ucfirst($functionName) . " = " . $t . ";", 2);
 			}
 
-			$this->addLine("return \$this", 2);
+			$this->addLine("return \$this;", 2);
 			$this->addLine("}", 1);
 			$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 		}
