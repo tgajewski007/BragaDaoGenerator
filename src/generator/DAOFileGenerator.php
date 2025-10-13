@@ -991,9 +991,9 @@ class DAOFileGenerator
 			/* @var $c Column */
 		{
 			$this->addLine(" * @param " . $c->getPHPType() . " \$" . $c->getClassFieldName() . "", 1);
-			$tmp1[] = "?{$c->getPHPType()} \$" . $c->getClassFieldName() . " = null";
-			$tmp2[] = "!is_null(\$" . $c->getClassFieldName() . ")";
-			$tmp3[] = "\$" . $c->getClassFieldName() . "";
+			$tmp1[] = "\${$c->getClassFieldName()} = null";
+			$tmp2[] = "!is_null(\${$c->getClassFieldName()})";
+			$tmp3[] = "\${$c->getClassFieldName()}";
 		}
 		$this->addLine(" * @throws BragaException", 1);
 		$this->addLine(" * @throws ExecutionSqlException", 1);
