@@ -878,7 +878,7 @@ class DAOFileGenerator
 		$this->addLine(" * @param {$c->getPHPType()}|null \${$c->getClassFieldName()}", 1);
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(?{$c->getPHPType()} \${$c->getClassFieldName()}): static", 1);
+		$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(\${$c->getClassFieldName()}): static", 1);
 		$this->addLine("{", 1);
 		switch($c->getType())
 		{
@@ -896,7 +896,7 @@ class DAOFileGenerator
 			case ColumnType::NUMBER:
 				$this->addLine("if(is_numeric(\$" . $c->getClassFieldName() . "))", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(\$" . $c->getClassFieldName() . ", " . intval($c->getScale()) . ");", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(floatval(\$" . $c->getClassFieldName() . "), " . intval($c->getScale()) . ");", 3);
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
@@ -936,7 +936,7 @@ class DAOFileGenerator
 			case ColumnType::FLOAT:
 				$this->addLine("if(is_numeric(\$" . $c->getClassFieldName() . "))", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = \$" . $c->getClassFieldName() . ";", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = floatval(\$" . $c->getClassFieldName() . ");", 3);
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
