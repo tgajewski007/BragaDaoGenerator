@@ -936,7 +936,7 @@ class DAOFileGenerator
 			case ColumnType::FLOAT:
 				$this->addLine("if(is_numeric(\$" . $c->getClassFieldName() . "))", 2);
 				$this->addLine("{", 2);
-				$this->addLine("\$this->" . $c->getClassFieldName() . " = round(floatval(\$" . $c->getClassFieldName() . "), " . intval($c->getScale()) . ");", 3);
+				$this->addLine("\$this->" . $c->getClassFieldName() . " = floatval(\$" . $c->getClassFieldName() . ");", 3);
 				$this->addLine("}", 2);
 				$this->addLine("else", 2);
 				$this->addLine("{", 2);
