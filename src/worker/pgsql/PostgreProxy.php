@@ -46,6 +46,7 @@ class PostgreProxy implements ReverseProxy
 	public function getColumn($tableName)
 	{
 		$db = new DB();
+
 		$sql = "SELECT column_name, data_type, character_maximum_length, numeric_precision, numeric_scale, column_default ";
 		$sql .= "FROM INFORMATION_SCHEMA.COLUMNS ";
 		$sql .= "WHERE TABLE_CATALOG = :TABLE_CATALOG ";
@@ -56,55 +57,160 @@ class PostgreProxy implements ReverseProxy
 		$db->setParam("TABLE_CATALOG", DB_NAME);
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
 		$db->setParam("TABLE_NAME", $tableName);
+
 		echo "columns for table " . str_pad($tableName, 60, ".", STR_PAD_RIGHT) . " ";
+
 		$db->query($sql);
+
 		$retval = array();
+
 		while($db->nextRecord())
 		{
 			$tmp = new ReverseColumn();
+
 			$tmp->name = $db->f(0);
-			switch($db->f(1))
+
+			$dataType = strtolower(trim($db->f(1)));
+			$charLength = $db->f(2);
+			$numericPrecision = $db->f(3);
+			$numericScale = $db->f(4);
+
+			switch($dataType)
 			{
-				case "date":
+				// -------------------------------------------------------------
+				// DATE / TIME
+				// -------------------------------------------------------------
+				case 'date':
 					$tmp->type = ColumnType::DATE;
 					break;
-				case "timestamp without time zone":
+
+				case 'timestamp':
+				case 'timestamp without time zone':
+				case 'timestamp with time zone':
 					$tmp->type = ColumnType::DATETIME;
 					break;
-				case "time without time zone":
+
+				case 'time':
+				case 'time without time zone':
+				case 'time with time zone':
 					$tmp->type = ColumnType::TIME;
 					break;
-				case "numeric":
-				case "integer":
-				case "bigint":
+
+				// -------------------------------------------------------------
+				// INTEGER
+				// -------------------------------------------------------------
+				case 'smallint':
+				case 'integer':
+				case 'bigint':
+				case 'serial':
+				case 'bigserial':
 					$tmp->type = ColumnType::NUMBER;
 					break;
-				case "decimal":
-				case "double precision":
+
+				// -------------------------------------------------------------
+				// FLOAT / DECIMAL
+				// -------------------------------------------------------------
+				case 'numeric':
+				case 'decimal':
+					if((int)$numericScale > 0)
+					{
+						$tmp->type = ColumnType::FLOAT;
+					}
+					else
+					{
+						$tmp->type = ColumnType::NUMBER;
+					}
+					break;
+
+				case 'real':
+				case 'double precision':
 					$tmp->type = ColumnType::FLOAT;
 					break;
-				case "text":
+
+				// -------------------------------------------------------------
+				// TEXT
+				// -------------------------------------------------------------
+				case 'text':
 					$tmp->type = ColumnType::TEXT;
 					break;
-				case "character varying":
+
+				case 'character varying':
+				case 'varchar':
+				case 'character':
+				case 'char':
 					$tmp->type = ColumnType::VARCHAR;
 					break;
-				default :
-					echo "\n!!!{" . $db->f(1) . " -> VARCHAR}\n";
+
+				// -------------------------------------------------------------
+				// BOOLEAN
+				// -------------------------------------------------------------
+				case 'boolean':
+					$tmp->type = ColumnType::NUMBER;
+					break;
+
+				// -------------------------------------------------------------
+				// JSON
+				// -------------------------------------------------------------
+				case 'json':
+				case 'jsonb':
+					$tmp->type = ColumnType::TEXT;
+					break;
+
+				// -------------------------------------------------------------
+				// UUID
+				// -------------------------------------------------------------
+				case 'uuid':
+					$tmp->type = ColumnType::VARCHAR;
+					$tmp->size = 36;
+					break;
+
+				// -------------------------------------------------------------
+				// BYTEA
+				// -------------------------------------------------------------
+				case 'bytea':
+				case 'tsvector':
+					$tmp->type = ColumnType::TEXT;
+					break;
+
+				// -------------------------------------------------------------
+				// DEFAULT
+				// -------------------------------------------------------------
+				default:
+					echo "\n!!!{" . $dataType . " -> VARCHAR}\n";
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}
-			if(is_null($db->f(3)))
+
+			// -------------------------------------------------------------
+			// SIZE
+			// -------------------------------------------------------------
+			if(empty($tmp->size))
 			{
-				$tmp->size = $db->f(2);
+				if(!is_null($charLength))
+				{
+					$tmp->size = (int)$charLength;
+				}
+				elseif(!is_null($numericPrecision))
+				{
+					$tmp->size = (int)$numericPrecision;
+				}
+				else
+				{
+					$tmp->size = null;
+				}
 			}
-			else
+
+			// -------------------------------------------------------------
+			// SCALE
+			// -------------------------------------------------------------
+			if(!is_null($numericScale))
 			{
-				$tmp->size = $db->f(3);
-				$tmp->size = $db->f(4);
+				$tmp->scale = (int)$numericScale;
 			}
+
 			$retval[$tmp->name] = $tmp;
 		}
+
 		return $retval;
 	}
 	// -------------------------------------------------------------------------
