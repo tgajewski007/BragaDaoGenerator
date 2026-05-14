@@ -47,8 +47,8 @@ class FilesGenerator
 	{
 		switch(self::$project->getDataBaseStyle())
 		{
-			case DataBaseStyle::MYSQL:
-				$d = new MySQLDAOFileGenerator(self::$project);
+			case DataBaseStyle::ORACLE:
+				$d = new OracleDAOFileGenerator(self::$project);
 				break;
 			case DataBaseStyle::PGSQL:
 				$d = new PostgreDAOFileGenerator(self::$project);
@@ -151,7 +151,7 @@ class FilesGenerator
 		// odczyt tablic
 		$tmp = array();
 		foreach($tables as $t)
-		/** @var \DOMElement  $t  */
+			/** @var \DOMElement $t */
 		{
 			$table = Table::import($t);
 			if(!self::$project->isTableExists($table))
@@ -162,20 +162,20 @@ class FilesGenerator
 		}
 		// odczyt column
 		foreach($tables as $t)
-		/** @var \DOMElement $t  */
+			/** @var \DOMElement $t */
 		{
 			$table = Table::import($t);
 			if(isset($tmp[$table->getKey()]))
 			{
 				foreach($t->getElementsByTagName("column") as $c)
-				/** @var \DOMElement $c  */
+					/** @var \DOMElement $c */
 				{
 					$column = Column::import($c);
 					$tmp = self::$project->getTables();
 					$tmp[$table->getKey()]->addColumn($column);
 				}
 				foreach($t->getElementsByTagName("fk") as $c)
-				/** @var \DOMElement $c  */
+					/** @var \DOMElement $c */
 				{
 					$fk = ForeginKey::import($c);
 					$tmp = self::$project->getTables();
@@ -196,19 +196,22 @@ class FilesGenerator
 		$p->setAttribute("namespace", self::$project->getNameSpace());
 		$p->setAttribute("dataBaseStyle", self::$project->getDataBaseStyle());
 
-		foreach(self::$project->getTables() as $table)/* @var $table Table */
+		foreach(self::$project->getTables() as $table)
+			/* @var $table Table */
 		{
 			$t = new \DOMElement("table");
 			$p->appendChild($t);
 			$table->export($t);
-			foreach($table->getColumny() as $columna)/* @var $columna Column */
+			foreach($table->getColumny() as $columna)
+				/* @var $columna Column */
 			{
 				$c = new \DOMElement("column");
 				$t->appendChild($c);
 				$columna->export($c);
 			}
 
-			foreach($table->getFk() as $fk)/* @var $fk ForeginKey */
+			foreach($table->getFk() as $fk)
+				/* @var $fk ForeginKey */
 			{
 				$k = new \DOMElement("fk");
 				$t->appendChild($k);
