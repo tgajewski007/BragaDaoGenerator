@@ -3,3 +3,5 @@
 /composer.phar
 /dbConfig.json
 /tmp
+/bin/doReverseTest.php
+dao.xml
