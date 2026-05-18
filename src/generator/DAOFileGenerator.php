@@ -863,13 +863,13 @@ class DAOFileGenerator
 		$this->addLine("// -----------------------------------------------------------------------------------------------------------------", 1);
 	}
 	// -----------------------------------------------------------------------------------------------------------------
-	protected function generateSetter(Column $c)
+	protected function generateSetter(Column $c, string $functionAccess = "public")
 	{
 		$this->addLine("/**", 1);
 		$this->addLine(" * @param {$c->getPHPType()}|null \${$c->getClassFieldName()}", 1);
 		$this->addLine(" * @return static", 1);
 		$this->addLine(" */", 1);
-		$this->addLine("public function set" . ucfirst($c->getClassFieldName()) . "(\${$c->getClassFieldName()}): static", 1);
+		$this->addLine("{$functionAccess} function set" . ucfirst($c->getClassFieldName()) . "(\${$c->getClassFieldName()}): static", 1);
 		$this->addLine("{", 1);
 		switch($c->getType())
 		{
@@ -952,6 +952,10 @@ class DAOFileGenerator
 			if(!$column->isDatabaseGenerated())
 			{
 				$this->generateSetter($column);
+			}
+			else
+			{
+				$this->generateSetter($column, "private");
 			}
 		}
 	}
