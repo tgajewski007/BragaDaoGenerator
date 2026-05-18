@@ -47,12 +47,21 @@ class PostgreProxy implements ReverseProxy
 	{
 		$db = new DB();
 
-		$sql = "SELECT column_name, data_type, character_maximum_length, numeric_precision, numeric_scale, column_default ";
-		$sql .= "FROM INFORMATION_SCHEMA.COLUMNS ";
-		$sql .= "WHERE TABLE_CATALOG = :TABLE_CATALOG ";
-		$sql .= "AND TABLE_SCHEMA = :TABLE_SCHEMA ";
-		$sql .= "AND TABLE_NAME = :TABLE_NAME ";
-		$sql .= "ORDER BY ORDINAL_POSITION";
+		$sql = <<<SQL
+			SELECT
+				column_name,
+				data_type,
+				character_maximum_length,
+				numeric_precision,
+				numeric_scale,
+				column_default,
+				is_generated 
+			FROM INFORMATION_SCHEMA.COLUMNS 
+			WHERE TABLE_CATALOG = :TABLE_CATALOG	 
+			AND TABLE_SCHEMA = :TABLE_SCHEMA 
+			AND TABLE_NAME = :TABLE_NAME 
+			ORDER BY ORDINAL_POSITION
+			SQL;
 
 		$db->setParam("TABLE_CATALOG", DB_NAME);
 		$db->setParam("TABLE_SCHEMA", DB_SCHEMA);
@@ -74,7 +83,7 @@ class PostgreProxy implements ReverseProxy
 			$charLength = $db->f(2);
 			$numericPrecision = $db->f(3);
 			$numericScale = $db->f(4);
-
+			$tmp->databaseGenerated = $db->f(6) == "ALWAYS";
 			switch($dataType)
 			{
 				// -------------------------------------------------------------

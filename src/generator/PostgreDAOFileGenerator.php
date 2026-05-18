@@ -47,11 +47,14 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 		$params = array();
 		foreach($data as $column)
 		{
-			$columns[$column->getName()] = $column->getName();
-			$params[$column->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($column->getName()));
-			if(strlen($params[$column->getName()]) == 0)
+			if(!$column->isDatabaseGenerated())
 			{
-				$params[$column->getName()] = RandomStringLetterOnly(8);
+				$columns[$column->getName()] = $column->getName();
+				$params[$column->getName()] = preg_replace("/[^A-Z1-9]/", "", strtoupper($column->getName()));
+				if(strlen($params[$column->getName()]) == 0)
+				{
+					$params[$column->getName()] = RandomStringLetterOnly(8);
+				}
 			}
 		}
 		$this->addLine("INSERT INTO {$t->getName()} (" . implode(", ", $columns) . ") ", 3);
@@ -70,13 +73,16 @@ class PostgreDAOFileGenerator extends DAOFileGenerator
 
 		foreach($data as $column)
 		{
-			if($column->getType() == ColumnType::BLOB)
+			if(!$column->isDatabaseGenerated())
 			{
-				$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "(), \PDO::PARAM_LOB);", 2);
-			}
-			else
-			{
-				$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+				if($column->getType() == ColumnType::BLOB)
+				{
+					$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "(), \PDO::PARAM_LOB);", 2);
+				}
+				else
+				{
+					$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+				}
 			}
 		}
 		$this->addLine("\$db->query(\$sql);", 2);

@@ -16,17 +16,17 @@ interface ReverseProxy
 	public function getTables();
 	/**
 	 *
-	 * @return array
+	 * @return array|ReverseColumn[]
 	 */
 	public function getColumn($tableName);
 	/**
 	 *
-	 * @return array
+	 * @return array|ReversePrimaryKey[]
 	 */
 	public function getPrimaryKeys($tableName);
 	/**
 	 *
-	 * @return array
+	 * @return array|REverseForeginKey[]
 	 */
 	public function getForeginKeys($tableName);
 	// -------------------------------------------------------------------------
