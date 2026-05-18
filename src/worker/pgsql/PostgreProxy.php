@@ -138,6 +138,7 @@ class PostgreProxy implements ReverseProxy
 				case 'varchar':
 				case 'character':
 				case 'char':
+				case 'tsvector':
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 
@@ -168,8 +169,7 @@ class PostgreProxy implements ReverseProxy
 				// BYTEA
 				// -------------------------------------------------------------
 				case 'bytea':
-				case 'tsvector':
-					$tmp->type = ColumnType::TEXT;
+					$tmp->type = ColumnType::BLOB;
 					break;
 
 				// -------------------------------------------------------------
@@ -180,7 +180,6 @@ class PostgreProxy implements ReverseProxy
 					$tmp->type = ColumnType::VARCHAR;
 					break;
 			}
-
 			// -------------------------------------------------------------
 			// SIZE
 			// -------------------------------------------------------------

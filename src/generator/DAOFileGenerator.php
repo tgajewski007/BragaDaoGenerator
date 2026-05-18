@@ -568,7 +568,14 @@ class DAOFileGenerator
 		$tmp = $pk + $data;
 		foreach($tmp as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			if($column->getType() == ColumnType::BLOB)
+			{
+				$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "(), \PDO::PARAM_LOB);", 2);
+			}
+			else
+			{
+				$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			}
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
@@ -641,7 +648,14 @@ class DAOFileGenerator
 		}
 		foreach($data as $column)
 		{
-			$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			if($column->getType() == ColumnType::BLOB)
+			{
+				$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "(), \PDO::PARAM_LOB);", 2);
+			}
+			else
+			{
+				$this->addLine("\$db->setParam(\"" . $params[$column->getName()] . "\", \$this->get" . ucfirst($column->getClassFieldName()) . "());", 2);
+			}
 		}
 		$this->addLine("\$db->query(\$sql);", 2);
 		$this->addLine("if(1 == \$db->getRowAffected())", 2);
